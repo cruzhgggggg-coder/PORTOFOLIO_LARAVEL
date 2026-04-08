@@ -14,16 +14,29 @@ class SeoSettingController extends Controller
         $seoSettings = SeoSetting::all()->keyBy('page_key');
         
         $pages = [
-            'home' => 'Homepage',
-            'projects' => 'Projects Page',
-            'about' => 'About Page',
-            'contact' => 'Contact Page',
+            'home' => [
+                'name' => 'Homepage',
+                'route' => '/',
+                'seoSetting' => $seoSettings->get('home'),
+            ],
+            'projects' => [
+                'name' => 'Projects Page',
+                'route' => '/projects',
+                'seoSetting' => $seoSettings->get('projects'),
+            ],
+            'about' => [
+                'name' => 'About Page',
+                'route' => '/about',
+                'seoSetting' => $seoSettings->get('about'),
+            ],
+            'contact' => [
+                'name' => 'Contact Page',
+                'route' => '/contact',
+                'seoSetting' => $seoSettings->get('contact'),
+            ],
         ];
         
-        return view('admin.seo.index', [
-            'seoSettings' => $seoSettings,
-            'pages' => $pages,
-        ]);
+        return view('admin.seo.index', compact('pages'));
     }
     
     public function edit(string $pageKey)
