@@ -19,12 +19,16 @@ class Project extends Model
         'link_repo',
         'link_demo',
         'is_featured',
+        'views_count',
+        'likes_count',
     ];
 
     protected $casts = [
         'tags'       => 'array',
         'tech_stack' => 'array',
         'is_featured' => 'boolean',
+        'views_count' => 'integer',
+        'likes_count' => 'integer',
     ];
 
     /**
@@ -61,5 +65,37 @@ class Project extends Model
     public function scopeFeatured($query)
     {
         return $query->where('is_featured', true);
+    }
+
+    /**
+     * Scope: most viewed projects.
+     */
+    public function scopeMostViewed($query, int $limit = 10)
+    {
+        return $query->orderByDesc('views_count')->limit($limit);
+    }
+
+    /**
+     * Scope: most liked projects.
+     */
+    public function scopeMostLiked($query, int $limit = 10)
+    {
+        return $query->orderByDesc('likes_count')->limit($limit);
+    }
+
+    /**
+     * Increment view count.
+     */
+    public function incrementViews(): void
+    {
+        $this->increment('views_count');
+    }
+
+    /**
+     * Increment like count.
+     */
+    public function incrementLikes(): void
+    {
+        $this->increment('likes_count');
     }
 }

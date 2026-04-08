@@ -158,7 +158,7 @@
         </div>
 
         {{-- ============================================================ --}}
-        {{-- EXPERTISE SECTION                                             --}}
+        {{-- EXPERTISE SECTION — DYNAMIC FROM ADMIN                        --}}
         {{-- ============================================================ --}}
         <div class="mb-40">
             <div class="flex flex-col md:flex-row justify-between items-end mb-20 gap-8">
@@ -173,6 +173,55 @@
                 </p>
             </div>
 
+            @if($skills->isNotEmpty())
+            @foreach($skills as $category => $categorySkills)
+            <div class="mb-12" data-reveal="up">
+                <h3 class="text-[10px] font-mono uppercase tracking-[0.4em] text-brand-primary/60 mb-8 flex items-center gap-4">
+                    {{ $category }}
+                    <span class="flex-1 h-px bg-white/5"></span>
+                    <span class="text-white/20">{{ $categorySkills->count() }} skills</span>
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    @foreach($categorySkills as $skill)
+                    <div class="group glass-premium rounded-2xl p-6 hover:border-white/20 transition-all duration-500" data-tilt style="--card-accent: #00f2ff;">
+                        <div data-tilt-glow></div>
+                        <div class="relative z-10">
+                            <div class="flex justify-between items-start mb-4">
+                                <div>
+                                    <h4 class="font-bold text-base tracking-wide group-hover:text-brand-primary transition-colors duration-300">{{ $skill->name }}</h4>
+                                    @if($skill->description)
+                                    <p class="text-white/30 text-xs mt-1">{{ $skill->description }}</p>
+                                    @endif
+                                </div>
+                                @php
+                                    $proficiencyClass = match($skill->proficiency_level) {
+                                        'Expert' => 'bg-brand-primary/10 text-brand-primary',
+                                        'Advanced' => 'bg-brand-secondary/10 text-brand-secondary',
+                                        default => 'bg-white/5 text-white/40',
+                                    };
+                                @endphp
+                                <span @class(['text-[9px] font-mono uppercase tracking-widest px-3 py-1 rounded-full', $proficiencyClass])>
+                                    {{ $skill->proficiency_level }}
+                                </span>
+                            </div>
+                            <div class="relative h-1 bg-white/5 rounded-full overflow-hidden">
+                                <div class="absolute left-0 top-0 h-full rounded-full transition-all duration-1000 group-hover:opacity-100 opacity-60"
+                                     @style([
+                                         'width: ' . $skill->proficiency . '%',
+                                         'background: linear-gradient(90deg, #00f2ff, #7000ff)'
+                                     ])></div>
+                            </div>
+                            <div class="flex justify-end mt-1.5">
+                                <span class="text-[9px] font-mono text-white/20">{{ $skill->proficiency }}%</span>
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endforeach
+            @else
+            {{-- Fallback to static if no skills in DB --}}
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach([
                 ['icon' => 'M16 18l6-6-6-6M8 6l-6 6 6 6', 'label' => 'Full-Stack Dev', 'color' => 'brand-primary', 'accent' => '#00f2ff'],
@@ -193,13 +242,126 @@
                 </div>
                 @endforeach
             </div>
+            @endif
         </div>
+
+        {{-- ============================================================ --}}
+        {{-- EXPERIENCE / CAREER TIMELINE                                   --}}
+        {{-- ============================================================ --}}
+        @if($experiences->isNotEmpty())
+        <div class="mb-40" data-reveal="up">
+            <div class="text-center mb-20">
+                <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block" data-reveal="fade">Career Path</span>
+                <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase" data-reveal="up" data-delay="100">
+                    The <span class="text-gradient-blue">Journey</span>
+                </h2>
+            </div>
+            <div class="relative">
+                {{-- Vertical timeline line --}}
+                <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-white/5 md:-translate-x-1/2"></div>
+
+                <div class="flex flex-col gap-12">
+                    @foreach($experiences as $i => $exp)
+                    <div class="relative flex flex-col md:flex-row gap-8 {{ $i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse' }}" data-reveal="up" data-delay="{{ $i * 100 }}">
+                        {{-- Timeline dot --}}
+                        <div class="absolute left-6 md:left-1/2 top-6 w-3 h-3 rounded-full border-2 md:-translate-x-1/2 -translate-y-1/2
+                            {{ $exp->is_current ? 'bg-brand-primary border-brand-primary shadow-[0_0_12px_rgba(0,242,255,0.5)]' : 'bg-white/10 border-white/20' }}"></div>
+
+                        {{-- Content card --}}
+                        <div class="ml-16 md:ml-0 md:w-5/12 {{ $i % 2 === 0 ? 'md:mr-auto md:pr-16' : 'md:ml-auto md:pl-16' }}">
+                            <div class="glass-premium p-8 rounded-3xl group hover:border-white/20 transition-all duration-500">
+                                <div class="flex items-start gap-4 mb-4">
+                                    @if($exp->logo_url)
+                                    <img src="{{ $exp->logo_url }}" alt="{{ $exp->company }}" class="w-10 h-10 rounded-xl object-cover bg-white/5">
+                                    @endif
+                                    <div class="flex-1">
+                                        <div class="flex items-center gap-3 flex-wrap">
+                                            <span class="text-[9px] font-mono uppercase tracking-widest px-3 py-1 rounded-full
+                                                {{ $exp->type === 'work' ? 'bg-brand-primary/10 text-brand-primary' : 'bg-brand-secondary/10 text-brand-secondary' }}">
+                                                {{ $exp->type === 'work' ? 'Work' : 'Education' }}
+                                            </span>
+                                            @if($exp->is_current)
+                                            <span class="text-[9px] font-mono uppercase tracking-widest px-3 py-1 rounded-full bg-green-500/10 text-green-400 flex items-center gap-1.5">
+                                                <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
+                                                Current
+                                            </span>
+                                            @endif
+                                        </div>
+                                        <h4 class="font-bold text-lg mt-2 group-hover:text-brand-primary transition-colors duration-300">{{ $exp->title }}</h4>
+                                        <p class="text-white/50 text-sm">{{ $exp->company }}{{ $exp->location ? ' · ' . $exp->location : '' }}</p>
+                                    </div>
+                                </div>
+                                <p class="text-white/20 text-[10px] font-mono uppercase tracking-widest mb-4">{{ $exp->date_range }} · {{ $exp->duration }}</p>
+                                @if($exp->description)
+                                <p class="text-white/40 text-sm leading-relaxed mb-4">{{ $exp->description }}</p>
+                                @endif
+                                @if($exp->highlights && count($exp->highlights) > 0)
+                                <ul class="flex flex-col gap-2">
+                                    @foreach($exp->highlights as $highlight)
+                                    <li class="flex items-start gap-2 text-sm text-white/30">
+                                        <span class="text-brand-primary mt-0.5">▸</span>
+                                        {{ $highlight }}
+                                    </li>
+                                    @endforeach
+                                </ul>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        @endif
+
+        {{-- ============================================================ --}}
+        {{-- TESTIMONIALS SECTION                                           --}}
+        {{-- ============================================================ --}}
+        @if($testimonials->isNotEmpty())
+        <div class="mb-40" data-reveal="up">
+            <div class="text-center mb-20">
+                <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block" data-reveal="fade">Social Proof</span>
+                <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase" data-reveal="up" data-delay="100">
+                    What Clients <span class="text-gradient-blue">Say</span>
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($testimonials as $i => $testimonial)
+                <div class="glass-premium p-8 rounded-3xl group hover:border-white/20 transition-all duration-500 flex flex-col" data-tilt data-reveal="up" data-delay="{{ $i * 100 }}" style="--card-accent: #00f2ff;">
+                    <div data-tilt-glow></div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        {{-- Stars --}}
+                        <div class="text-brand-primary text-lg mb-6 tracking-wider">{{ $testimonial->stars }}</div>
+                        {{-- Quote --}}
+                        <blockquote class="text-white/60 leading-relaxed text-sm flex-1 mb-6 italic">
+                            "{{ $testimonial->content }}"
+                        </blockquote>
+                        {{-- Author --}}
+                        <div class="flex items-center gap-4 pt-6 border-t border-white/5">
+                            @if($testimonial->avatar_url)
+                            <img src="{{ $testimonial->avatar_url }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover bg-white/5">
+                            @else
+                            <div class="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold text-sm">
+                                {{ substr($testimonial->name, 0, 1) }}
+                            </div>
+                            @endif
+                            <div>
+                                <div class="font-bold text-sm">{{ $testimonial->name }}</div>
+                                <div class="text-white/30 text-[10px] uppercase tracking-widest">{{ $testimonial->title }}{{ $testimonial->company ? ' @ ' . $testimonial->company : '' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+        @endif
 
         {{-- ============================================================ --}}
         {{-- PHILOSOPHY SECTION                                            --}}
         {{-- ============================================================ --}}
         <section class="relative py-32 text-center overflow-hidden">
-            <div class="absolute inset-0 flex items-center justify-center opacity-[0.02] pointer-events-none select-none">
+            <div class="absolute inset-0 flex items-center justify-center opacity-[0.06] pointer-events-none select-none">
                 <h2 class="text-[25vw] font-display font-black uppercase tracking-tighter leading-none">
                     Vision
                 </h2>

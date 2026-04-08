@@ -76,7 +76,7 @@
     {{-- TECH MARQUEE DIVIDER                                          --}}
     {{-- ============================================================ --}}
     <div class="overflow-hidden py-8 border-y border-white/4" data-reveal="fade" data-delay="0">
-        <div class="marquee-track text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-white/4 leading-none whitespace-nowrap">
+        <div class="marquee-track text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-white/12 leading-none whitespace-nowrap">
             <span>Laravel ◆ React ◆ Vue.js ◆ TypeScript ◆ Three.js ◆ Tailwind ◆ Node.js ◆ PostgreSQL ◆ Docker ◆ AWS ◆&nbsp;</span>
             <span>Laravel ◆ React ◆ Vue.js ◆ TypeScript ◆ Three.js ◆ Tailwind ◆ Node.js ◆ PostgreSQL ◆ Docker ◆ AWS ◆&nbsp;</span>
         </div>
@@ -224,6 +224,48 @@
             </div>
         </div>
     </section>
+
+    {{-- ============================================================ --}}
+    {{-- TESTIMONIALS                                                   --}}
+    {{-- ============================================================ --}}
+    @if(isset($testimonials) && $testimonials->isNotEmpty())
+    <section class="relative py-32 px-6 z-10">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block" data-reveal="fade" data-delay="0">Social Proof</span>
+                <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase" data-reveal="up" data-delay="100">
+                    Client <span class="text-gradient-blue">Voices</span>
+                </h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                @foreach($testimonials as $i => $testimonial)
+                <div class="glass-premium p-8 rounded-3xl group hover:border-white/20 transition-all duration-500 flex flex-col" data-tilt data-reveal="up" data-delay="{{ $i * 100 }}" style="--card-accent: #00f2ff;">
+                    <div data-tilt-glow></div>
+                    <div class="relative z-10 flex flex-col h-full">
+                        <div class="text-brand-primary text-lg mb-6 tracking-wider">{{ $testimonial->stars }}</div>
+                        <blockquote class="text-white/60 leading-relaxed text-sm flex-1 mb-6 italic">
+                            "{{ $testimonial->content }}"
+                        </blockquote>
+                        <div class="flex items-center gap-4 pt-6 border-t border-white/5">
+                            @if($testimonial->avatar_url)
+                            <img src="{{ $testimonial->avatar_url }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover bg-white/5">
+                            @else
+                            <div class="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold text-sm">
+                                {{ substr($testimonial->name, 0, 1) }}
+                            </div>
+                            @endif
+                            <div>
+                                <div class="font-bold text-sm">{{ $testimonial->name }}</div>
+                                <div class="text-white/30 text-[10px] uppercase tracking-widest">{{ $testimonial->title }}{{ $testimonial->company ? ' @ ' . $testimonial->company : '' }}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                @endforeach
+            </div>
+        </div>
+    </section>
+    @endif
 
     {{-- ============================================================ --}}
     {{-- CTA SECTION                                                   --}}

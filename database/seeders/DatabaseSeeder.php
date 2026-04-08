@@ -44,5 +44,8 @@ class DatabaseSeeder extends Seeder
 
         // Run project seeder
         $this->call(ProjectSeeder::class);
+
+        // Run enhanced portfolio seeder (skills, experiences, testimonials, etc.)
+        $this->call(EnhancedPortfolioSeeder::class);
     }
 }

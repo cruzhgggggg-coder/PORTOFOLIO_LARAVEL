@@ -89,7 +89,7 @@
     <footer class="relative z-10 bg-black border-t border-white/6 overflow-hidden">
         {{-- Marquee divider --}}
         <div class="py-6 border-b border-white/4 overflow-hidden">
-            <div class="marquee-track text-[10rem] font-display font-black uppercase tracking-tighter text-white/2 leading-none whitespace-nowrap select-none">
+            <div class="marquee-track text-[10rem] font-display font-black uppercase tracking-tighter text-white/10 leading-none whitespace-nowrap select-none">
                 <span>Luminescent Architect ◆ Digital Craftsman ◆ Full-Stack Developer ◆ UI/UX Engineer ◆&nbsp;</span>
                 <span>Luminescent Architect ◆ Digital Craftsman ◆ Full-Stack Developer ◆ UI/UX Engineer ◆&nbsp;</span>
             </div>

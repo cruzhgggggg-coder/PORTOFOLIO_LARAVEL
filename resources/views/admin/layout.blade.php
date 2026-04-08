@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -18,14 +19,15 @@
             --card-bg: rgba(255, 255, 255, 0.03);
             --card-border: rgba(255, 255, 255, 0.07);
         }
-        body { 
-            background: var(--bg-deep); 
-            color: #e2e8f0; 
-            font-family: 'Instrument Sans', sans-serif; 
+
+        body {
+            background: var(--bg-deep);
+            color: #e2e8f0;
+            font-family: 'Instrument Sans', sans-serif;
             margin: 0;
             overflow-x: hidden;
         }
-        
+
         /* Sidebar Styles */
         .admin-sidebar {
             width: var(--sidebar-w);
@@ -33,13 +35,15 @@
             border-right: 1px solid var(--card-border);
             height: 100vh;
             position: fixed;
-            top: 0; left: 0;
+            top: 0;
+            left: 0;
             display: flex;
             flex-direction: column;
             backdrop-filter: blur(25px);
             z-index: 100;
             transition: transform 0.3s ease;
         }
+
         .admin-main {
             margin-left: var(--sidebar-w);
             min-height: 100vh;
@@ -49,29 +53,36 @@
 
         /* Nav Links */
         .nav-link {
-            display: flex; align-items: center; gap: 12px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
             padding: 12px 20px;
-            color: rgba(255,255,255,0.45);
-            font-size: 13px; font-weight: 500;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 13px;
+            font-weight: 500;
             text-decoration: none;
             border-radius: 10px;
             margin: 4px 12px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             letter-spacing: 0.02em;
         }
+
         .nav-link:hover {
             color: #fff;
             background: rgba(255, 255, 255, 0.05);
         }
+
         .nav-link.active {
             background: var(--brand-muted);
             color: var(--brand);
             font-weight: 600;
             box-shadow: inset 0 0 0 1px rgba(0, 242, 255, 0.15);
         }
+
         .nav-link svg {
             transition: transform 0.3s ease;
         }
+
         .nav-link:hover svg {
             transform: scale(1.1);
         }
@@ -82,133 +93,229 @@
             border: 1px solid var(--card-border);
             border-radius: 20px;
             backdrop-filter: blur(12px);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
         }
+
         .btn-primary {
-            background: var(--brand); color: #000;
-            font-weight: 700; font-size: 12px;
-            padding: 12px 24px; border-radius: 10px;
-            text-decoration: none; display: inline-flex;
-            align-items: center; gap: 8px;
-            transition: all 0.3s ease; border: none; cursor: pointer;
-            letter-spacing: 0.05em; text-transform: uppercase;
+            background: var(--brand);
+            color: #000;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 12px 24px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
         }
-        .btn-primary:hover { 
-            transform: translateY(-2px); 
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
             box-shadow: 0 8px 25px var(--brand-glow);
             filter: brightness(1.1);
         }
+
         .btn-danger {
-            background: rgba(239,68,68,0.1); color: #f87171;
-            border: 1px solid rgba(239,68,68,0.2);
-            font-weight: 600; font-size: 12px;
-            padding: 10px 18px; border-radius: 10px;
-            cursor: pointer; transition: all 0.2s; letter-spacing: 0.03em;
+            background: rgba(239, 68, 68, 0.1);
+            color: #f87171;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            font-weight: 600;
+            font-size: 12px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.2s;
+            letter-spacing: 0.03em;
         }
-        .btn-danger:hover { 
-            background: rgba(239,68,68,0.2); 
+
+        .btn-danger:hover {
+            background: rgba(239, 68, 68, 0.2);
             transform: translateY(-1px);
         }
+
         .btn-secondary {
-            background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.7);
-            border: 1px solid rgba(255,255,255,0.1);
-            font-weight: 600; font-size: 12px;
-            padding: 10px 18px; border-radius: 10px;
-            text-decoration: none; display: inline-flex;
-            align-items: center; gap: 8px;
-            transition: all 0.2s; cursor: pointer;
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-weight: 600;
+            font-size: 12px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.2s;
+            cursor: pointer;
         }
-        .btn-secondary:hover { 
-            background: rgba(255,255,255,0.08); 
-            border-color: rgba(255,255,255,0.2);
+
+        .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
         }
 
         /* Forms */
         .form-input {
             width: 100%;
-            background: rgba(255,255,255,0.03);
-            border: 1px solid rgba(255,255,255,0.08);
-            color: #fff; border-radius: 12px;
-            padding: 14px 18px; font-size: 14px;
-            transition: all 0.2s ease; outline: none;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: #fff;
+            border-radius: 12px;
+            padding: 14px 18px;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            outline: none;
         }
-        .form-input:focus { 
-            border-color: var(--brand); 
-            background: rgba(255,255,255,0.05);
+
+        .form-input:focus {
+            border-color: var(--brand);
+            background: rgba(255, 255, 255, 0.05);
             box-shadow: 0 0 0 4px var(--brand-muted);
         }
+
         .form-label {
-            font-size: 11px; font-weight: 700;
-            text-transform: uppercase; letter-spacing: 0.12em;
-            color: rgba(255,255,255,0.4);
-            display: block; margin-bottom: 10px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: rgba(255, 255, 255, 0.4);
+            display: block;
+            margin-bottom: 10px;
         }
 
         /* Toasts */
         .toast-container {
-            position: fixed; top: 2rem; right: 2rem;
-            z-index: 1000; display: flex; flex-direction: column; gap: 12px;
+            position: fixed;
+            top: 2rem;
+            right: 2rem;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
         }
+
         .toast {
-            padding: 16px 24px; border-radius: 12px;
-            backdrop-filter: blur(20px); font-size: 14px; font-weight: 500;
-            display: flex; align-items: center; gap: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 16px 24px;
+            border-radius: 12px;
+            backdrop-filter: blur(20px);
+            font-size: 14px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
             animation: toast-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
-        .toast-success { background: rgba(16, 185, 129, 0.15); color: #6ee7b7; border-color: rgba(16, 185, 129, 0.2); }
-        .toast-error { background: rgba(239, 68, 68, 0.15); color: #fca5a5; border-color: rgba(239, 68, 68, 0.2); }
+
+        .toast-success {
+            background: rgba(16, 185, 129, 0.15);
+            color: #6ee7b7;
+            border-color: rgba(16, 185, 129, 0.2);
+        }
+
+        .toast-error {
+            background: rgba(239, 68, 68, 0.15);
+            color: #fca5a5;
+            border-color: rgba(239, 68, 68, 0.2);
+        }
+
         @keyframes toast-in {
-            from { opacity: 0; transform: translateX(50px) scale(0.9); }
-            to { opacity: 1; transform: translateX(0) scale(1); }
+            from {
+                opacity: 0;
+                transform: translateX(50px) scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0) scale(1);
+            }
         }
 
         /* Modal */
         .modal-backdrop {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.8);
-            backdrop-filter: blur(8px); display: none; align-items: center;
-            justify-content: center; z-index: 2000;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(8px);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
         }
+
         .modal-content {
-            width: 400px; padding: 32px; border-radius: 24px;
-            background: #0d0d12; border: 1px solid var(--card-border);
-            text-align: center; transform: scale(0.95); opacity: 0;
+            width: 400px;
+            padding: 32px;
+            border-radius: 24px;
+            background: #0d0d12;
+            border: 1px solid var(--card-border);
+            text-align: center;
+            transform: scale(0.95);
+            opacity: 0;
             transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .modal-backdrop.active { display: flex; }
-        .modal-backdrop.active .modal-content { transform: scale(1); opacity: 1; }
+
+        .modal-backdrop.active {
+            display: flex;
+        }
+
+        .modal-backdrop.active .modal-content {
+            transform: scale(1);
+            opacity: 1;
+        }
 
         @media(max-width: 1024px) {
-            .admin-sidebar { transform: translateX(-100%); }
-            .admin-sidebar.mobile-active { transform: translateX(0); }
-            .admin-main { margin-left: 0; padding: 1.5rem; }
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+
+            .admin-sidebar.mobile-active {
+                transform: translateX(0);
+            }
+
+            .admin-main {
+                margin-left: 0;
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
+
 <body>
     <div class="toast-container" id="toast-container">
         @if(session('success'))
-            <div class="toast toast-success">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;"><polyline points="20 6 9 17 4 12"/></svg>
-                {{ session('success') }}
-            </div>
+        <div class="toast toast-success">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;">
+                <polyline points="20 6 9 17 4 12" />
+            </svg>
+            {{ session('success') }}
+        </div>
         @endif
         @if(session('error'))
-            <div class="toast toast-error">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-                {{ session('error') }}
-            </div>
+        <div class="toast toast-error">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:20px;height:20px;">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+            </svg>
+            {{ session('error') }}
+        </div>
         @endif
     </div>
 
     {{-- Sidebar --}}
     <aside class="admin-sidebar" id="sidebar">
-        <div style="padding: 32px 24px; border-bottom: 1px solid var(--card-border);">
+        <a href="{{ route('admin.dashboard') }}" style="text-decoration:none; color:inherit; display:block; padding: 32px 24px; border-bottom: 1px solid var(--card-border);">
             <div style="display:flex; align-items:center; gap:12px;">
                 <div style="width:40px;height:40px;background:var(--brand-muted);border:1px solid rgba(0,242,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
                     <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" style="width:20px;height:20px;">
-                        <path d="M12 2l9 4.9V17.1L12 22l-9-4.9V6.9L12 2z"/>
+                        <path d="M12 2l9 4.9V17.1L12 22l-9-4.9V6.9L12 2z" />
                     </svg>
                 </div>
                 <div>
@@ -216,30 +323,104 @@
                     <div style="font-size:10px;color:rgba(255,255,255,0.3);letter-spacing:0.1em;text-transform:uppercase;font-weight:700;">Dashboard</div>
                 </div>
             </div>
-        </div>
+        </a>
 
         <nav style="padding: 24px 0; flex:1; overflow-y:auto;">
             <div style="padding: 0 24px; margin-bottom:12px;">
-                <span style="font-size:10px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);">Navigation</span>
+                <span style="font-size:10px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);">Main</span>
             </div>
             <a href="{{ route('admin.dashboard') }}" class="nav-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                </svg>
                 Dashboard
             </a>
+            <a href="{{ route('admin.analytics.index') }}" class="nav-link {{ request()->routeIs('admin.analytics.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <line x1="18" y1="20" x2="18" y2="10" />
+                    <line x1="12" y1="20" x2="12" y2="4" />
+                    <line x1="6" y1="20" x2="6" y2="14" />
+                </svg>
+                Analytics
+            </a>
+
+            <div style="padding: 0 24px; margin:24px 0 12px; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 24px;">
+                <span style="font-size:10px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);">Content</span>
+            </div>
             <a href="{{ route('admin.projects.index') }}" class="nav-link {{ request()->routeIs('admin.projects.*') ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                </svg>
                 Portfolio Works
             </a>
+            <a href="{{ route('admin.testimonials.index') }}" class="nav-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                </svg>
+                Testimonials
+            </a>
+            <a href="{{ route('admin.skills.index') }}" class="nav-link {{ request()->routeIs('admin.skills.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+                </svg>
+                Skills & Expertise
+            </a>
+            <a href="{{ route('admin.experiences.index') }}" class="nav-link {{ request()->routeIs('admin.experiences.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+                    <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
+                </svg>
+                Experience
+            </a>
+            <a href="{{ route('admin.messages.index') }}" class="nav-link {{ request()->routeIs('admin.messages.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                    <polyline points="22,6 12,13 2,6" />
+                </svg>
+                Messages
+                @php $unreadCount = \App\Models\Message::unread()->count(); @endphp
+                @if($unreadCount > 0)
+                <span style="margin-left:auto;background:#ef4444;color:#fff;font-size:10px;padding:2px 6px;border-radius:10px;font-weight:700;">{{ $unreadCount }}</span>
+                @endif
+            </a>
+
+            <div style="padding: 0 24px; margin:24px 0 12px; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 24px;">
+                <span style="font-size:10px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);">Configuration</span>
+            </div>
             <a href="{{ route('admin.profile.edit') }}" class="nav-link {{ request()->routeIs('admin.profile.*') ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                </svg>
                 Profile & Identity
+            </a>
+            <a href="{{ route('admin.seo.index') }}" class="nav-link {{ request()->routeIs('admin.seo.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                </svg>
+                SEO Manager
+            </a>
+            <a href="{{ route('admin.settings.index') }}" class="nav-link {{ request()->routeIs('admin.settings.*') ? 'active' : '' }}">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <circle cx="12" cy="12" r="3" />
+                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
+                </svg>
+                Site Settings
             </a>
 
             <div style="padding: 0 24px; margin:24px 0 12px; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 24px;">
                 <span style="font-size:10px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);">Quick Links</span>
             </div>
-            <a href="{{ route('home') }}" target="_blank" class="nav-link">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            <a href=" {{ route('home') }}" target="_blank" class="nav-link">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
+                    <polyline points="15 3 21 3 21 9" />
+                    <line x1="10" y1="14" x2="21" y2="3" />
+                </svg>
                 Live Preview
             </a>
         </nav>
@@ -257,7 +438,11 @@
             <form method="POST" action="{{ route('logout') }}">
                 @csrf
                 <button type="submit" class="btn-secondary" style="width:100%;justify-content:center;font-size:11px;padding:8px;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px;">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+                        <polyline points="16 17 21 12 16 7" />
+                        <line x1="21" y1="12" x2="9" y2="12" />
+                    </svg>
                     Logout System
                 </button>
             </form>
@@ -273,7 +458,9 @@
     <div class="modal-backdrop" id="deleteModal">
         <div class="modal-content">
             <div style="width:60px;height:60px;background:rgba(239,68,68,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" style="width:28px;height:28px;"><path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="2" style="width:28px;height:28px;">
+                    <path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                </svg>
             </div>
             <h3 style="font-size:20px;font-weight:700;margin-bottom:8px;">Hapus Data?</h3>
             <p style="color:rgba(255,255,255,0.4);font-size:14px;margin-bottom:28px;">Tindakan ini tidak dapat dibatalkan. Seluruh data terkait akan dihapus permanen.</p>
@@ -317,5 +504,5 @@
         }
     </script>
 </body>
-</html>
 
+</html>
