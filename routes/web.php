@@ -23,6 +23,16 @@ use Illuminate\Support\Facades\Auth;
 */
 
 Route::get('/', [ProjectController::class, 'home'])->name('home');
+
+// Temporary Migration Route for Vercel/Cloud Hosting
+Route::get('/install-database', function() {
+    try {
+        \Illuminate\Support\Facades\Artisan::call('migrate', ['--force' => true]);
+        return "Database Berhasil Diinstall!";
+    } catch (\Exception $e) {
+        return "Error: " . $e->getMessage();
+    }
+});
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
 Route::get('/about', [ProjectController::class, 'about'])->name('about');
 Route::get('/contact', [ProjectController::class, 'contact'])->name('contact');
