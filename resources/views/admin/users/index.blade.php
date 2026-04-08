@@ -49,7 +49,7 @@
                         <div style="display:flex; gap:8px; justify-content:flex-end;">
                             <a href="{{ route('admin.users.edit', $user) }}" class="btn-secondary" style="padding:8px 12px; font-size:11px;">Edit</a>
                             @if($user->id !== auth()->id())
-                            <button type="button" class="btn-danger" style="padding:8px 12px; font-size:11px;" onclick="openDeleteModal('{{ route('admin.users.destroy', $user->id) }}')">Hapus</button>
+                            <button type="button" class="btn-danger" style="padding:8px 12px; font-size:11px;" data-url="{{ route('admin.users.destroy', $user->id) }}" onclick="openDeleteModal(this.dataset.url)">Hapus</button>
                             @endif
                         </div>
                     </td>
