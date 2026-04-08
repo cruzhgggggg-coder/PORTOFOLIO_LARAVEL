@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -22,7 +23,7 @@ class ProjectAdminController extends Controller
         return view('admin.projects.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, ImageOptimizer $optimizer)
     {
         $validated = $request->validate([
             'title'       => 'required|string|max:255',
@@ -41,7 +42,9 @@ class ProjectAdminController extends Controller
         $imageUrl = null;
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('projects', 'public');
-            $imageUrl = Storage::url($path);
+            // Optimize the image (converts to WebP)
+            $optimizedPath = $optimizer->optimizeProjectImage($path);
+            $imageUrl = Storage::url($optimizedPath);
         }
 
         // Process tech_stack and tags from comma-separated to array
@@ -78,7 +81,7 @@ class ProjectAdminController extends Controller
         return view('admin.projects.edit', compact('project'));
     }
 
-    public function update(Request $request, Project $project)
+    public function update(Request $request, Project $project, ImageOptimizer $optimizer)
     {
         $validated = $request->validate([
             'title'       => 'required|string|max:255',
@@ -96,13 +99,21 @@ class ProjectAdminController extends Controller
         // Handle new image upload
         $imageUrl = $project->image_url;
         if ($request->hasFile('image')) {
-            // Delete old image if it's in storage
+            // Delete old image if it's in storage (both original and WebP)
             if ($project->image_url && str_starts_with($project->image_url, '/storage/')) {
                 $oldPath = str_replace('/storage/', 'public/', $project->image_url);
                 Storage::delete($oldPath);
+
+                // Also delete WebP version if current is not WebP
+                if (!str_ends_with($oldPath, '.webp')) {
+                    $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $oldPath);
+                    Storage::delete($webpPath);
+                }
             }
             $path = $request->file('image')->store('projects', 'public');
-            $imageUrl = Storage::url($path);
+            // Optimize the image (converts to WebP)
+            $optimizedPath = $optimizer->optimizeProjectImage($path);
+            $imageUrl = Storage::url($optimizedPath);
         }
 
         // Process tech_stack and tags
@@ -140,10 +151,16 @@ class ProjectAdminController extends Controller
 
     public function destroy(Project $project)
     {
-        // Delete associated image if stored locally
+        // Delete associated image if stored locally (both original and WebP)
         if ($project->image_url && str_starts_with($project->image_url, '/storage/')) {
             $oldPath = str_replace('/storage/', 'public/', $project->image_url);
             Storage::delete($oldPath);
+
+            // Also delete WebP version if current is not WebP
+            if (!str_ends_with($oldPath, '.webp')) {
+                $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $oldPath);
+                Storage::delete($webpPath);
+            }
         }
 
         $project->delete();

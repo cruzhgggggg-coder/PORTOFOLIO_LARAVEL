@@ -30,7 +30,7 @@
                 {{-- Image --}}
                 <div class="relative aspect-4/5 md:aspect-video overflow-hidden bg-white/5 rounded-4xl mb-10 shadow-2xl" data-img-reveal data-tilt>
                     <div data-tilt-glow></div>
-                    
+
                     {{-- Project number --}}
                     <span class="project-index font-display">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
 
@@ -40,6 +40,8 @@
                     <img
                         src="{{ $project->image }}"
                         alt="{{ $project->title }}"
+                        loading="lazy"
+                        decoding="async"
                         class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" />
 
                     {{-- Overlay with view button --}}

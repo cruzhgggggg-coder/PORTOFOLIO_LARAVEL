@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProfileSetting;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -16,7 +17,7 @@ class ProfileAdminController extends Controller
         return view('admin.profile.edit', compact('settings'));
     }
 
-    public function update(Request $request)
+    public function update(Request $request, ImageOptimizer $optimizer)
     {
         $request->validate([
             'name'        => 'required|string|max:100',
@@ -26,7 +27,7 @@ class ProfileAdminController extends Controller
             'email'       => 'nullable|email|max:150',
             'github_url'  => 'nullable|url|max:300',
             'twitter_url' => 'nullable|url|max:300',
-            'linkedin_url'=> 'nullable|url|max:300',
+            'linkedin_url' => 'nullable|url|max:300',
             'years_exp'   => 'nullable|integer|min:0',
             'projects_count' => 'nullable|integer|min:0',
             'photo'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
@@ -46,18 +47,42 @@ class ProfileAdminController extends Controller
                 if ($pathPart && str_starts_with($pathPart, '/storage/')) {
                     $oldPath = str_replace('/storage/', 'public/', $pathPart);
                     Storage::delete($oldPath);
+
+                    // Also delete WebP version if exists
+                    $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $oldPath);
+                    if ($webpPath !== $oldPath) {
+                        Storage::delete($webpPath);
+                    }
                 }
             }
+
+            // Store original file temporarily
             $path = $request->file('photo')->store('profile', 'public');
-            ProfileSetting::set('photo_url', Storage::url($path));
+
+            // Optimize the image (converts to WebP)
+            $optimizedPath = $optimizer->optimizeProfilePhoto($path);
+
+            // Store the optimized URL
+            ProfileSetting::set('photo_url', Storage::url($optimizedPath));
         }
 
         // Save all text settings
         $keys = [
-            'name', 'tagline', 'bio', 'location', 'email', 'phone',
-            'github_url', 'twitter_url', 'linkedin_url',
-            'years_exp', 'projects_count',
-            'hero_badge', 'hero_line1', 'hero_line2', 'hero_desc',
+            'name',
+            'tagline',
+            'bio',
+            'location',
+            'email',
+            'phone',
+            'github_url',
+            'twitter_url',
+            'linkedin_url',
+            'years_exp',
+            'projects_count',
+            'hero_badge',
+            'hero_line1',
+            'hero_line2',
+            'hero_desc',
         ];
 
         foreach ($keys as $key) {

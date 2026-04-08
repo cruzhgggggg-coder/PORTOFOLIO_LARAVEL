@@ -40,21 +40,24 @@
                 <div class="relative group w-full max-w-md" data-reveal="scale" data-delay="200">
                     {{-- Glow backdrop --}}
                     <div class="absolute -inset-4 bg-linear-to-br from-brand-primary/20 to-brand-secondary/20 rounded-[40px] blur-3xl opacity-20 group-hover:opacity-50 transition-opacity duration-1000"></div>
-                    
+
                     <div class="relative aspect-square glass-premium rounded-[40px] overflow-hidden p-2 md:p-4" data-tilt>
                         <div data-tilt-glow></div>
                         {{-- Dark overlay that fades on hover --}}
                         <div class="absolute inset-0 bg-black/20 z-10 transition-opacity duration-700 group-hover:opacity-0 pointer-events-none rounded-[32px]"></div>
-                        
+
                         <img
                             src="{{ $profile['photo_url'] ?? 'https://picsum.photos/seed/architect-portrait/800/800' }}"
                             alt="{{ $profile['name'] ?? 'Architect' }}"
-                            class="w-full h-full object-cover rounded-[32px] grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100"
-                        />
-                        
+                            loading="lazy"
+                            decoding="async"
+                            class="w-full h-full object-cover rounded-[32px] grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" />
+
                         {{-- Decorative Elements --}}
                         <div class="absolute top-8 right-8 z-20 pointer-events-none">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-brand-primary animate-spin-slow opacity-40"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-10 h-10 text-brand-primary animate-spin-slow opacity-40">
+                                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+                            </svg>
                         </div>
                         <div class="absolute bottom-8 left-8 z-20 pointer-events-none">
                             <div class="glass-premium px-5 py-2.5 rounded-full">
@@ -96,7 +99,11 @@
                     <div class="relative z-10">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 blur-3xl rounded-full group-hover:bg-brand-primary/10 transition-colors pointer-events-none"></div>
                         <div class="w-14 h-14 text-brand-primary mb-8 group-hover:scale-110 transition-transform duration-500">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                <polyline points="2 17 12 22 22 17" />
+                                <polyline points="2 12 12 17 22 12" />
+                            </svg>
                         </div>
                         <h3 class="text-2xl font-display font-bold uppercase tracking-widest mb-6 group-hover:text-brand-primary transition-colors duration-500">Structural Integrity</h3>
                         <p class="text-white/40 leading-relaxed">
@@ -110,7 +117,18 @@
                     <div class="relative z-10">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-brand-secondary/5 blur-3xl rounded-full group-hover:bg-brand-secondary/10 transition-colors pointer-events-none"></div>
                         <div class="w-14 h-14 text-brand-secondary mb-8 group-hover:scale-110 transition-transform duration-500">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="15" x2="23" y2="15"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="15" x2="4" y2="15"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
+                                <rect x="9" y="9" width="6" height="6" />
+                                <line x1="9" y1="1" x2="9" y2="4" />
+                                <line x1="15" y1="1" x2="15" y2="4" />
+                                <line x1="9" y1="20" x2="9" y2="23" />
+                                <line x1="15" y1="20" x2="15" y2="23" />
+                                <line x1="20" y1="9" x2="23" y2="9" />
+                                <line x1="20" y1="15" x2="23" y2="15" />
+                                <line x1="1" y1="9" x2="4" y2="9" />
+                                <line x1="1" y1="15" x2="4" y2="15" />
+                            </svg>
                         </div>
                         <h3 class="text-2xl font-display font-bold uppercase tracking-widest mb-6 group-hover:text-brand-secondary transition-colors duration-500">Neural UX</h3>
                         <p class="text-white/40 leading-relaxed">
@@ -124,7 +142,11 @@
                     <div class="relative z-10">
                         <div class="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 blur-3xl rounded-full group-hover:bg-brand-accent/10 transition-colors pointer-events-none"></div>
                         <div class="w-14 h-14 text-brand-accent mb-8 group-hover:scale-110 transition-transform duration-500">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="2" y1="12" x2="22" y2="12" />
+                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                            </svg>
                         </div>
                         <h3 class="text-2xl font-display font-bold uppercase tracking-widest mb-6 group-hover:text-brand-accent transition-colors duration-500">Global Reach</h3>
                         <p class="text-white/40 leading-relaxed">
@@ -153,10 +175,10 @@
 
             <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
                 @foreach([
-                    ['icon' => 'M16 18l6-6-6-6M8 6l-6 6 6 6', 'label' => 'Full-Stack Dev', 'color' => 'brand-primary', 'accent' => '#00f2ff'],
-                    ['icon' => 'M13 2L3 14h9l-1 8 10-12h-9l1-8z', 'label' => 'Performance', 'color' => 'brand-secondary', 'accent' => '#7000ff'],
-                    ['icon' => 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', 'label' => 'Security', 'color' => 'brand-accent', 'accent' => '#ff0099'],
-                    ['icon' => 'M12 15l-2 5L9 9l11 4-5 2zm0 0l4 4', 'label' => 'UI/UX Design', 'color' => 'white', 'accent' => '#ffffff'],
+                ['icon' => 'M16 18l6-6-6-6M8 6l-6 6 6 6', 'label' => 'Full-Stack Dev', 'color' => 'brand-primary', 'accent' => '#00f2ff'],
+                ['icon' => 'M13 2L3 14h9l-1 8 10-12h-9l1-8z', 'label' => 'Performance', 'color' => 'brand-secondary', 'accent' => '#7000ff'],
+                ['icon' => 'M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z', 'label' => 'Security', 'color' => 'brand-accent', 'accent' => '#ff0099'],
+                ['icon' => 'M12 15l-2 5L9 9l11 4-5 2zm0 0l4 4', 'label' => 'UI/UX Design', 'color' => 'white', 'accent' => '#ffffff'],
                 ] as $index => $skill)
                 <div class="feature-card glass-premium p-8 rounded-4xl flex flex-col items-center text-center group" data-tilt data-reveal="up" data-delay="{{ $index * 100 }}" style="--card-accent: {{ $skill['accent'] }};">
                     <div data-tilt-glow></div>

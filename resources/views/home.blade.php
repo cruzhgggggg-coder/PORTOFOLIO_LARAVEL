@@ -28,12 +28,12 @@
                 {{-- Main Title --}}
                 <h1 class="text-6xl md:text-8xl lg:text-9xl font-display font-bold tracking-tighter mb-10 leading-[0.85] uppercase" data-reveal="up" data-delay="400">
                     @if(isset($profile['hero_line1']) || isset($profile['hero_line2']))
-                        {{ $profile['hero_line1'] ?? '' }} 
-                        @if(isset($profile['hero_line2']))
-                            <br /> <span class="text-gradient-blue" style="filter: drop-shadow(0 0 40px rgba(0, 242, 255, 0.5)) drop-shadow(0 0 80px rgba(0, 168, 255, 0.3));">{{ $profile['hero_line2'] }}</span>
-                        @endif
+                    {{ $profile['hero_line1'] ?? '' }}
+                    @if(isset($profile['hero_line2']))
+                    <br /> <span class="text-gradient-blue" style="filter: drop-shadow(0 0 40px rgba(0, 242, 255, 0.5)) drop-shadow(0 0 80px rgba(0, 168, 255, 0.3));">{{ $profile['hero_line2'] }}</span>
+                    @endif
                     @else
-                        WEAVING <span class="text-gradient-blue" style="filter: drop-shadow(0 0 40px rgba(0, 242, 255, 0.5)) drop-shadow(0 0 80px rgba(0, 168, 255, 0.3));">LIGHT</span> INTO <br /> DIGITAL <span class="italic font-light">STRUCTURES</span>
+                    WEAVING <span class="text-gradient-blue" style="filter: drop-shadow(0 0 40px rgba(0, 242, 255, 0.5)) drop-shadow(0 0 80px rgba(0, 168, 255, 0.3));">LIGHT</span> INTO <br /> DIGITAL <span class="italic font-light">STRUCTURES</span>
                     @endif
                 </h1>
 
@@ -193,6 +193,8 @@
                         <img
                             src="{{ $project->image }}"
                             alt="{{ $project->title }}"
+                            loading="lazy"
+                            decoding="async"
                             class="w-full h-full object-cover grayscale" />
 
                         {{-- Overlay on hover --}}
@@ -262,13 +264,25 @@
 
 <style>
     @keyframes fade-in {
-        from { opacity: 0; }
-        to { opacity: 1; }
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
     }
 
     @keyframes slide-up {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 
     .animate-fade-in {
