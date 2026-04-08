@@ -2,47 +2,71 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
+use Cloudinary\Cloudinary;
 use Illuminate\Support\Facades\Log;
+use Exception;
 
 class CloudinaryService
 {
+    protected $cloudinary;
+
+    public function __construct()
+    {
+        $this->cloudinary = new Cloudinary([
+            'cloud' => [
+                'cloud_name' => config('services.cloudinary.cloud_name'),
+                'api_key'    => config('services.cloudinary.api_key'),
+                'api_secret' => config('services.cloudinary.api_secret'),
+            ],
+        ]);
+    }
+
     /**
      * Upload an image to Cloudinary
-     * 
-     * @param string|\Illuminate\Http\UploadedFile $file Path to file or UploadedFile object
-     * @param string $folder Folder name in Cloudinary
-     * @return string|null The secure URL of the uploaded image
      */
-    public function upload($file, string $folder = 'portfolio')
+    public function upload($file, $folder = 'portfolio')
     {
-        $cloudName = config('services.cloudinary.cloud_name');
-        $uploadPreset = config('services.cloudinary.upload_preset');
+        try {
+            $result = $this->cloudinary->uploadApi()->upload(
+                is_string($file) ? $file : $file->getRealPath(),
+                [
+                    'folder' => $folder,
+                    'resource_type' => 'auto',
+                ]
+            );
 
-        if (!$cloudName || !$uploadPreset) {
-            Log::warning('Cloudinary credentials not set. Falling back to local storage.');
+            return $result['secure_url'];
+        } catch (Exception $e) {
+            \Log::error('Cloudinary Upload Error: ' . $e->getMessage());
             return null;
         }
+    }
+
+    /**
+     * Delete an image from Cloudinary
+     */
+    public function delete($url)
+    {
+        if (!$url) return false;
 
         try {
-            $response = Http::attach(
-                'file', 
-                is_string($file) ? fopen($file, 'r') : fopen($file->getRealPath(), 'r'),
-                is_string($file) ? basename($file) : $file->getClientOriginalName()
-            )->post("https://api.cloudinary.com/v1_1/{$cloudName}/image/upload", [
-                'upload_preset' => $uploadPreset,
-                'folder' => $folder,
-            ]);
-
-            if ($response->successful()) {
-                return $response->json('secure_url');
+            // Extract public_id from URL
+            $path = parse_url($url, PHP_URL_PATH);
+            $filename = basename($path);
+            $publicId = explode('.', $filename)[0];
+            
+            // If in folder, public_id includes folder name
+            $segments = explode('/', $path);
+            if (count($segments) > 2) {
+                $folder = $segments[count($segments)-2];
+                $publicId = $folder . '/' . $publicId;
             }
 
-            Log::error('Cloudinary upload failed: ' . $response->body());
-            return null;
-        } catch (\Exception $e) {
-            Log::error('Cloudinary error: ' . $e->getMessage());
-            return null;
+            $this->cloudinary->uploadApi()->destroy($publicId);
+            return true;
+        } catch (Exception $e) {
+            \Log::error('Cloudinary Delete Error: ' . $e->getMessage());
+            return false;
         }
     }
 }

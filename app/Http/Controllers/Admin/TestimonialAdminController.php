@@ -139,14 +139,11 @@ class TestimonialAdminController extends Controller
     
     private function handleAvatarUpload($file): string
     {
-        $cloudinary = app(\App\Services\CloudinaryService::class);
-        $cloudUrl = $cloudinary->upload($file, 'testimonials');
-        
-        if ($cloudUrl) {
-            return $cloudUrl;
-        }
-
         $path = $file->store('testimonials/avatars', 'public');
-        return Storage::url($path);
+        
+        // Optimize image (convert to WebP if possible)
+        // You can integrate with your ImageOptimizer service here
+        
+        return $path;
     }
 }
