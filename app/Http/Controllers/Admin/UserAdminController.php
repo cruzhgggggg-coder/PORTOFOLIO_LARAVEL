@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 
@@ -90,7 +91,7 @@ class UserAdminController extends Controller
     public function destroy(User $user)
     {
         /** @var \App\Models\User $currentUser */
-        $currentUser = auth()->user();
+        $currentUser = Auth::user();
 
         if (User::count() <= 1) {
             return back()->with('error', 'Tidak dapat menghapus admin terakhir!');
@@ -112,7 +113,7 @@ class UserAdminController extends Controller
     public function security()
     {
         /** @var \App\Models\User $user */
-        $user = auth()->user();
+        $user = Auth::user();
         return view('admin.security.index', compact('user'));
     }
 
@@ -122,7 +123,7 @@ class UserAdminController extends Controller
     public function updateProfile(Request $request)
     {
         /** @var \App\Models\User $user */
-        $user = auth()->user();
+        $user = Auth::user();
         
         $request->validate([
             'name' => 'required|string|max:255',
@@ -148,7 +149,7 @@ class UserAdminController extends Controller
         ]);
 
         /** @var \App\Models\User $user */
-        $user = auth()->user();
+        $user = Auth::user();
         $user->update([
             'password' => Hash::make($request->password),
         ]);
