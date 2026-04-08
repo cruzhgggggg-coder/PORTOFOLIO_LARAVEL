@@ -23,7 +23,7 @@ class ProjectAdminController extends Controller
         return view('admin.projects.create');
     }
 
-    public function store(Request $request, ImageOptimizer $optimizer)
+    public function store(Request $request, ImageOptimizer $optimizer, \App\Services\CloudinaryService $cloudinary)
     {
         $validated = $request->validate([
             'title'       => 'required|string|max:255',
@@ -41,10 +41,15 @@ class ProjectAdminController extends Controller
         // Handle image upload
         $imageUrl = null;
         if ($request->hasFile('image')) {
-            $path = $request->file('image')->store('projects', 'public');
-            // Optimize the image (converts to WebP)
-            $optimizedPath = $optimizer->optimizeProjectImage($path);
-            $imageUrl = Storage::url($optimizedPath);
+            $cloudUrl = $cloudinary->upload($request->file('image'), 'projects');
+            
+            if ($cloudUrl) {
+                $imageUrl = $cloudUrl;
+            } else {
+                $path = $request->file('image')->store('projects', 'public');
+                $optimizedPath = $optimizer->optimizeProjectImage($path);
+                $imageUrl = Storage::url($optimizedPath);
+            }
         }
 
         // Process tech_stack and tags from comma-separated to array
@@ -81,7 +86,7 @@ class ProjectAdminController extends Controller
         return view('admin.projects.edit', compact('project'));
     }
 
-    public function update(Request $request, Project $project, ImageOptimizer $optimizer)
+    public function update(Request $request, Project $project, ImageOptimizer $optimizer, \App\Services\CloudinaryService $cloudinary)
     {
         $validated = $request->validate([
             'title'       => 'required|string|max:255',
@@ -99,21 +104,24 @@ class ProjectAdminController extends Controller
         // Handle new image upload
         $imageUrl = $project->image_url;
         if ($request->hasFile('image')) {
-            // Delete old image if it's in storage (both original and WebP)
-            if ($project->image_url && str_starts_with($project->image_url, '/storage/')) {
-                $oldPath = str_replace('/storage/', 'public/', $project->image_url);
-                Storage::delete($oldPath);
-
-                // Also delete WebP version if current is not WebP
-                if (!str_ends_with($oldPath, '.webp')) {
-                    $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $oldPath);
-                    Storage::delete($webpPath);
+            $cloudUrl = $cloudinary->upload($request->file('image'), 'projects');
+            
+            if ($cloudUrl) {
+                $imageUrl = $cloudUrl;
+            } else {
+                // Delete old local image if exists
+                if ($project->image_url && str_contains($project->image_url, '/storage/')) {
+                    $oldPath = str_replace('/storage/', 'public/', $project->image_url);
+                    Storage::delete($oldPath);
+                    if (!str_ends_with($oldPath, '.webp')) {
+                        $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $oldPath);
+                        Storage::delete($webpPath);
+                    }
                 }
+                $path = $request->file('image')->store('projects', 'public');
+                $optimizedPath = $optimizer->optimizeProjectImage($path);
+                $imageUrl = Storage::url($optimizedPath);
             }
-            $path = $request->file('image')->store('projects', 'public');
-            // Optimize the image (converts to WebP)
-            $optimizedPath = $optimizer->optimizeProjectImage($path);
-            $imageUrl = Storage::url($optimizedPath);
         }
 
         // Process tech_stack and tags

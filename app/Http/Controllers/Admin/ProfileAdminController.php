@@ -17,7 +17,7 @@ class ProfileAdminController extends Controller
         return view('admin.profile.edit', compact('settings'));
     }
 
-    public function update(Request $request, ImageOptimizer $optimizer)
+    public function update(Request $request, ImageOptimizer $optimizer, \App\Services\CloudinaryService $cloudinary)
     {
         $request->validate([
             'name'        => 'required|string|max:100',
@@ -40,30 +40,30 @@ class ProfileAdminController extends Controller
 
         // Handle profile photo upload
         if ($request->hasFile('photo')) {
-            $oldPhoto = ProfileSetting::get('photo_url');
-            if ($oldPhoto) {
-                // Determine the path relative to the storage disk
-                $pathPart = parse_url($oldPhoto, PHP_URL_PATH);
-                if ($pathPart && str_starts_with($pathPart, '/storage/')) {
-                    $oldPath = str_replace('/storage/', 'public/', $pathPart);
-                    Storage::delete($oldPath);
-
-                    // Also delete WebP version if exists
-                    $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $oldPath);
-                    if ($webpPath !== $oldPath) {
-                        Storage::delete($webpPath);
+            // Priority: Cloudinary (for Cloud Hosting)
+            $cloudUrl = $cloudinary->upload($request->file('photo'), 'profile');
+            
+            if ($cloudUrl) {
+                ProfileSetting::set('photo_url', $cloudUrl);
+            } else {
+                // Fallback: Local Storage (for local dev/VPS)
+                $oldPhoto = ProfileSetting::get('photo_url');
+                if ($oldPhoto && !str_contains($oldPhoto, 'cloudinary.com')) {
+                    $pathPart = parse_url($oldPhoto, PHP_URL_PATH);
+                    if ($pathPart && str_starts_with($pathPart, '/storage/')) {
+                        $oldPath = str_replace('/storage/', 'public/', $pathPart);
+                        Storage::delete($oldPath);
+                        $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $oldPath);
+                        if ($webpPath !== $oldPath) {
+                            Storage::delete($webpPath);
+                        }
                     }
                 }
+
+                $path = $request->file('photo')->store('profile', 'public');
+                $optimizedPath = $optimizer->optimizeProfilePhoto($path);
+                ProfileSetting::set('photo_url', Storage::url($optimizedPath));
             }
-
-            // Store original file temporarily
-            $path = $request->file('photo')->store('profile', 'public');
-
-            // Optimize the image (converts to WebP)
-            $optimizedPath = $optimizer->optimizeProfilePhoto($path);
-
-            // Store the optimized URL
-            ProfileSetting::set('photo_url', Storage::url($optimizedPath));
         }
 
         // Save all text settings
