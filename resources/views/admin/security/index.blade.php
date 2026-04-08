@@ -40,13 +40,13 @@
                 <div style="margin-bottom:20px;">
                     <label class="form-label">Nama Lengkap</label>
                     <input type="text" name="name" value="{{ old('name', $user->name) }}" class="form-input" required>
-                    @error('name') <div style="color:#f87171; font-size:12px; mt-1;">{{ $message }}</div> @enderror
+                    @error('name') <div style="color:#f87171; font-size:12px; margin-top:4px;">{{ $message }}</div> @enderror
                 </div>
 
                 <div style="margin-bottom:24px;">
                     <label class="form-label">Alamat Email</label>
                     <input type="email" name="email" value="{{ old('email', $user->email) }}" class="form-input" required>
-                    @error('email') <div style="color:#f87171; font-size:12px; mt-1;">{{ $message }}</div> @enderror
+                    @error('email') <div style="color:#f87171; font-size:12px; margin-top:4px;">{{ $message }}</div> @enderror
                 </div>
 
                 <div style="display:flex; justify-content:flex-end;">
@@ -77,13 +77,13 @@
                 <div style="margin-bottom:20px;">
                     <label class="form-label">Password Saat Ini</label>
                     <input type="password" name="current_password" class="form-input" required>
-                    @error('current_password') <div style="color:#f87171; font-size:12px; mt-1;">{{ $message }}</div> @enderror
+                    @error('current_password') <div style="color:#f87171; font-size:12px; margin-top:4px;">{{ $message }}</div> @enderror
                 </div>
 
                 <div style="margin-bottom:20px;">
                     <label class="form-label">Password Baru</label>
                     <input type="password" name="password" class="form-input" required>
-                    @error('password') <div style="color:#f87171; font-size:12px; mt-1;">{{ $message }}</div> @enderror
+                    @error('password') <div style="color:#f87171; font-size:12px; margin-top:4px;">{{ $message }}</div> @enderror
                 </div>
 
                 <div style="margin-bottom:24px;">

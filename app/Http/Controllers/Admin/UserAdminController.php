@@ -89,11 +89,14 @@ class UserAdminController extends Controller
      */
     public function destroy(User $user)
     {
+        /** @var \App\Models\User $currentUser */
+        $currentUser = auth()->user();
+
         if (User::count() <= 1) {
             return back()->with('error', 'Tidak dapat menghapus admin terakhir!');
         }
 
-        if ($user->id === auth()->id()) {
+        if ($user->id === $currentUser->id) {
             return back()->with('error', 'Anda tidak dapat menghapus akun Anda sendiri dari sini!');
         }
 
@@ -108,6 +111,7 @@ class UserAdminController extends Controller
      */
     public function security()
     {
+        /** @var \App\Models\User $user */
         $user = auth()->user();
         return view('admin.security.index', compact('user'));
     }
@@ -117,6 +121,7 @@ class UserAdminController extends Controller
      */
     public function updateProfile(Request $request)
     {
+        /** @var \App\Models\User $user */
         $user = auth()->user();
         
         $request->validate([
@@ -142,6 +147,7 @@ class UserAdminController extends Controller
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
+        /** @var \App\Models\User $user */
         $user = auth()->user();
         $user->update([
             'password' => Hash::make($request->password),
