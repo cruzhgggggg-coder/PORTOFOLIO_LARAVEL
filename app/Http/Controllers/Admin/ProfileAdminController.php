@@ -59,11 +59,13 @@ class ProfileAdminController extends Controller
             // Store original file temporarily
             $path = $request->file('photo')->store('profile', 'public');
 
-            // Optimize the image (converts to WebP)
-            $optimizedPath = $optimizer->optimizeProfilePhoto($path);
+            // Check if auto-optimization is enabled
+            if (\App\Models\SiteSetting::get('auto_optimize_images', true)) {
+                $path = $optimizer->optimizeProfilePhoto($path);
+            }
 
             // Store the optimized URL
-            ProfileSetting::set('photo_url', Storage::url($optimizedPath));
+            ProfileSetting::set('photo_url', Storage::url($path));
         }
 
         // Save all text settings

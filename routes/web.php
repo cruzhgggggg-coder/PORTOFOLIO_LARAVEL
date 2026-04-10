@@ -12,7 +12,6 @@ use App\Http\Controllers\Admin\ExperienceAdminController;
 use App\Http\Controllers\Admin\SeoSettingController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\AnalyticsController;
-use App\Http\Controllers\Admin\UserAdminController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Auth;
 
@@ -39,7 +38,7 @@ Route::get('/akses-rahasia-admin', function () {
         return redirect()->route('admin.dashboard');
     }
     return view('admin.auth.login');
-})->name('login')->middleware('guest');
+})->name('admin.login')->middleware('guest');
 
 // Fortify handles POST /login internally — we just alias its route to our custom view
 // The POST action still goes to Fortify's AuthenticatedSessionController
@@ -120,14 +119,8 @@ Route::prefix('admin')
         Route::put('settings', [SiteSettingController::class, 'update'])->name('settings.update');
         Route::post('settings/toggle-maintenance', [SiteSettingController::class, 'toggleMaintenanceMode'])
             ->name('settings.toggle-maintenance');
-
-        // User Management
-        Route::resource('users', UserAdminController::class);
-        
-        // Account Security (Current User)
-        Route::get('security', [UserAdminController::class, 'security'])->name('security.index');
-        Route::put('security/password', [UserAdminController::class, 'updatePassword'])->name('security.password');
-        Route::put('security/profile', [UserAdminController::class, 'updateProfile'])->name('security.profile');
+        Route::post('settings/optimize-images', [SiteSettingController::class, 'runImageOptimization'])
+            ->name('settings.optimize-images');
 
         // Analytics
         Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');

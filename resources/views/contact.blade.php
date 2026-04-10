@@ -29,7 +29,9 @@
                             </div>
                             <div>
                                 <h4 class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/30 mb-2">Direct Email</h4>
-                                <p class="text-base font-display font-medium group-hover:text-brand-primary transition-colors duration-300">{{ $profile['email'] ?? 'hello@luminescent.arch' }}</p>
+                                <p class="text-base font-display font-medium group-hover:text-brand-primary transition-colors duration-300">
+                                    {{ $siteSettings['contact_email'] ?? ($profile['email'] ?? 'hello@luminescent.arch') }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -45,12 +47,14 @@
                             </div>
                             <div>
                                 <h4 class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/30 mb-2">Base of Operations</h4>
-                                <p class="text-base font-display font-medium group-hover:text-brand-secondary transition-colors duration-300">{{ $profile['location'] ?? 'Jakarta, Indonesia' }}</p>
+                                <p class="text-base font-display font-medium group-hover:text-brand-secondary transition-colors duration-300">
+                                    {{ $siteSettings['address'] ?? ($profile['location'] ?? 'Jakarta, Indonesia') }}
+                                </p>
                             </div>
                         </div>
                     </div>
 
-                    @if(!empty($profile['phone']))
+                    @if(!empty($siteSettings['contact_phone']) || !empty($profile['phone']))
                     <div class="group flex items-start gap-6 glass-premium p-6 rounded-2xl cursor-default" data-tilt style="--card-accent: #ff0099;">
                         <div data-tilt-glow></div>
                         <div class="relative z-10 flex items-start gap-6">
@@ -61,7 +65,9 @@
                             </div>
                             <div>
                                 <h4 class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/30 mb-2">Encrypted Line</h4>
-                                <p class="text-base font-display font-medium group-hover:text-brand-accent transition-colors duration-300">{{ $profile['phone'] }}</p>
+                                <p class="text-base font-display font-medium group-hover:text-brand-accent transition-colors duration-300">
+                                    {{ $siteSettings['contact_phone'] ?? $profile['phone'] }}
+                                </p>
                             </div>
                         </div>
                     </div>

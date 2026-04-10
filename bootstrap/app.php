@@ -16,6 +16,7 @@ return Application::configure(basePath: dirname(__DIR__))
 
         $middleware->web(append: [
             AddLinkHeadersForPreloadedAssets::class,
+            \App\Http\Middleware\CheckMaintenanceMode::class,
         ]);
 
         // Register custom middleware alias

@@ -114,8 +114,6 @@ class ImageOptimizer
         $webpData = file_get_contents($tempOutput);
 
         // Clean up
-        imagedestroy($source);
-        imagedestroy($dest);
         unlink($tempInput);
         unlink($tempOutput);
 

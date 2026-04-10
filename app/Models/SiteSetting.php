@@ -19,7 +19,7 @@ class SiteSetting extends Model
     {
         $setting = self::where('key', $key)->first();
         
-        if (!$setting) {
+        if (!$setting || $setting->value === '' || $setting->value === null) {
             return $default;
         }
 
@@ -41,7 +41,7 @@ class SiteSetting extends Model
         
         // Encode value based on type
         $settingValue = match($type) {
-            'json' => json_encode($value),
+            'json' => is_array($value) ? json_encode($value) : $value,
             default => (string) $value,
         };
         
@@ -58,7 +58,21 @@ class SiteSetting extends Model
      */
     public static function allAsArray(): array
     {
-        return self::all()->pluck('value', 'key')->toArray();
+        return self::all()->mapWithKeys(function ($setting) {
+            $value = match($setting->type) {
+                'boolean' => (bool) $setting->value,
+                'json' => json_decode($setting->value, true),
+                'integer' => (int) $setting->value,
+                default => $setting->value,
+            };
+
+            // If value is empty string but not boolean false, we might want to let the view handle defaults
+            // but for safety, we return it as is and let Blade's ?? or @empty handle it.
+            // However, to fix the user's issue, we should probably only return non-empty values
+            // so that ?? works correctly in Blade.
+            
+            return [$setting->key => ($value === '' ? null : $value)];
+        })->toArray();
     }
 
     /**

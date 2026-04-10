@@ -80,7 +80,10 @@
             </div>
 
             {{-- Maintenance Warning --}}
-            <div id="maintenance-warning" style="margin-top:12px; padding:12px 16px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.2); border-radius:10px; display:flex; align-items:center; gap:10px; {{ old('maintenance_mode', $settings->get('maintenance_mode', false)) ? '' : 'display:none;' }}">
+            <div id="maintenance-warning" @style([
+                'margin-top:12px; padding:12px 16px; background:rgba(245,158,11,0.1); border:1px solid rgba(245,158,11,0.2); border-radius:10px; display:flex; align-items:center; gap:10px;',
+                'display: none' => !old('maintenance_mode', $settings->get('maintenance_mode', false))
+            ])>
                 <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" style="width:18px; height:18px; flex-shrink:0;">
                     <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
                     <line x1="12" y1="9" x2="12" y2="13" />
@@ -216,7 +219,45 @@
             </div>
         </div>
 
-        {{-- Section 5: Branding --}}
+        {{-- Section 5: Performance & Optimization --}}
+        <div class="glass-card" style="padding:28px; margin-bottom:24px;">
+            <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
+                <div style="width:36px; height:36px; background:rgba(16,185,129,0.15); border:1px solid rgba(16,185,129,0.2); border-radius:10px; display:flex; align-items:center; justify-content:center;">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2" style="width:18px; height:18px;">
+                        <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+                    </svg>
+                </div>
+                <div>
+                    <div style="font-size:16px; font-weight:700; color:#fff;">Performance & Optimization</div>
+                    <div style="font-size:11px; color:rgba(255,255,255,0.3);">Enhance site speed and resource management</div>
+                </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:24px;">
+                {{-- Auto Optimize Images --}}
+                <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px;">
+                    <input type="checkbox" id="auto_optimize_images" name="auto_optimize_images" value="1" {{ old('auto_optimize_images', $settings->get('auto_optimize_images', true)) ? 'checked' : '' }}
+                           style="width:18px; height:18px; accent-color:var(--brand); cursor:pointer; flex-shrink:0;" />
+                    <div>
+                        <label for="auto_optimize_images" style="font-size:13px; font-weight:600; color:#fff; cursor:pointer;">Auto-Optimize Images</label>
+                        <div style="font-size:10px; color:rgba(255,255,255,0.3);">Automatically convert and compress uploads</div>
+                    </div>
+                </div>
+
+                {{-- Manual Optimization --}}
+                <div style="display:flex; align-items:center; gap:12px; padding:14px 16px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px;">
+                    <button type="button" onclick="confirmOptimization()" class="btn-secondary" style="width:100%; justify-content:center; border-color:var(--brand-muted);">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" style="width:14px; height:14px;">
+                            <path d="M23 4v6h-6M1 20v-6h6M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+                        </svg>
+                        Run Bulk Optimization
+                    </button>
+                </div>
+            </div>
+            <div style="font-size:11px; color:rgba(255,255,255,0.25);">Large libraries may take a few moments to process. This will convert all existing JPG/PNG images to WebP.</div>
+        </div>
+
+        {{-- Section 6: Branding --}}
         <div class="glass-card" style="padding:28px; margin-bottom:24px;">
             <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
                 <div style="width:36px; height:36px; background:rgba(236,72,153,0.15); border:1px solid rgba(236,72,153,0.2); border-radius:10px; display:flex; align-items:center; justify-content:center;">
@@ -260,8 +301,16 @@
             <div style="margin-top:20px; padding:16px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px;">
                 <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:0.1em; color:rgba(255,255,255,0.3); margin-bottom:12px;">Preview</div>
                 <div style="display:flex; gap:12px;">
-                    <div id="preview-primary" style="width:64px; height:40px; border-radius:8px; background:{{ old('brand_color_primary', $settings->get('brand_color_primary', '#00f2ff')) }}; box-shadow:0 4px 12px {{ old('brand_color_primary', $settings->get('brand_color_primary', '#00f2ff')) }}40; transition:all 0.3s ease;"></div>
-                    <div id="preview-secondary" style="width:64px; height:40px; border-radius:8px; background:{{ old('brand_color_secondary', $settings->get('brand_color_secondary', '#7c3aed')) }}; box-shadow:0 4px 12px {{ old('brand_color_secondary', $settings->get('brand_color_secondary', '#7c3aed')) }}40; transition:all 0.3s ease;"></div>
+                    <div id="preview-primary" @style([
+                        'width:64px; height:40px; border-radius:8px; transition:all 0.3s ease;',
+                        'background:' . old('brand_color_primary', $settings->get('brand_color_primary', '#00f2ff')),
+                        'box-shadow: 0 4px 12px ' . old('brand_color_primary', $settings->get('brand_color_primary', '#00f2ff')) . '40'
+                    ])></div>
+                    <div id="preview-secondary" @style([
+                        'width:64px; height:40px; border-radius:8px; transition:all 0.3s ease;',
+                        'background:' . old('brand_color_secondary', $settings->get('brand_color_secondary', '#7c3aed')),
+                        'box-shadow: 0 4px 12px ' . old('brand_color_secondary', $settings->get('brand_color_secondary', '#7c3aed')) . '40'
+                    ])></div>
                     <div style="display:flex; flex-direction:column; justify-content:center; font-size:12px; color:rgba(255,255,255,0.4);">
                         <span id="preview-primary-label" style="font-family:'JetBrains Mono', monospace;">{{ old('brand_color_primary', $settings->get('brand_color_primary', '#00f2ff')) }}</span>
                         <span id="preview-secondary-label" style="font-family:'JetBrains Mono', monospace;">{{ old('brand_color_secondary', $settings->get('brand_color_secondary', '#7c3aed')) }}</span>
@@ -345,5 +394,16 @@
         element.style.boxShadow = `0 4px 12px ${color}40`;
         label.textContent = color;
     }
+
+    function confirmOptimization() {
+        if (confirm('Run bulk image optimization now? This will process all profile and project images to ensure they are compressed and in WebP format. This might take a few seconds.')) {
+            document.getElementById('optimize-form').submit();
+        }
+    }
 </script>
+
+{{-- Hidden Optimization Form --}}
+<form id="optimize-form" action="{{ route('admin.settings.optimize-images') }}" method="POST" style="display:none;">
+    @csrf
+</form>
 @endsection

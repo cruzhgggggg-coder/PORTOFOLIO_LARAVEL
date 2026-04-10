@@ -17,7 +17,7 @@ class RedirectGuestToHome
     public function handle(Request $request, Closure $next): Response
     {
         if (!$request->user()) {
-            return redirect()->route('home');
+            return redirect()->route('admin.login');
         }
 
         return $next($request);

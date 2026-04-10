@@ -24,6 +24,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->configureDefaults();
+
+        // Share site settings globally with all views
+        $settings = [];
+        if (!app()->runningInConsole() && \Illuminate\Support\Facades\Schema::hasTable('site_settings')) {
+            $settings = \App\Models\SiteSetting::allAsArray();
+        }
+        \Illuminate\Support\Facades\View::share('siteSettings', $settings);
     }
 
     /**

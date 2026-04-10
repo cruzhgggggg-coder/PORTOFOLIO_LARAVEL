@@ -21,8 +21,10 @@ class ProjectController extends Controller
 
     public function index()
     {
+        $perPage = \App\Models\SiteSetting::get('projects_per_page', 9);
+        
         return view('projects', [
-            'projects' => Project::latest()->get(),
+            'projects' => Project::latest()->paginate($perPage),
         ]);
     }
 

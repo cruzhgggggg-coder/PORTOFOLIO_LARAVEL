@@ -42,9 +42,13 @@ class ProjectAdminController extends Controller
         $imageUrl = null;
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('projects', 'public');
-            // Optimize the image (converts to WebP)
-            $optimizedPath = $optimizer->optimizeProjectImage($path);
-            $imageUrl = Storage::url($optimizedPath);
+            
+            // Check if auto-optimization is enabled
+            if (\App\Models\SiteSetting::get('auto_optimize_images', true)) {
+                $path = $optimizer->optimizeProjectImage($path);
+            }
+            
+            $imageUrl = Storage::url($path);
         }
 
         // Process tech_stack and tags from comma-separated to array
@@ -101,19 +105,23 @@ class ProjectAdminController extends Controller
         if ($request->hasFile('image')) {
             // Delete old image if it's in storage (both original and WebP)
             if ($project->image_url && str_starts_with($project->image_url, '/storage/')) {
-                $oldPath = str_replace('/storage/', 'public/', $project->image_url);
+                $oldPath = str_replace('/storage/', 'public/', parse_url($project->image_url, PHP_URL_PATH));
                 Storage::delete($oldPath);
 
-                // Also delete WebP version if current is not WebP
+                // Also delete WebP version if exists
                 if (!str_ends_with($oldPath, '.webp')) {
                     $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $oldPath);
                     Storage::delete($webpPath);
                 }
             }
             $path = $request->file('image')->store('projects', 'public');
-            // Optimize the image (converts to WebP)
-            $optimizedPath = $optimizer->optimizeProjectImage($path);
-            $imageUrl = Storage::url($optimizedPath);
+            
+            // Check if auto-optimization is enabled
+            if (\App\Models\SiteSetting::get('auto_optimize_images', true)) {
+                $path = $optimizer->optimizeProjectImage($path);
+            }
+            
+            $imageUrl = Storage::url($path);
         }
 
         // Process tech_stack and tags

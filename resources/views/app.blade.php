@@ -4,9 +4,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Luminescent Architect — Crafting immersive digital experiences at the intersection of light, motion, and code.">
-    <meta name="theme-color" content="#000000">
-    <title>@yield('title', config('app.name', 'Luminescent Architect'))</title>
+    <meta name="description" content="{{ $siteSettings['site_tagline'] ?? 'Luminescent Architect — Crafting immersive digital experiences at the intersection of light, motion, and code.' }}">
+    <meta name="theme-color" content="{{ $siteSettings['brand_color_primary'] ?? '#000000' }}">
+    <title>@yield('title', ($siteSettings['site_name'] ?? config('app.name', 'Site')) . ' — ' . ($siteSettings['site_tagline'] ?? 'Architect'))</title>
+
+    <style>
+        :root {
+            --color-brand-primary: {{ $siteSettings['brand_color_primary'] ?? '#00f2ff' }} !important;
+            --color-brand-secondary: {{ $siteSettings['brand_color_secondary'] ?? '#7000ff' }} !important;
+        }
+    </style>
 
     {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -16,6 +23,31 @@
     <link rel="icon" href="/favicon.ico" sizes="any">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+
+    {{-- Analytics Integration --}}
+    @if(($siteSettings['enable_analytics'] ?? false) && !empty($siteSettings['google_analytics_id']))
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $siteSettings['google_analytics_id'] }}"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', '{{ $siteSettings["google_analytics_id"] }}');
+    </script>
+    @endif
+
+    @if(($siteSettings['enable_analytics'] ?? false) && !empty($siteSettings['facebook_pixel_id']))
+    <!-- Facebook Pixel -->
+    <script>
+        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+        document,'script','https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '{{ $siteSettings["facebook_pixel_id"] }}');
+        fbq('track', 'PageView');
+    </script>
+    @endif
 </head>
 
 <body class="font-sans antialiased bg-black text-white selection:bg-brand-primary selection:text-black overflow-x-hidden">
@@ -44,7 +76,7 @@
                     <div class="absolute inset-0 bg-brand-primary/20 blur-lg rounded-full group-hover:bg-brand-primary/40 transition-colors duration-500"></div>
                 </div>
                 <span class="font-display font-bold text-xl tracking-tighter uppercase" data-magnetic-text>
-                    Luminescent<span class="text-brand-primary">Architect</span>
+                    {{ $siteSettings['site_name'] ?? 'Luminescent Architect' }}
                 </span>
             </a>
 
@@ -104,12 +136,11 @@
                             <path d="M12 2l9 4.9V17.1L12 22l-9-4.9V6.9L12 2z" />
                         </svg>
                         <span class="font-display font-bold text-xl tracking-tighter uppercase">
-                            Luminescent<span class="text-brand-primary">Architect</span>
+                            {{ $siteSettings['site_name'] ?? 'Luminescent Architect' }}
                         </span>
                     </div>
                     <p class="text-white/40 max-w-sm leading-relaxed text-sm mb-8">
-                        Crafting digital experiences at the intersection of light, motion, and code.
-                        Building the next generation of architectural interfaces for the digital age.
+                        {{ $siteSettings['site_tagline'] ?? 'Crafting digital experiences at the intersection of light, motion, and code.' }}
                     </p>
                     <div class="flex gap-4">
                         <a href="#" class="social-icon w-11 h-11 glass-premium flex items-center justify-center rounded-full text-white/60 hover:text-brand-primary text-sm font-medium">
@@ -143,6 +174,9 @@
                     <h4 class="font-display font-bold uppercase tracking-widest text-[11px] mb-8 text-white/80">Get In Touch</h4>
                     <div class="flex flex-col gap-4 text-sm">
                         <p class="text-white/40">Ready to build something extraordinary?</p>
+                        @if(!empty($siteSettings['contact_email']))
+                        <a href="mailto:{{ $siteSettings['contact_email'] }}" class="text-white/60 hover:text-brand-primary transition-colors">{{ $siteSettings['contact_email'] }}</a>
+                        @endif
                         <a href="{{ route('contact') }}" class="inline-flex items-center gap-2 text-brand-primary font-medium hover:gap-4 transition-all duration-300">
                             Start a conversation
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4">
@@ -159,7 +193,7 @@
         <div class="border-t border-white/4">
             <div class="max-w-7xl mx-auto px-6 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
                 <p class="text-white/20 text-[10px] uppercase tracking-[0.3em]">
-                    © {{ date('Y') }} Luminescent Architect. All Rights Reserved.
+                    © {{ date('Y') }} {{ $siteSettings['site_name'] ?? 'Luminescent Architect' }}. All Rights Reserved.
                 </p>
                 <p class="text-white/20 text-[10px] uppercase tracking-[0.3em] flex items-center gap-2">
                     Designed with <span class="text-brand-accent text-sm">♥</span> for the future

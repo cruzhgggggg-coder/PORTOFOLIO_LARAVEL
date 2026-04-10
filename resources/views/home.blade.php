@@ -33,7 +33,7 @@
                     <br /> <span class="text-gradient-blue" style="filter: drop-shadow(0 0 40px rgba(0, 242, 255, 0.5)) drop-shadow(0 0 80px rgba(0, 168, 255, 0.3));">{{ $profile['hero_line2'] }}</span>
                     @endif
                     @else
-                    WEAVING <span class="text-gradient-blue" style="filter: drop-shadow(0 0 40px rgba(0, 242, 255, 0.5)) drop-shadow(0 0 80px rgba(0, 168, 255, 0.3));">LIGHT</span> INTO <br /> DIGITAL <span class="italic font-light">STRUCTURES</span>
+                    {{ $siteSettings['site_name'] ?? 'LUMINESCENT ARCHITECT' }}
                     @endif
                 </h1>
 
@@ -75,16 +75,19 @@
     {{-- ============================================================ --}}
     {{-- TECH MARQUEE DIVIDER                                          --}}
     {{-- ============================================================ --}}
+    @if($siteSettings['show_tech_marquee'] ?? true)
     <div class="overflow-hidden py-8 border-y border-white/4" data-reveal="fade" data-delay="0">
         <div class="marquee-track text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-white/12 leading-none whitespace-nowrap">
             <span>Laravel ◆ React ◆ Vue.js ◆ TypeScript ◆ Three.js ◆ Tailwind ◆ Node.js ◆ PostgreSQL ◆ Docker ◆ AWS ◆&nbsp;</span>
             <span>Laravel ◆ React ◆ Vue.js ◆ TypeScript ◆ Three.js ◆ Tailwind ◆ Node.js ◆ PostgreSQL ◆ Docker ◆ AWS ◆&nbsp;</span>
         </div>
     </div>
+    @endif
 
     {{-- ============================================================ --}}
     {{-- FEATURES SECTION                                              --}}
     {{-- ============================================================ --}}
+    @if($siteSettings['show_features_section'] ?? true)
     <section class="relative py-32 px-6 z-10">
         <div class="max-w-7xl mx-auto">
             {{-- Section header --}}
@@ -99,7 +102,7 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 {{-- Card 1: Aesthetic Precision --}}
-                <div class="feature-card glass-premium p-10 rounded-4xl group cursor-default" data-tilt data-reveal="up" data-delay="0" style="--card-accent: #00f2ff;">
+                <div class="feature-card glass-premium p-10 rounded-4xl group cursor-default" data-tilt data-reveal="up" data-delay="0" style="--card-accent: var(--brand-primary);">
                     <div data-tilt-glow></div>
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-brand-primary/10 flex items-center justify-center rounded-2xl mb-8 group-hover:bg-brand-primary/20 transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(0,242,255,0.15)]">
@@ -119,7 +122,7 @@
                 </div>
 
                 {{-- Card 2: High Performance --}}
-                <div class="feature-card glass-premium p-10 rounded-4xl group cursor-default" data-tilt data-reveal="up" data-delay="150" style="--card-accent: #7000ff;">
+                <div class="feature-card glass-premium p-10 rounded-4xl group cursor-default" data-tilt data-reveal="up" data-delay="150" style="--card-accent: var(--brand-secondary);">
                     <div data-tilt-glow></div>
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-brand-secondary/10 flex items-center justify-center rounded-2xl mb-8 group-hover:bg-brand-secondary/20 transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(112,0,255,0.15)]">
@@ -139,19 +142,19 @@
                 </div>
 
                 {{-- Card 3: Robust Architecture --}}
-                <div class="feature-card glass-premium p-10 rounded-4xl group cursor-default" data-tilt data-reveal="up" data-delay="300" style="--card-accent: #ff0099;">
+                <div class="feature-card glass-premium p-10 rounded-4xl group cursor-default" data-tilt data-reveal="up" data-delay="300" style="--card-accent: var(--brand-secondary);">
                     <div data-tilt-glow></div>
                     <div class="relative z-10">
                         <div class="w-14 h-14 bg-brand-accent/10 flex items-center justify-center rounded-2xl mb-8 group-hover:bg-brand-accent/20 transition-all duration-500 group-hover:scale-110 group-hover:shadow-[0_0_30px_rgba(255,0,153,0.15)]">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-7 h-7 text-brand-accent">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="w-7 h-7 text-brand-secondary">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-display font-bold uppercase tracking-widest mb-4 group-hover:text-brand-accent transition-colors duration-500">Robust Architecture</h3>
+                        <h3 class="text-xl font-display font-bold uppercase tracking-widest mb-4 group-hover:text-brand-secondary transition-colors duration-500">Robust Architecture</h3>
                         <p class="text-white/40 leading-relaxed text-sm">
                             Built on solid foundations that scale, ensuring your digital presence remains future-proof and resilient.
                         </p>
-                        <div class="mt-8 flex items-center gap-2 text-brand-accent/50 group-hover:text-brand-accent/80 transition-colors">
+                        <div class="mt-8 flex items-center gap-2 text-brand-secondary/50 group-hover:text-brand-secondary/80 transition-colors">
                             <div class="w-8 h-px bg-current"></div>
                             <span class="text-[9px] font-mono uppercase tracking-widest">Built To Last</span>
                         </div>
@@ -160,6 +163,7 @@
             </div>
         </div>
     </section>
+    @endif
 
     {{-- ============================================================ --}}
     {{-- FEATURED PROJECTS                                             --}}
@@ -228,7 +232,7 @@
     {{-- ============================================================ --}}
     {{-- TESTIMONIALS                                                   --}}
     {{-- ============================================================ --}}
-    @if(isset($testimonials) && $testimonials->isNotEmpty())
+    @if(($siteSettings['enable_testimonials'] ?? true) && isset($testimonials) && $testimonials->isNotEmpty())
     <section class="relative py-32 px-6 z-10">
         <div class="max-w-7xl mx-auto">
             <div class="text-center mb-20">
