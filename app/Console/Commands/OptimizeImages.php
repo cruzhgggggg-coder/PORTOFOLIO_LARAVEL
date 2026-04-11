@@ -6,7 +6,6 @@ use App\Models\ProfileSetting;
 use App\Models\Project;
 use App\Services\ImageOptimizer;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Storage;
 
 class OptimizeImages extends Command
 {
@@ -38,7 +37,7 @@ class OptimizeImages extends Command
         $this->updateDatabaseReferences();
 
         $this->newLine();
-        $this->info("✅ Optimization complete!");
+        $this->info('✅ Optimization complete!');
         $this->newLine();
 
         $this->table(
@@ -50,9 +49,9 @@ class OptimizeImages extends Command
             ]
         );
 
-        if (!empty($results['errors'])) {
+        if (! empty($results['errors'])) {
             $this->newLine();
-            $this->error('❌ Encountered ' . count($results['errors']) . ' error(s):');
+            $this->error('❌ Encountered '.count($results['errors']).' error(s):');
             foreach ($results['errors'] as $error) {
                 $this->line("   - $error");
             }
@@ -76,7 +75,7 @@ class OptimizeImages extends Command
         // Update profile photos
         $profilePhotos = ProfileSetting::where('key', 'photo_url')->get();
         foreach ($profilePhotos as $setting) {
-            if ($setting->value && !str_ends_with(parse_url($setting->value, PHP_URL_PATH), '.webp')) {
+            if ($setting->value && ! str_ends_with(parse_url($setting->value, PHP_URL_PATH), '.webp')) {
                 $setting->value = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $setting->value);
                 $setting->save();
                 $updated++;
@@ -86,7 +85,7 @@ class OptimizeImages extends Command
         // Update project images
         $projects = Project::whereNotNull('image_url')->get();
         foreach ($projects as $project) {
-            if ($project->image_url && str_starts_with($project->image_url, '/storage/') && !str_ends_with(parse_url($project->image_url, PHP_URL_PATH), '.webp')) {
+            if ($project->image_url && str_starts_with($project->image_url, '/storage/') && ! str_ends_with(parse_url($project->image_url, PHP_URL_PATH), '.webp')) {
                 $project->image_url = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $project->image_url);
                 $project->save();
                 $updated++;

@@ -21,7 +21,7 @@ class RegistrationTest extends TestCase
     {
         $response = $this->get(route('register'));
 
-        $response->assertOk();
+        $response->assertRedirect(route('home'));
     }
 
     public function test_new_users_can_register()

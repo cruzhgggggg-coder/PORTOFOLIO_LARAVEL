@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Project;
+use App\Models\SiteSetting;
 use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -26,15 +27,15 @@ class ProjectAdminController extends Controller
     public function store(Request $request, ImageOptimizer $optimizer)
     {
         $validated = $request->validate([
-            'title'       => 'required|string|max:255',
-            'category'    => 'required|string|max:100',
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
             'description' => 'required|string',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
-            'tech_stack'  => 'nullable|string',
-            'tags'        => 'nullable|string',
-            'year'        => 'required|string|max:4',
-            'link_repo'   => 'nullable|url|max:500',
-            'link_demo'   => 'nullable|url|max:500',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'tech_stack' => 'nullable|string',
+            'tags' => 'nullable|string',
+            'year' => 'required|string|max:4',
+            'link_repo' => 'nullable|url|max:500',
+            'link_demo' => 'nullable|url|max:500',
             'is_featured' => 'nullable|boolean',
         ]);
 
@@ -42,37 +43,37 @@ class ProjectAdminController extends Controller
         $imageUrl = null;
         if ($request->hasFile('image')) {
             $path = $request->file('image')->store('projects', 'public');
-            
+
             // Check if auto-optimization is enabled
-            if (\App\Models\SiteSetting::get('auto_optimize_images', true)) {
+            if (SiteSetting::get('auto_optimize_images', true)) {
                 $path = $optimizer->optimizeProjectImage($path);
             }
-            
+
             $imageUrl = Storage::url($path);
         }
 
         // Process tech_stack and tags from comma-separated to array
         $techStack = null;
-        if (!empty($validated['tech_stack'])) {
+        if (! empty($validated['tech_stack'])) {
             $techStack = array_map('trim', explode(',', $validated['tech_stack']));
         }
 
         $tags = null;
-        if (!empty($validated['tags'])) {
+        if (! empty($validated['tags'])) {
             $tags = array_map('trim', explode(',', $validated['tags']));
         }
 
         Project::create([
-            'title'       => $validated['title'],
-            'slug'        => Str::slug($validated['title']),
-            'category'    => $validated['category'],
+            'title' => $validated['title'],
+            'slug' => Str::slug($validated['title']),
+            'category' => $validated['category'],
             'description' => $validated['description'],
-            'image_url'   => $imageUrl,
-            'tech_stack'  => $techStack,
-            'tags'        => $tags,
-            'year'        => $validated['year'],
-            'link_repo'   => $validated['link_repo'] ?? null,
-            'link_demo'   => $validated['link_demo'] ?? null,
+            'image_url' => $imageUrl,
+            'tech_stack' => $techStack,
+            'tags' => $tags,
+            'year' => $validated['year'],
+            'link_repo' => $validated['link_repo'] ?? null,
+            'link_demo' => $validated['link_demo'] ?? null,
             'is_featured' => $request->boolean('is_featured'),
         ]);
 
@@ -88,15 +89,15 @@ class ProjectAdminController extends Controller
     public function update(Request $request, Project $project, ImageOptimizer $optimizer)
     {
         $validated = $request->validate([
-            'title'       => 'required|string|max:255',
-            'category'    => 'required|string|max:100',
+            'title' => 'required|string|max:255',
+            'category' => 'required|string|max:100',
             'description' => 'required|string',
-            'image'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
-            'tech_stack'  => 'nullable|string',
-            'tags'        => 'nullable|string',
-            'year'        => 'required|string|max:4',
-            'link_repo'   => 'nullable|url|max:500',
-            'link_demo'   => 'nullable|url|max:500',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'tech_stack' => 'nullable|string',
+            'tags' => 'nullable|string',
+            'year' => 'required|string|max:4',
+            'link_repo' => 'nullable|url|max:500',
+            'link_demo' => 'nullable|url|max:500',
             'is_featured' => 'nullable|boolean',
         ]);
 
@@ -109,47 +110,47 @@ class ProjectAdminController extends Controller
                 Storage::delete($oldPath);
 
                 // Also delete WebP version if exists
-                if (!str_ends_with($oldPath, '.webp')) {
+                if (! str_ends_with($oldPath, '.webp')) {
                     $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $oldPath);
                     Storage::delete($webpPath);
                 }
             }
             $path = $request->file('image')->store('projects', 'public');
-            
+
             // Check if auto-optimization is enabled
-            if (\App\Models\SiteSetting::get('auto_optimize_images', true)) {
+            if (SiteSetting::get('auto_optimize_images', true)) {
                 $path = $optimizer->optimizeProjectImage($path);
             }
-            
+
             $imageUrl = Storage::url($path);
         }
 
         // Process tech_stack and tags
         $techStack = $project->tech_stack;
         if (isset($validated['tech_stack'])) {
-            $techStack = !empty($validated['tech_stack'])
+            $techStack = ! empty($validated['tech_stack'])
                 ? array_map('trim', explode(',', $validated['tech_stack']))
                 : null;
         }
 
         $tags = $project->tags;
         if (isset($validated['tags'])) {
-            $tags = !empty($validated['tags'])
+            $tags = ! empty($validated['tags'])
                 ? array_map('trim', explode(',', $validated['tags']))
                 : null;
         }
 
         $project->update([
-            'title'       => $validated['title'],
-            'slug'        => Str::slug($validated['title']),
-            'category'    => $validated['category'],
+            'title' => $validated['title'],
+            'slug' => Str::slug($validated['title']),
+            'category' => $validated['category'],
             'description' => $validated['description'],
-            'image_url'   => $imageUrl,
-            'tech_stack'  => $techStack,
-            'tags'        => $tags,
-            'year'        => $validated['year'],
-            'link_repo'   => $validated['link_repo'] ?? null,
-            'link_demo'   => $validated['link_demo'] ?? null,
+            'image_url' => $imageUrl,
+            'tech_stack' => $techStack,
+            'tags' => $tags,
+            'year' => $validated['year'],
+            'link_repo' => $validated['link_repo'] ?? null,
+            'link_demo' => $validated['link_demo'] ?? null,
             'is_featured' => $request->boolean('is_featured'),
         ]);
 
@@ -165,7 +166,7 @@ class ProjectAdminController extends Controller
             Storage::delete($oldPath);
 
             // Also delete WebP version if current is not WebP
-            if (!str_ends_with($oldPath, '.webp')) {
+            if (! str_ends_with($oldPath, '.webp')) {
                 $webpPath = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $oldPath);
                 Storage::delete($webpPath);
             }
@@ -179,7 +180,7 @@ class ProjectAdminController extends Controller
 
     public function toggleFeatured(Project $project)
     {
-        $project->update(['is_featured' => !$project->is_featured]);
+        $project->update(['is_featured' => ! $project->is_featured]);
 
         return back()->with('success', 'Status featured berhasil diubah!');
     }

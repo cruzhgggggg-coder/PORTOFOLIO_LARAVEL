@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\ProfileSetting;
+use App\Models\SiteSetting;
 use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -20,22 +21,22 @@ class ProfileAdminController extends Controller
     public function update(Request $request, ImageOptimizer $optimizer)
     {
         $request->validate([
-            'name'        => 'required|string|max:100',
-            'tagline'     => 'nullable|string|max:200',
-            'bio'         => 'nullable|string',
-            'location'    => 'nullable|string|max:100',
-            'email'       => 'nullable|email|max:150',
-            'github_url'  => 'nullable|url|max:300',
+            'name' => 'required|string|max:100',
+            'tagline' => 'nullable|string|max:200',
+            'bio' => 'nullable|string',
+            'location' => 'nullable|string|max:100',
+            'email' => 'nullable|email|max:150',
+            'github_url' => 'nullable|url|max:300',
             'twitter_url' => 'nullable|url|max:300',
             'linkedin_url' => 'nullable|url|max:300',
-            'years_exp'   => 'nullable|integer|min:0',
+            'years_exp' => 'nullable|integer|min:0',
             'projects_count' => 'nullable|integer|min:0',
-            'photo'       => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
-            'hero_badge'  => 'nullable|string|max:100',
-            'hero_line1'  => 'nullable|string|max:200',
-            'hero_line2'  => 'nullable|string|max:200',
-            'hero_desc'   => 'nullable|string|max:500',
-            'phone'       => 'nullable|string|max:50',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,webp|max:4096',
+            'hero_badge' => 'nullable|string|max:100',
+            'hero_line1' => 'nullable|string|max:200',
+            'hero_line2' => 'nullable|string|max:200',
+            'hero_desc' => 'nullable|string|max:500',
+            'phone' => 'nullable|string|max:50',
         ]);
 
         // Handle profile photo upload
@@ -60,7 +61,7 @@ class ProfileAdminController extends Controller
             $path = $request->file('photo')->store('profile', 'public');
 
             // Check if auto-optimization is enabled
-            if (\App\Models\SiteSetting::get('auto_optimize_images', true)) {
+            if (SiteSetting::get('auto_optimize_images', true)) {
                 $path = $optimizer->optimizeProfilePhoto($path);
             }
 

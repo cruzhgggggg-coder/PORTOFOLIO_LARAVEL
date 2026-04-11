@@ -8,10 +8,10 @@ class ImageOptimizer
 {
     /**
      * Optimize profile photo: resize, compress, and convert to WebP
-     * 
-     * @param string $filePath The stored file path (e.g., 'profile/image.jpg')
-     * @param int $maxWidth Maximum width (maintains aspect ratio)
-     * @param int $quality Quality level (1-100)
+     *
+     * @param  string  $filePath  The stored file path (e.g., 'profile/image.jpg')
+     * @param  int  $maxWidth  Maximum width (maintains aspect ratio)
+     * @param  int  $quality  Quality level (1-100)
      * @return string Optimized file path with .webp extension
      */
     public function optimizeProfilePhoto(string $filePath, int $maxWidth = 800, int $quality = 85): string
@@ -21,10 +21,10 @@ class ImageOptimizer
 
     /**
      * Optimize project image: resize, compress, and convert to WebP
-     * 
-     * @param string $filePath The stored file path (e.g., 'projects/image.jpg')
-     * @param int $maxWidth Maximum width (maintains aspect ratio)
-     * @param int $quality Quality level (1-100)
+     *
+     * @param  string  $filePath  The stored file path (e.g., 'projects/image.jpg')
+     * @param  int  $maxWidth  Maximum width (maintains aspect ratio)
+     * @param  int  $quality  Quality level (1-100)
      * @return string Optimized file path with .webp extension
      */
     public function optimizeProjectImage(string $filePath, int $maxWidth = 1200, int $quality = 80): string
@@ -40,7 +40,7 @@ class ImageOptimizer
         // Read the image from storage
         $imageData = Storage::disk('public')->get($filePath);
 
-        if (!$imageData) {
+        if (! $imageData) {
             return $filePath; // Return original if can't read
         }
 
@@ -50,8 +50,9 @@ class ImageOptimizer
 
         // Get image info
         $imageInfo = getimagesize($tempInput);
-        if (!$imageInfo) {
+        if (! $imageInfo) {
             unlink($tempInput);
+
             return $filePath;
         }
 
@@ -76,8 +77,9 @@ class ImageOptimizer
                 break;
         }
 
-        if (!$source) {
+        if (! $source) {
             unlink($tempInput);
+
             return $filePath;
         }
 
@@ -103,11 +105,11 @@ class ImageOptimizer
 
         // Generate new filename with .webp extension
         $pathInfo = pathinfo($filePath);
-        $newFileName = $pathInfo['filename'] . '.webp';
-        $newFilePath = $folder . '/' . $newFileName;
+        $newFileName = $pathInfo['filename'].'.webp';
+        $newFilePath = $folder.'/'.$newFileName;
 
         // Save as WebP
-        $tempOutput = tempnam(sys_get_temp_dir(), 'img_opt_out_') . '.webp';
+        $tempOutput = tempnam(sys_get_temp_dir(), 'img_opt_out_').'.webp';
         imagewebp($dest, $tempOutput, $quality);
 
         // Read the WebP data
@@ -148,7 +150,7 @@ class ImageOptimizer
                 $this->optimizeProfilePhoto($file);
                 $results['profile']++;
             } catch (\Exception $e) {
-                $results['errors'][] = "Profile $file: " . $e->getMessage();
+                $results['errors'][] = "Profile $file: ".$e->getMessage();
             }
         }
 
@@ -163,7 +165,7 @@ class ImageOptimizer
                 $this->optimizeProjectImage($file);
                 $results['projects']++;
             } catch (\Exception $e) {
-                $results['errors'][] = "Project $file: " . $e->getMessage();
+                $results['errors'][] = "Project $file: ".$e->getMessage();
             }
         }
 

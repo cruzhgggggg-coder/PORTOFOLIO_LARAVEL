@@ -338,14 +338,7 @@
                 </svg>
                 Dashboard
             </a>
-            <a href="{{ route('admin.analytics.index') }}" class="nav-link {{ request()->routeIs('admin.analytics.*') ? 'active' : '' }}">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
-                    <line x1="18" y1="20" x2="18" y2="10" />
-                    <line x1="12" y1="20" x2="12" y2="4" />
-                    <line x1="6" y1="20" x2="6" y2="14" />
-                </svg>
-                Analytics
-            </a>
+
 
             <div style="padding: 0 24px; margin:24px 0 12px; border-top: 1px solid rgba(255,255,255,0.04); padding-top: 24px;">
                 <span style="font-size:10px;font-weight:800;letter-spacing:0.15em;text-transform:uppercase;color:rgba(255,255,255,0.2);">Content</span>

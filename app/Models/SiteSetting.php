@@ -18,13 +18,13 @@ class SiteSetting extends Model
     public static function get(string $key, $default = null)
     {
         $setting = self::where('key', $key)->first();
-        
-        if (!$setting || $setting->value === '' || $setting->value === null) {
+
+        if (! $setting || $setting->value === '' || $setting->value === null) {
             return $default;
         }
 
         // Cast value based on type
-        return match($setting->type) {
+        return match ($setting->type) {
             'boolean' => (bool) $setting->value,
             'json' => json_decode($setting->value, true),
             'integer' => (int) $setting->value,
@@ -38,13 +38,13 @@ class SiteSetting extends Model
     public static function set(string $key, $value, string $type = 'text'): self
     {
         $setting = self::firstOrCreate(['key' => $key]);
-        
+
         // Encode value based on type
-        $settingValue = match($type) {
+        $settingValue = match ($type) {
             'json' => is_array($value) ? json_encode($value) : $value,
             default => (string) $value,
         };
-        
+
         $setting->update([
             'value' => $settingValue,
             'type' => $type,
@@ -59,7 +59,7 @@ class SiteSetting extends Model
     public static function allAsArray(): array
     {
         return self::all()->mapWithKeys(function ($setting) {
-            $value = match($setting->type) {
+            $value = match ($setting->type) {
                 'boolean' => (bool) $setting->value,
                 'json' => json_decode($setting->value, true),
                 'integer' => (int) $setting->value,
@@ -70,7 +70,7 @@ class SiteSetting extends Model
             // but for safety, we return it as is and let Blade's ?? or @empty handle it.
             // However, to fix the user's issue, we should probably only return non-empty values
             // so that ?? works correctly in Blade.
-            
+
             return [$setting->key => ($value === '' ? null : $value)];
         })->toArray();
     }

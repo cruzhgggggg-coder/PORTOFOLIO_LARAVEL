@@ -70,19 +70,19 @@ class Experience extends Model
     {
         $start = $this->start_date;
         $end = $this->is_current ? now() : $this->end_date;
-        
-        if (!$end) {
+
+        if (! $end) {
             return 'Present';
         }
 
         $diff = $start->diff($end);
-        
+
         if ($diff->y > 0) {
-            return $diff->y . ' year' . ($diff->y > 1 ? 's' : '') . 
-                   ($diff->m > 0 ? ' ' . $diff->m . ' month' . ($diff->m > 1 ? 's' : '') : '');
+            return $diff->y.' year'.($diff->y > 1 ? 's' : '').
+                   ($diff->m > 0 ? ' '.$diff->m.' month'.($diff->m > 1 ? 's' : '') : '');
         }
-        
-        return $diff->m . ' month' . ($diff->m > 1 ? 's' : '');
+
+        return $diff->m.' month'.($diff->m > 1 ? 's' : '');
     }
 
     /**
@@ -92,7 +92,7 @@ class Experience extends Model
     {
         $start = $this->start_date->format('M Y');
         $end = $this->is_current ? 'Present' : ($this->end_date ? $this->end_date->format('M Y') : '');
-        
-        return $start . ' - ' . $end;
+
+        return $start.' - '.$end;
     }
 }

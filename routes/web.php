@@ -1,20 +1,19 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\ProjectController;
+use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Admin\DashboardController;
-use App\Http\Controllers\Admin\ProjectAdminController;
-use App\Http\Controllers\Admin\ProfileAdminController;
-use App\Http\Controllers\Admin\MessageAdminController;
-use App\Http\Controllers\Admin\TestimonialAdminController;
-use App\Http\Controllers\Admin\SkillAdminController;
 use App\Http\Controllers\Admin\ExperienceAdminController;
+use App\Http\Controllers\Admin\MessageAdminController;
+use App\Http\Controllers\Admin\ProfileAdminController;
+use App\Http\Controllers\Admin\ProjectAdminController;
 use App\Http\Controllers\Admin\SeoSettingController;
 use App\Http\Controllers\Admin\SiteSettingController;
-use App\Http\Controllers\Admin\AnalyticsController;
-use App\Http\Controllers\Admin\AdminUserController;
-use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\Admin\SkillAdminController;
+use App\Http\Controllers\Admin\TestimonialAdminController;
+use App\Http\Controllers\ProjectController;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,6 +38,7 @@ Route::get('/akses-rahasia-admin', function () {
     if (Auth::check()) {
         return redirect()->route('admin.dashboard');
     }
+
     return view('admin.auth.login');
 })->name('admin.login')->middleware('guest');
 
@@ -124,15 +124,6 @@ Route::prefix('admin')
         Route::post('settings/optimize-images', [SiteSettingController::class, 'runImageOptimization'])
             ->name('settings.optimize-images');
 
-        // Analytics
-        Route::get('analytics', [AnalyticsController::class, 'index'])->name('analytics.index');
-        Route::post('analytics/projects/{project}/track-view', [AnalyticsController::class, 'trackProjectView'])
-            ->name('analytics.track-view');
-        Route::post('analytics/projects/{project}/track-like', [AnalyticsController::class, 'trackProjectLike'])
-            ->name('analytics.track-like');
-
         // Admin User Management
         Route::resource('users', AdminUserController::class);
     });
-
-require __DIR__ . '/settings.php';

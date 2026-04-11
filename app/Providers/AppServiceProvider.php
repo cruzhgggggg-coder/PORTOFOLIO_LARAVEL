@@ -2,9 +2,13 @@
 
 namespace App\Providers;
 
+use App\Models\ProfileSetting;
+use App\Models\SiteSetting;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -27,10 +31,17 @@ class AppServiceProvider extends ServiceProvider
 
         // Share site settings globally with all views
         $settings = [];
-        if (!app()->runningInConsole() && \Illuminate\Support\Facades\Schema::hasTable('site_settings')) {
-            $settings = \App\Models\SiteSetting::allAsArray();
+        $profile = [];
+        if (! app()->runningInConsole()) {
+            if (Schema::hasTable('site_settings')) {
+                $settings = SiteSetting::allAsArray();
+            }
+            if (Schema::hasTable('profile_settings')) {
+                $profile = ProfileSetting::allAsArray();
+            }
         }
-        \Illuminate\Support\Facades\View::share('siteSettings', $settings);
+        View::share('siteSettings', $settings);
+        View::share('profile', $profile);
     }
 
     /**

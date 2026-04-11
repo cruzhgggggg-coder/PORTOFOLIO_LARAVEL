@@ -24,7 +24,7 @@ class Project extends Model
     ];
 
     protected $casts = [
-        'tags'       => 'array',
+        'tags' => 'array',
         'tech_stack' => 'array',
         'is_featured' => 'boolean',
         'views_count' => 'integer',
@@ -45,7 +45,7 @@ class Project extends Model
         });
 
         static::updating(function (Project $project) {
-            if ($project->isDirty('title') && !$project->isDirty('slug')) {
+            if ($project->isDirty('title') && ! $project->isDirty('slug')) {
                 $project->slug = Str::slug($project->title);
             }
         });
@@ -56,7 +56,7 @@ class Project extends Model
      */
     public function getImageAttribute(): string
     {
-        return $this->image_url ?? 'https://picsum.photos/seed/' . $this->id . '/800/600';
+        return $this->image_url ?? 'https://picsum.photos/seed/'.$this->id.'/800/600';
     }
 
     /**

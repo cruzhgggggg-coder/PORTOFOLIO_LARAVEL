@@ -12,7 +12,7 @@ class TestimonialAdminController extends Controller
     public function index(Request $request)
     {
         $query = Testimonial::query();
-        
+
         // Filter by approval status
         if ($request->filled('status')) {
             if ($request->status === 'approved') {
@@ -23,19 +23,19 @@ class TestimonialAdminController extends Controller
                 $query->featured();
             }
         }
-        
+
         $testimonials = $query->ordered()->paginate(15);
-        
+
         return view('admin.testimonials.index', [
             'testimonials' => $testimonials,
         ]);
     }
-    
+
     public function create()
     {
         return view('admin.testimonials.create');
     }
-    
+
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -52,29 +52,29 @@ class TestimonialAdminController extends Controller
             'is_approved' => 'boolean',
             'sort_order' => 'integer',
         ]);
-        
+
         // Handle avatar upload
         if ($request->hasFile('avatar_url')) {
             $validated['avatar_url'] = $this->handleAvatarUpload($request->file('avatar_url'));
         }
-        
+
         $validated['is_featured'] = $request->boolean('is_featured', false);
         $validated['is_approved'] = $request->boolean('is_approved', true);
         $validated['sort_order'] = $request->input('sort_order', 0);
-        
+
         Testimonial::create($validated);
-        
+
         return redirect()->route('admin.testimonials.index')
             ->with('success', 'Testimonial created successfully.');
     }
-    
+
     public function edit(Testimonial $testimonial)
     {
         return view('admin.testimonials.edit', [
             'testimonial' => $testimonial,
         ]);
     }
-    
+
     public function update(Request $request, Testimonial $testimonial)
     {
         $validated = $request->validate([
@@ -91,7 +91,7 @@ class TestimonialAdminController extends Controller
             'is_approved' => 'boolean',
             'sort_order' => 'integer',
         ]);
-        
+
         // Handle avatar upload
         if ($request->hasFile('avatar_url')) {
             // Delete old avatar
@@ -99,51 +99,53 @@ class TestimonialAdminController extends Controller
                 Storage::disk('public')->delete($testimonial->avatar_url);
             }
             $validated['avatar_url'] = $this->handleAvatarUpload($request->file('avatar_url'));
+        } else {
+            unset($validated['avatar_url']);
         }
-        
+
         $validated['is_featured'] = $request->boolean('is_featured', false);
         $validated['is_approved'] = $request->boolean('is_approved', true);
-        
+
         $testimonial->update($validated);
-        
+
         return redirect()->route('admin.testimonials.index')
             ->with('success', 'Testimonial updated successfully.');
     }
-    
+
     public function toggleFeatured(Testimonial $testimonial)
     {
-        $testimonial->update(['is_featured' => !$testimonial->is_featured]);
-        
+        $testimonial->update(['is_featured' => ! $testimonial->is_featured]);
+
         return back()->with('success', 'Testimonial featured status updated.');
     }
-    
+
     public function approve(Testimonial $testimonial)
     {
         $testimonial->update(['is_approved' => true]);
-        
+
         return back()->with('success', 'Testimonial approved.');
     }
-    
+
     public function destroy(Testimonial $testimonial)
     {
         // Delete avatar if exists
         if ($testimonial->avatar_url) {
             Storage::disk('public')->delete($testimonial->avatar_url);
         }
-        
+
         $testimonial->delete();
-        
+
         return redirect()->route('admin.testimonials.index')
             ->with('success', 'Testimonial deleted successfully.');
     }
-    
+
     private function handleAvatarUpload($file): string
     {
         $path = $file->store('testimonials/avatars', 'public');
-        
+
         // Optimize image (convert to WebP if possible)
         // You can integrate with your ImageOptimizer service here
-        
+
         return $path;
     }
 }

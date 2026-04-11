@@ -37,7 +37,7 @@
     {{-- Performance Matrix --}}
     <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(280px, 1fr)); gap:24px; margin-bottom:3.5rem;">
         {{-- Total Visibility --}}
-        <a href="{{ route('admin.analytics.index') }}" class="glass-card stat-card" style="--card-color: var(--brand); text-decoration:none;">
+        <div class="glass-card stat-card" style="--card-color: var(--brand); text-decoration:none;">
             <div class="stat-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
             </div>
@@ -47,10 +47,10 @@
                 <span class="trend-up">+{{ $messagesLast7Days * 5 }}%</span> vs last month
             </div>
             <div class="stat-progress"><div style="width: 75%;"></div></div>
-        </a>
+        </div>
 
         {{-- Engagement Velocity --}}
-        <a href="{{ route('admin.analytics.index') }}" class="glass-card stat-card" style="--card-color: #f472b6; text-decoration:none;">
+        <div class="glass-card stat-card" style="--card-color: #f472b6; text-decoration:none;">
             <div class="stat-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
             </div>
@@ -60,7 +60,7 @@
                 <span class="trend-up">Positive</span> project feedback
             </div>
             <div class="stat-progress"><div style="width: 45%; background: #f472b6;"></div></div>
-        </a>
+        </div>
 
         {{-- Communication Flow --}}
         <a href="{{ route('admin.messages.index') }}" class="glass-card stat-card" style="--card-color: var(--accent); text-decoration:none;">
@@ -154,11 +154,11 @@
                             <div style="font-size:10px; color:rgba(255,255,255,0.3);">Global search parameters</div>
                         </div>
                     </a>
-                    <a href="{{ route('admin.analytics.index') }}" class="command-btn">
-                        <span class="cmd-icon" style="background:rgba(0, 242, 255, 0.1); color:var(--brand);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg></span>
+                    <a href="{{ route('admin.projects.index') }}" class="command-btn">
+                        <span class="cmd-icon" style="background:rgba(0, 242, 255, 0.1); color:var(--brand);"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2v11z"/></svg></span>
                         <div style="flex:1;">
-                            <div style="font-size:13px; font-weight:700; color:#fff;">Deep Intel</div>
-                            <div style="font-size:10px; color:rgba(255,255,255,0.3);">Analytical data mining</div>
+                            <div style="font-size:13px; font-weight:700; color:#fff;">Infrastructure</div>
+                            <div style="font-size:10px; color:rgba(255,255,255,0.3);">Manage project matrix</div>
                         </div>
                     </a>
                 </div>

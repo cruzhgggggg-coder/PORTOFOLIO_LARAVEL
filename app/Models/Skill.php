@@ -59,7 +59,7 @@ class Skill extends Model
      */
     public function getProficiencyLevelAttribute(): string
     {
-        return match(true) {
+        return match (true) {
             $this->proficiency >= 90 => 'Expert',
             $this->proficiency >= 75 => 'Advanced',
             $this->proficiency >= 60 => 'Intermediate',

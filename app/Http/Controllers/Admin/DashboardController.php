@@ -3,15 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Project;
-use App\Models\Message;
-use App\Models\Testimonial;
-use App\Models\Skill;
 use App\Models\Experience;
+use App\Models\Message;
 use App\Models\ProfileSetting;
+use App\Models\Project;
 use App\Models\SiteSetting;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
+use App\Models\Skill;
+use App\Models\Testimonial;
 
 class DashboardController extends Controller
 {

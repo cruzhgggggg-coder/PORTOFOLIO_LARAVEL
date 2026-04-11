@@ -28,11 +28,11 @@ class SeoSetting extends Model
     public static function getByPage(string $key, ?array $defaults = null): ?self
     {
         $setting = self::where('page_key', $key)->first();
-        
-        if (!$setting && $defaults) {
+
+        if (! $setting && $defaults) {
             $setting = self::create(array_merge(['page_key' => $key], $defaults));
         }
-        
+
         return $setting;
     }
 
@@ -54,6 +54,6 @@ class SeoSetting extends Model
             $meta = array_merge($meta, $this->custom_meta);
         }
 
-        return array_filter($meta, fn($value) => $value !== null);
+        return array_filter($meta, fn ($value) => $value !== null);
     }
 }

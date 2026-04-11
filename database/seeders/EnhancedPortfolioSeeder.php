@@ -2,11 +2,11 @@
 
 namespace Database\Seeders;
 
-use App\Models\Skill;
 use App\Models\Experience;
-use App\Models\Testimonial;
 use App\Models\SeoSetting;
 use App\Models\SiteSetting;
+use App\Models\Skill;
+use App\Models\Testimonial;
 use Illuminate\Database\Seeder;
 
 class EnhancedPortfolioSeeder extends Seeder
@@ -29,14 +29,14 @@ class EnhancedPortfolioSeeder extends Seeder
             ['name' => 'TypeScript', 'category' => 'frontend', 'proficiency' => 85, 'icon' => '🔷', 'description' => 'Type-safe development for better code quality', 'sort_order' => 3],
             ['name' => 'Tailwind CSS', 'category' => 'frontend', 'proficiency' => 95, 'icon' => '🎨', 'description' => 'Rapid UI development with utility-first CSS', 'sort_order' => 4],
             ['name' => 'Three.js', 'category' => 'frontend', 'proficiency' => 75, 'icon' => '🎮', 'description' => '3D graphics and interactive visualizations', 'sort_order' => 5],
-            
+
             // Backend
             ['name' => 'Laravel', 'category' => 'backend', 'proficiency' => 93, 'icon' => '🔥', 'description' => 'Full-stack development with Eloquent, queues, and APIs', 'sort_order' => 10],
             ['name' => 'PHP', 'category' => 'backend', 'proficiency' => 90, 'icon' => '🐘', 'description' => 'Modern PHP 8+ with strong typing and design patterns', 'sort_order' => 11],
             ['name' => 'Node.js', 'category' => 'backend', 'proficiency' => 80, 'icon' => '🟢', 'description' => 'Server-side JavaScript for real-time applications', 'sort_order' => 12],
             ['name' => 'PostgreSQL', 'category' => 'backend', 'proficiency' => 85, 'icon' => '🐘', 'description' => 'Advanced queries, indexing, and database optimization', 'sort_order' => 13],
             ['name' => 'MySQL', 'category' => 'backend', 'proficiency' => 88, 'icon' => '🗄️', 'description' => 'Relational database design and performance tuning', 'sort_order' => 14],
-            
+
             // Tools
             ['name' => 'Docker', 'category' => 'tools', 'proficiency' => 78, 'icon' => '🐳', 'description' => 'Containerization for consistent development environments', 'sort_order' => 20],
             ['name' => 'Git', 'category' => 'tools', 'proficiency' => 92, 'icon' => '📦', 'description' => 'Version control and collaborative development workflows', 'sort_order' => 21],

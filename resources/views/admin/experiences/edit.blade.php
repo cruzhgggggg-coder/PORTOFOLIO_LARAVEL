@@ -79,7 +79,7 @@
 
                     <div style="margin-bottom:24px;">
                         <label class="form-label">Highlights / Key Achievements</label>
-                        <textarea name="highlights" class="form-input" rows="5" placeholder="Led migration to microservices architecture&#10;Reduced page load time by 40%&#10;Mentored team of 5 junior developers" style="resize:vertical; line-height:1.6; font-family:'JetBrains Mono', monospace; font-size:12px;">{{ old('highlights', $experience->highlights) }}</textarea>
+                        <textarea name="highlights" class="form-input" rows="5" placeholder="Led migration to microservices architecture&#10;Reduced page load time by 40%&#10;Mentored team of 5 junior developers" style="resize:vertical; line-height:1.6; font-family:'JetBrains Mono', monospace; font-size:12px;">{{ old('highlights', is_array($experience->highlights) ? implode("\n", $experience->highlights) : $experience->highlights) }}</textarea>
                         <small style="color:rgba(255,255,255,0.2); font-size:10px; display:block; margin-top:6px;">One achievement per line</small>
                     </div>
 
@@ -90,7 +90,7 @@
                             <small style="color:rgba(255,255,255,0.2); font-size:10px; display:block; margin-top:6px;">PNG, JPG, WEBP (Maks 2MB)</small>
                             @if($experience->logo_url)
                             <div style="margin-top:10px; display:flex; align-items:center; gap:8px;">
-                                <img src="{{ $experience->logo_url }}" alt="Current logo" style="width:40px; height:40px; object-fit:cover; border-radius:8px; border:1px solid rgba(255,255,255,0.1);">
+                                <img src="{{ asset('storage/' . $experience->logo_url) }}" alt="Current logo" style="width:40px; height:40px; object-fit:cover; border-radius:8px; border:1px solid rgba(255,255,255,0.1);">
                                 <span style="font-size:10px; color:rgba(255,255,255,0.3);">Current logo</span>
                             </div>
                             @endif
@@ -131,8 +131,9 @@
                     <a href="{{ route('admin.experiences.index') }}" class="btn-secondary" style="width:100%; justify-content:center; padding:14px;">Batal</a>
                 </div>
 
+                @php $deleteUrl = route('admin.experiences.destroy', $experience); @endphp
                 <button type="button" class="btn-danger" style="width:100%; justify-content:center; padding:14px; background:rgba(239,68,68,0.05); margin-top:12px;"
-                        onclick="openDeleteModal('{{ route('admin.experiences.destroy', $experience) }}')">
+                        onclick="openDeleteModal('{{ $deleteUrl }}')">
                     Hapus Permanen
                 </button>
             </div>

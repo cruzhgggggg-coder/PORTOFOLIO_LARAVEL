@@ -14,7 +14,7 @@ class AuthenticationTest extends TestCase
 
     public function test_login_screen_can_be_rendered()
     {
-        $response = $this->get(route('login'));
+        $response = $this->get(route('admin.login'));
 
         $response->assertOk();
     }
@@ -23,13 +23,13 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $response = $this->post(route('login.store'), [
+        $response = $this->post(route('admin.login.post'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
 
         $this->assertAuthenticated();
-        $response->assertRedirect(route('dashboard', absolute: false));
+        $response->assertRedirect(route('admin.dashboard', absolute: false));
     }
 
     public function test_users_with_two_factor_enabled_are_redirected_to_two_factor_challenge()
@@ -49,7 +49,7 @@ class AuthenticationTest extends TestCase
             'two_factor_confirmed_at' => now(),
         ])->save();
 
-        $response = $this->post(route('login'), [
+        $response = $this->post(route('admin.login.post'), [
             'email' => $user->email,
             'password' => 'password',
         ]);
@@ -63,7 +63,7 @@ class AuthenticationTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->post(route('login.store'), [
+        $this->post(route('admin.login.post'), [
             'email' => $user->email,
             'password' => 'wrong-password',
         ]);
@@ -78,7 +78,7 @@ class AuthenticationTest extends TestCase
         $response = $this->actingAs($user)->post(route('logout'));
 
         $this->assertGuest();
-        $response->assertRedirect(route('home'));
+        $response->assertRedirect(route('admin.login'));
     }
 
     public function test_users_are_rate_limited()
@@ -87,7 +87,7 @@ class AuthenticationTest extends TestCase
 
         RateLimiter::increment(md5('login'.implode('|', [$user->email, '127.0.0.1'])), amount: 5);
 
-        $response = $this->post(route('login.store'), [
+        $response = $this->post(route('admin.login.post'), [
             'email' => $user->email,
             'password' => 'wrong-password',
         ]);

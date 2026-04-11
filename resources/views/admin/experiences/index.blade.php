@@ -56,20 +56,23 @@
     @forelse($experiences as $exp)
     @php
         $colors = $typeBadgeColors[$exp->type] ?? $typeBadgeColors['work'];
+        $deleteUrl = route('admin.experiences.destroy', $exp);
+        $accentStyle = "width:4px; background:{$colors['text']}; flex-shrink:0;";
+        $badgeStyle = "background:{$colors['bg']}; color:{$colors['text']}; border:1px solid {$colors['border']}; font-size:9px; font-weight:800; padding:4px 10px; border-radius:8px; text-transform:uppercase; letter-spacing:0.1em;";
     @endphp
     <div class="glass-card" style="padding:0; margin-bottom:16px; overflow:hidden; transition:all 0.3s ease;"
          onmouseover="this.style.borderColor='rgba(0,242,255,0.15)'; this.style.transform='translateX(4px)'"
          onmouseout="this.style.borderColor='var(--card-border)'; this.style.transform='translateX(0)'">
         <div style="display:flex; align-items:stretch;">
             {{-- Timeline Accent Bar --}}
-            <div style="width:4px; background:{{ $colors['text'] }}; flex-shrink:0;"></div>
+            <div @style([$accentStyle])></div>
 
             <div style="flex:1; padding:24px 28px;">
                 <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:16px; flex-wrap:wrap;">
                     <div style="flex:1; min-width:0;">
                         {{-- Badges Row --}}
                         <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px; flex-wrap:wrap;">
-                            <span style="background:{{ $colors['bg'] }}; color:{{ $colors['text'] }}; border:1px solid {{ $colors['border'] }}; font-size:9px; font-weight:800; padding:4px 10px; border-radius:8px; text-transform:uppercase; letter-spacing:0.1em;">
+                            <span @style([$badgeStyle])>
                                 {{ $colors['label'] }}
                             </span>
                             @if($exp->is_current)
@@ -120,7 +123,7 @@
                             </svg>
                         </a>
                         <button type="button" class="btn-danger" style="padding:10px; border-radius:12px; background:rgba(239,68,68,0.08);"
-                            onclick="openDeleteModal('{{ route('admin.experiences.destroy', $exp) }}')" title="Delete Experience">
+                            onclick="openDeleteModal('{{ $deleteUrl }}')" title="Delete Experience">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;">
                                 <path d="M3 6h18m-2 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                             </svg>

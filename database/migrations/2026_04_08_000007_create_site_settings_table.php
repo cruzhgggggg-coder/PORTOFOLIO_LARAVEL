@@ -15,7 +15,7 @@ return new class extends Migration
             $table->string('type')->default('text'); // text, boolean, json, file
             $table->timestamps();
         });
-        
+
         // Add maintenance mode to profile_settings if not exists
         // We'll handle this in the seeder
     }

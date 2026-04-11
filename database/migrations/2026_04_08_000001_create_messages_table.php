@@ -18,7 +18,7 @@ return new class extends Migration
             $table->text('reply')->nullable();
             $table->timestamp('replied_at')->nullable();
             $table->timestamps();
-            
+
             $table->index(['is_read', 'created_at']);
         });
     }
