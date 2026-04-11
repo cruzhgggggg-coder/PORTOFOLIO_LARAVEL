@@ -26,25 +26,12 @@ class SiteSettingController extends Controller
             'contact_email' => 'nullable|email|max:255',
             'contact_phone' => 'nullable|string|max:50',
             'address' => 'nullable|string|max:500',
-            'google_analytics_id' => 'nullable|string|max:100',
-            'facebook_pixel_id' => 'nullable|string|max:100',
-            'show_tech_marquee' => 'nullable|boolean',
-            'show_features_section' => 'nullable|boolean',
-            'projects_per_page' => 'integer|min:1|max:50',
-            'enable_testimonials' => 'nullable|boolean',
-            'enable_analytics' => 'nullable|boolean',
             'auto_optimize_images' => 'nullable|boolean',
-            'brand_color_primary' => 'nullable|string|max:20',
-            'brand_color_secondary' => 'nullable|string|max:20',
         ]);
         
         // Define which keys are booleans to ensure they are handled correctly when unchecked
         $booleanKeys = [
             'maintenance_mode', 
-            'show_tech_marquee', 
-            'show_features_section', 
-            'enable_testimonials', 
-            'enable_analytics', 
             'auto_optimize_images'
         ];
 
@@ -56,10 +43,7 @@ class SiteSettingController extends Controller
         
         // Update each setting
         foreach ($data as $key => $value) {
-            $type = in_array($key, $booleanKeys) 
-                ? 'boolean' 
-                : (in_array($key, ['projects_per_page']) ? 'integer' : 'text');
-            
+            $type = in_array($key, $booleanKeys) ? 'boolean' : 'text';
             SiteSetting::set($key, $value, $type);
         }
         

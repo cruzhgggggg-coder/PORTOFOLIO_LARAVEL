@@ -178,19 +178,41 @@
 </div>
 
 <script>
-    function handleContact(e) {
+    async function handleContact(e) {
         e.preventDefault();
         const btn = document.getElementById('submit-btn');
         const form = document.getElementById('contact-form');
         const success = document.getElementById('form-success');
+        const formData = new FormData(form);
 
         btn.innerHTML = `<span class="flex items-center gap-3"><svg class="w-4 h-4 animate-spin" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" opacity="0.3"></circle><path d="M12 2a10 10 0 0 1 10 10" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path></svg> Transmitting...</span>`;
         btn.disabled = true;
 
-        setTimeout(() => {
-            form.classList.add('hidden');
-            success.classList.replace('hidden', 'flex');
-        }, 1500);
+        try {
+            const response = await fetch("{{ route('contact.submit') }}", {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                    'Accept': 'application/json'
+                },
+                body: formData
+            });
+
+            if (response.ok) {
+                form.classList.add('hidden');
+                success.classList.replace('hidden', 'flex');
+            } else {
+                const data = await response.json();
+                alert(data.message || 'Transmission failed. Please try again.');
+                btn.innerHTML = `<span data-magnetic-text class="flex items-center gap-3">Send Transmission <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></span>`;
+                btn.disabled = false;
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('A technical error occurred during transmission.');
+            btn.innerHTML = `<span data-magnetic-text class="flex items-center gap-3">Send Transmission <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></span>`;
+            btn.disabled = false;
+        }
     }
 
     function resetForm() {

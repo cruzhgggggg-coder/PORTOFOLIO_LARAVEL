@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ExperienceAdminController;
 use App\Http\Controllers\Admin\SeoSettingController;
 use App\Http\Controllers\Admin\SiteSettingController;
 use App\Http\Controllers\Admin\AnalyticsController;
+use App\Http\Controllers\Admin\AdminUserController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use Illuminate\Support\Facades\Auth;
 
@@ -25,6 +26,7 @@ Route::get('/', [ProjectController::class, 'home'])->name('home');
 Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
 Route::get('/about', [ProjectController::class, 'about'])->name('about');
 Route::get('/contact', [ProjectController::class, 'contact'])->name('contact');
+Route::post('/contact', [ProjectController::class, 'submitContact'])->name('contact.submit');
 
 /*
 |--------------------------------------------------------------------------
@@ -128,6 +130,9 @@ Route::prefix('admin')
             ->name('analytics.track-view');
         Route::post('analytics/projects/{project}/track-like', [AnalyticsController::class, 'trackProjectLike'])
             ->name('analytics.track-like');
+
+        // Admin User Management
+        Route::resource('users', AdminUserController::class);
     });
 
 require __DIR__ . '/settings.php';

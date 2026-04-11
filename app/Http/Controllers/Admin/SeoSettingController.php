@@ -58,18 +58,7 @@ class SeoSettingController extends Controller
             'meta_title' => 'nullable|string|max:255',
             'meta_description' => 'nullable|string|max:500',
             'meta_keywords' => 'nullable|string|max:500',
-            'og_image' => 'nullable|url|max:255',
-            'canonical_url' => 'nullable|url|max:255',
-            'no_index' => 'boolean',
-            'custom_meta' => 'nullable|array',
         ]);
-        
-        $validated['no_index'] = $request->boolean('no_index', false);
-        
-        // Parse custom meta if sent as JSON string
-        if (is_string($validated['custom_meta'] ?? null)) {
-            $validated['custom_meta'] = json_decode($validated['custom_meta'], true);
-        }
         
         $seoSetting = SeoSetting::firstOrCreate(['page_key' => $pageKey]);
         $seoSetting->update($validated);

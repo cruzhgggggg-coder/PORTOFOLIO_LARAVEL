@@ -24,30 +24,7 @@
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-    {{-- Analytics Integration --}}
-    @if(($siteSettings['enable_analytics'] ?? false) && !empty($siteSettings['google_analytics_id']))
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id={{ $siteSettings['google_analytics_id'] }}"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', '{{ $siteSettings["google_analytics_id"] }}');
-    </script>
-    @endif
-
-    @if(($siteSettings['enable_analytics'] ?? false) && !empty($siteSettings['facebook_pixel_id']))
-    <!-- Facebook Pixel -->
-    <script>
-        !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-        n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-        n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-        t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
-        document,'script','https://connect.facebook.net/en_US/fbevents.js');
-        fbq('init', '{{ $siteSettings["facebook_pixel_id"] }}');
-        fbq('track', 'PageView');
-    </script>
-    @endif
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="font-sans antialiased bg-black text-white selection:bg-brand-primary selection:text-black overflow-x-hidden">

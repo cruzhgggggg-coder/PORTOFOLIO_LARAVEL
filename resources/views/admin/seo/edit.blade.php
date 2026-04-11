@@ -18,7 +18,7 @@
     {{-- Header --}}
     <div style="margin-bottom:2.5rem;">
         <h1 style="font-size:32px; font-weight:800; letter-spacing:-0.04em; margin-bottom:8px;">SEO Settings: {{ ucfirst($pageKey) }}</h1>
-        <p style="color:rgba(255,255,255,0.4); font-size:14px;">Configure meta tags, Open Graph data, and indexing rules for this page.</p>
+        <p style="color:rgba(255,255,255,0.4); font-size:14px;">Configure meta titles, descriptions, and keywords for this page.</p>
     </div>
 
     {{-- Validation Errors --}}
@@ -85,63 +85,6 @@
                 <label class="form-label" for="meta_keywords">Meta Keywords</label>
                 <input type="text" id="meta_keywords" name="meta_keywords" value="{{ old('meta_keywords', $seoSetting->meta_keywords) }}" class="form-input" placeholder="e.g., portfolio, web developer, designer" />
                 <div style="font-size:11px; color:rgba(255,255,255,0.25); margin-top:6px;">Comma-separated keywords for search engines</div>
-            </div>
-        </div>
-
-        {{-- Open Graph Section --}}
-        <div class="glass-card" style="padding:28px; margin-bottom:24px;">
-            <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
-                <div style="width:36px; height:36px; background:rgba(124,58,237,0.15); border:1px solid rgba(124,58,237,0.2); border-radius:10px; display:flex; align-items:center; justify-content:center;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2" style="width:18px; height:18px;">
-                        <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
-                        <polyline points="16 6 12 2 8 6" />
-                        <line x1="12" y1="2" x2="12" y2="15" />
-                    </svg>
-                </div>
-                <div>
-                    <div style="font-size:16px; font-weight:700; color:#fff;">Open Graph</div>
-                    <div style="font-size:11px; color:rgba(255,255,255,0.3);">Social sharing metadata</div>
-                </div>
-            </div>
-
-            {{-- OG Image --}}
-            <div>
-                <label class="form-label" for="og_image">Open Graph Image URL</label>
-                <input type="url" id="og_image" name="og_image" value="{{ old('og_image', $seoSetting->og_image) }}" class="form-input" placeholder="https://example.com/og-image.jpg" />
-                <div style="font-size:11px; color:rgba(255,255,255,0.25); margin-top:6px;">Recommended: 1200x630 pixels for optimal display on social media</div>
-            </div>
-        </div>
-
-        {{-- Advanced Section --}}
-        <div class="glass-card" style="padding:28px; margin-bottom:24px;">
-            <div style="display:flex; align-items:center; gap:12px; margin-bottom:24px;">
-                <div style="width:36px; height:36px; background:rgba(245,158,11,0.15); border:1px solid rgba(245,158,11,0.2); border-radius:10px; display:flex; align-items:center; justify-content:center;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2" style="width:18px; height:18px;">
-                        <circle cx="12" cy="12" r="3" />
-                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                    </svg>
-                </div>
-                <div>
-                    <div style="font-size:16px; font-weight:700; color:#fff;">Advanced</div>
-                    <div style="font-size:11px; color:rgba(255,255,255,0.3);">Canonical URL and indexing rules</div>
-                </div>
-            </div>
-
-            {{-- Canonical URL --}}
-            <div style="margin-bottom:24px;">
-                <label class="form-label" for="canonical_url">Canonical URL</label>
-                <input type="url" id="canonical_url" name="canonical_url" value="{{ old('canonical_url', $seoSetting->canonical_url) }}" class="form-input" placeholder="https://example.com/page" />
-                <div style="font-size:11px; color:rgba(255,255,255,0.25); margin-top:6px;">Prevents duplicate content issues by specifying the preferred URL</div>
-            </div>
-
-            {{-- No Index Checkbox --}}
-            <div style="display:flex; align-items:flex-start; gap:12px; padding:16px; background:rgba(255,255,255,0.02); border:1px solid rgba(255,255,255,0.06); border-radius:12px;">
-                <input type="checkbox" id="no_index" name="no_index" value="1" {{ old('no_index', $seoSetting->no_index) ? 'checked' : '' }}
-                       style="width:20px; height:20px; margin-top:2px; accent-color:var(--brand); cursor:pointer; flex-shrink:0;" />
-                <div>
-                    <label for="no_index" style="font-size:14px; font-weight:600; color:#fff; cursor:pointer;">No Index</label>
-                    <div style="font-size:12px; color:rgba(255,255,255,0.35); margin-top:2px;">Prevent search engines from indexing this page. Use for pages like admin panels, thank you pages, or private content.</div>
-                </div>
             </div>
         </div>
 

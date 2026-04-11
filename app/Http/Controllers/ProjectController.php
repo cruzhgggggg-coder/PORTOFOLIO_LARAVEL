@@ -7,6 +7,8 @@ use App\Models\ProfileSetting;
 use App\Models\Skill;
 use App\Models\Experience;
 use App\Models\Testimonial;
+use App\Models\Message;
+use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
@@ -44,6 +46,23 @@ class ProjectController extends Controller
     {
         return view('contact', [
             'profile' => ProfileSetting::allAsArray(),
+        ]);
+    }
+
+    public function submitContact(Request $request)
+    {
+        $validated = $request->validate([
+            'name'    => 'required|string|max:255',
+            'email'   => 'required|email|max:255',
+            'subject' => 'required|string|max:255',
+            'message' => 'required|string|max:5000',
+        ]);
+
+        Message::create($validated);
+
+        return response()->json([
+            'status'  => 'success',
+            'message' => 'Transmission received successfully.',
         ]);
     }
 }
