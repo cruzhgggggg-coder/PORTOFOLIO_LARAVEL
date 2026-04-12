@@ -5,6 +5,7 @@ namespace App\Providers;
 use App\Models\ProfileSetting;
 use App\Models\SiteSetting;
 use Carbon\CarbonImmutable;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -29,17 +30,31 @@ class AppServiceProvider extends ServiceProvider
     {
         $this->configureDefaults();
 
+        // Register Observers for Cache Invalidation
+        \App\Models\Project::observe(\App\Observers\PortfolioObserver::class);
+        \App\Models\ProfileSetting::observe(\App\Observers\PortfolioObserver::class);
+        \App\Models\Testimonial::observe(\App\Observers\PortfolioObserver::class);
+        \App\Models\Skill::observe(\App\Observers\PortfolioObserver::class);
+        \App\Models\Experience::observe(\App\Observers\PortfolioObserver::class);
+        \App\Models\SiteSetting::observe(\App\Observers\PortfolioObserver::class);
+
         // Share site settings globally with all views
         $settings = [];
         $profile = [];
+        
         if (! app()->runningInConsole()) {
             if (Schema::hasTable('site_settings')) {
-                $settings = SiteSetting::allAsArray();
+                $settings = Cache::remember('portfolio.settings', 86400, function () {
+                    return SiteSetting::allAsArray();
+                });
             }
             if (Schema::hasTable('profile_settings')) {
-                $profile = ProfileSetting::allAsArray();
+                $profile = Cache::remember('portfolio.settings_profile', 86400, function () {
+                    return ProfileSetting::allAsArray();
+                });
             }
         }
+        
         View::share('siteSettings', $settings);
         View::share('profile', $profile);
     }

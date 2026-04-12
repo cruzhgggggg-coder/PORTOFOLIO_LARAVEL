@@ -15,38 +15,55 @@ class ProjectController extends Controller
 {
     public function home()
     {
-        return view('home', [
-            'projects' => Project::featured()->latest()->get(),
-            'profile' => ProfileSetting::allAsArray(),
-            'testimonials' => Testimonial::approved()->featured()->ordered()->take(6)->get(),
-        ]);
+        $data = cache()->remember('portfolio.home_data', 86400, function () {
+            return [
+                'projects' => Project::featured()->latest()->get(),
+                'profile' => ProfileSetting::allAsArray(),
+                'testimonials' => Testimonial::approved()->featured()->ordered()->take(6)->get(),
+            ];
+        });
+
+        return view('home', $data);
     }
 
     public function index()
     {
+        $page = request()->input('page', 1);
         $perPage = SiteSetting::get('projects_per_page', 9);
 
+        $projects = cache()->remember("portfolio.projects_page_{$page}", 86400, function () use ($perPage) {
+            return Project::latest()->paginate($perPage);
+        });
+
         return view('projects', [
-            'projects' => Project::latest()->paginate($perPage),
+            'projects' => $projects,
         ]);
     }
 
     public function about()
     {
-        $skills = Skill::active()->ordered()->get()->groupBy('category');
+        $data = cache()->remember('portfolio.about_data', 86400, function () {
+            $skills = Skill::active()->ordered()->get()->groupBy('category');
 
-        return view('about', [
-            'profile' => ProfileSetting::allAsArray(),
-            'skills' => $skills,
-            'experiences' => Experience::active()->ordered()->get(),
-            'testimonials' => Testimonial::approved()->ordered()->take(6)->get(),
-        ]);
+            return [
+                'profile' => ProfileSetting::allAsArray(),
+                'skills' => $skills,
+                'experiences' => Experience::active()->ordered()->get(),
+                'testimonials' => Testimonial::approved()->ordered()->take(6)->get(),
+            ];
+        });
+
+        return view('about', $data);
     }
 
     public function contact()
     {
+        $profile = cache()->remember('portfolio.contact_profile', 86400, function () {
+            return ProfileSetting::allAsArray();
+        });
+
         return view('contact', [
-            'profile' => ProfileSetting::allAsArray(),
+            'profile' => $profile,
         ]);
     }
 
