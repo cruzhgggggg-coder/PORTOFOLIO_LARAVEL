@@ -31,6 +31,8 @@ class Project extends Model
         'likes_count' => 'integer',
     ];
 
+    protected $appends = ['image'];
+
     /**
      * Auto-generate slug from title on creation.
      */

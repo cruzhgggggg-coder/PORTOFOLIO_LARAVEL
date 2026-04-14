@@ -44,14 +44,22 @@ class AppServiceProvider extends ServiceProvider
         
         if (! app()->runningInConsole()) {
             if (Schema::hasTable('site_settings')) {
-                $settings = Cache::remember('portfolio.settings', 86400, function () {
-                    return SiteSetting::allAsArray();
-                });
+                $cachedSettings = Cache::get('portfolio.settings_v3');
+                if ($cachedSettings) {
+                    $settings = json_decode($cachedSettings, true);
+                } else {
+                    $settings = SiteSetting::allAsArray();
+                    Cache::put('portfolio.settings_v3', json_encode($settings), 86400);
+                }
             }
             if (Schema::hasTable('profile_settings')) {
-                $profile = Cache::remember('portfolio.settings_profile', 86400, function () {
-                    return ProfileSetting::allAsArray();
-                });
+                $cachedProfile = Cache::get('portfolio.settings_profile_v3');
+                if ($cachedProfile) {
+                    $profile = json_decode($cachedProfile, true);
+                } else {
+                    $profile = ProfileSetting::allAsArray();
+                    Cache::put('portfolio.settings_profile_v3', json_encode($profile), 86400);
+                }
             }
         }
         

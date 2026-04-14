@@ -22,6 +22,8 @@ class Skill extends Model
         'is_active' => 'boolean',
     ];
 
+    protected $appends = ['proficiency_percent', 'proficiency_level'];
+
     /**
      * Scope: only active skills
      */

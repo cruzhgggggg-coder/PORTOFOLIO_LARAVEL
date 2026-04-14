@@ -21,13 +21,17 @@ class PortfolioObserver
         Cache::forget('portfolio.contact_profile');
         Cache::forget('portfolio.settings');
         Cache::forget('portfolio.settings_profile');
+
+        // New _v3 JSON cache keys
+        Cache::forget('portfolio.home_data_v3');
+        Cache::forget('portfolio.about_data_v3');
+        Cache::forget('portfolio.contact_profile_v3');
+        Cache::forget('portfolio.settings_v3');
+        Cache::forget('portfolio.settings_profile_v3');
         
-        // Since we don't know all page numbers for projects, we can either use tags (if supported)
-        // or just clear the first few pages or flush if the site is small.
-        // Or better yet, we can use a cache tag if the driver supports it (redis/memcached).
-        // Since we likely use 'file' or 'database' in shared hosting:
         for ($i = 1; $i <= 10; $i++) {
             Cache::forget("portfolio.projects_page_{$i}");
+            Cache::forget("portfolio.projects_page_v3_{$i}");
         }
     }
 

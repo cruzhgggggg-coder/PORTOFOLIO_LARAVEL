@@ -28,6 +28,8 @@ class Testimonial extends Model
         'sort_order' => 'integer',
     ];
 
+    protected $appends = ['stars'];
+
     /**
      * Scope: only featured testimonials
      */

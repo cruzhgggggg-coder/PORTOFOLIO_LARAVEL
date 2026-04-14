@@ -31,6 +31,8 @@ class Experience extends Model
         'is_active' => 'boolean',
     ];
 
+    protected $appends = ['duration', 'date_range'];
+
     /**
      * Scope: filter by type
      */
