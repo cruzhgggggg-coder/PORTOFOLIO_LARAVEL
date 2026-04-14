@@ -188,11 +188,11 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 @foreach($projects as $index => $project)
-                <div class="project-card group relative" data-reveal="up" data-delay="{{ $index * 150 }}">
+                <div class="project-card group relative" data-reveal="up" data-delay="{{ $loop->index * 150 }}">
                     {{-- Image --}}
                     <div class="project-image-wrap aspect-4/5 bg-white/5 rounded-4xl mb-8 shadow-2xl overflow-hidden" data-img-reveal>
                         {{-- Project index number --}}
-                        <span class="project-index font-display">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                        <span class="project-index font-display">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
 
                         <img
                             src="{{ $project->image }}"
@@ -243,7 +243,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach($testimonials as $i => $testimonial)
-                <div class="glass-premium p-8 rounded-3xl group hover:border-white/20 transition-all duration-500 flex flex-col" data-tilt data-reveal="up" data-delay="{{ $i * 100 }}" style="--card-accent: #00f2ff;">
+                <div class="glass-premium p-8 rounded-3xl group hover:border-white/20 transition-all duration-500 flex flex-col" data-tilt data-reveal="up" data-delay="{{ $loop->index * 100 }}" style="--card-accent: #00f2ff;">
                     <div data-tilt-glow></div>
                     <div class="relative z-10 flex flex-col h-full">
                         <div class="text-brand-primary text-lg mb-6 tracking-wider">{{ $testimonial->stars }}</div>

@@ -198,7 +198,7 @@
         <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px;">
             @foreach($mostViewedProjects->take(4) as $index => $p)
             <div style="padding:16px; background:rgba(255,255,255,0.02); border-radius:8px; border-left:3px solid var(--brand);">
-                <div style="font-size:10px; color:rgba(255,255,255,0.2); margin-bottom:4px;">#0{{ $index + 1 }}</div>
+                <div style="font-size:10px; color:rgba(255,255,255,0.2); margin-bottom:4px;">#0{{ $loop->iteration }}</div>
                 <div style="font-size:13px; font-weight:700; color:#fff; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-bottom:8px;">{{ $p->title }}</div>
                 <div style="font-family:'JetBrains Mono', monospace; font-size:14px; font-weight:800; color:var(--brand);">{{ number_format($p->views_count) }} <span style="font-size:9px; font-weight:400; color:rgba(255,255,255,0.3);">REQ</span></div>
             </div>

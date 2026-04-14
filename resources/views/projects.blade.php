@@ -26,13 +26,13 @@
         {{-- Projects Grid --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
             @foreach($projects as $index => $project)
-            <div class="project-card group cursor-pointer relative" data-reveal="up" data-delay="{{ ($index % 2) * 150 }}">
+            <div class="project-card group cursor-pointer relative" data-reveal="up" data-delay="{{ ($loop->index % 2) * 150 }}">
                 {{-- Image --}}
                 <div class="relative aspect-4/5 md:aspect-video overflow-hidden bg-white/5 rounded-4xl mb-10 shadow-2xl" data-img-reveal data-tilt>
                     <div data-tilt-glow></div>
 
                     {{-- Project number --}}
-                    <span class="project-index font-display">{{ str_pad($index + 1, 2, '0', STR_PAD_LEFT) }}</span>
+                    <span class="project-index font-display">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
 
                     {{-- Hover Effect --}}
                     <div class="absolute inset-0 bg-brand-primary/0 group-hover:bg-brand-primary/5 transition-colors duration-700 z-10 pointer-events-none"></div>
