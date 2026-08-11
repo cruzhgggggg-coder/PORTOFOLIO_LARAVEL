@@ -190,6 +190,15 @@
     .dark ::-webkit-scrollbar-thumb { background: oklch(0.8 0 0 / 0.1); }
     .dark ::-webkit-scrollbar-thumb:hover { background: oklch(0.8 0 0 / 0.2); }
 
+    /* Hide scrollbar but keep scroll functionality */
+    .scrollbar-hide {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+    }
+    .scrollbar-hide::-webkit-scrollbar {
+        display: none;
+    }
+
     h1, h2, h3, h4, h5, h6 {
         @apply font-display tracking-tight font-bold;
     }
@@ -389,11 +398,9 @@
 
 @utility text-gradient-blue {
     @apply bg-clip-text text-transparent tracking-tighter;
-    background-image: linear-gradient(90deg, #00f2ff, #00a8ff, #0070ff, #0055ff, #00a8ff, #00f2ff);
-    background-size: 200% 100%;
-    animation: gradient-shift 4s ease infinite;
-    text-shadow: 0 0 40px rgba(0, 242, 255, 0.3);
-    filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.4));
+    background-image: linear-gradient(135deg, #ffffff, #ffffff, #5ab4e0, #0d6eb8, #0d6eb8, #5ab4e0, #ffffff, #ffffff);
+    background-size: 400% 400%;
+    animation: gradient-flow 5s ease-in-out infinite;
 }
 
 @utility text-gradient-purple {
@@ -430,9 +437,8 @@
 }
 
 .nav-scrolled {
-    background: rgba(0, 0, 0, 0.85) !important;
-    backdrop-filter: blur(20px) saturate(180%);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    background: transparent !important;
+    backdrop-filter: none;
 }
 
 /* Nav link hover underline effect */
@@ -695,6 +701,27 @@
     display: flex;
     gap: 5rem;
     width: max-content;
+}
+
+/* ============================================================ */
+/* VIDEO BACKGROUND FALLBACK                                      */
+/* ============================================================ */
+.bg-video-fallback {
+    background:
+        radial-gradient(ellipse at 20% 50%, rgba(0, 242, 255, 0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(112, 0, 255, 0.06) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 80%, rgba(255, 0, 153, 0.04) 0%, transparent 50%),
+        linear-gradient(180deg, #0a0a0a 0%, #000000 100%);
+    animation: fallback-pulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes fallback-pulse {
+    0% { opacity: 1; }
+    100% { opacity: 0.7; }
+}
+
+#bg-video.opacity-100 {
+    opacity: 1;
 }
 
 /* ============================================================ */

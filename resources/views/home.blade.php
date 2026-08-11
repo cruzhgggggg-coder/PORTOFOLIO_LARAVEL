@@ -8,15 +8,6 @@
     {{-- HERO SECTION — 3D Interactive                                 --}}
     {{-- ============================================================ --}}
     <section class="relative min-h-screen flex items-center justify-center overflow-hidden px-6">
-        {{-- Three.js 3D Canvas --}}
-        <div id="hero-3d-container" class="absolute inset-0 z-0"></div>
-
-        {{-- Comet Canvas --}}
-        <div id="comet-container" class="absolute inset-0 z-1 pointer-events-none"></div>
-
-        {{-- Gradient overlays for depth --}}
-        <div class="absolute inset-0 z-2 pointer-events-none bg-linear-to-b from-black/40 via-transparent to-black/60"></div>
-
         {{-- Hero Content --}}
         <div class="relative z-10 max-w-6xl mx-auto text-center">
             <div>
@@ -230,46 +221,123 @@
     </section>
 
     {{-- ============================================================ --}}
-    {{-- TESTIMONIALS                                                   --}}
+    {{-- CERTIFICATES                                                   --}}
     {{-- ============================================================ --}}
-    @if(($siteSettings['enable_testimonials'] ?? true) && isset($testimonials) && $testimonials->isNotEmpty())
-    <section class="relative py-32 px-6 z-10">
-        <div class="max-w-7xl mx-auto">
+    @if(($siteSettings['enable_certificates'] ?? true) && isset($certificates) && $certificates->isNotEmpty())
+    <section class="relative py-32 z-10">
+        <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-20">
-                <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block" data-reveal="fade" data-delay="0">Social Proof</span>
+                <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block" data-reveal="fade" data-delay="0">Achievements</span>
                 <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase" data-reveal="up" data-delay="100">
-                    Client <span class="text-gradient-blue">Voices</span>
+                    Certi<span class="text-gradient-blue">fications</span>
                 </h2>
             </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($testimonials as $i => $testimonial)
-                <div class="glass-premium p-8 rounded-3xl group hover:border-white/20 transition-all duration-500 flex flex-col" data-tilt data-reveal="up" data-delay="{{ $loop->index * 100 }}" style="--card-accent: #00f2ff;">
-                    <div data-tilt-glow></div>
-                    <div class="relative z-10 flex flex-col h-full">
-                        <div class="text-brand-primary text-lg mb-6 tracking-wider">{{ $testimonial->stars }}</div>
-                        <blockquote class="text-white/60 leading-relaxed text-sm flex-1 mb-6 italic">
-                            "{{ $testimonial->content }}"
-                        </blockquote>
-                        <div class="flex items-center gap-4 pt-6 border-t border-white/15">
-                            @if($testimonial->avatar_url)
-                            <img src="{{ $testimonial->avatar_url }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover bg-white/5">
-                            @else
-                            <div class="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold text-sm">
-                                {{ substr($testimonial->name, 0, 1) }}
+        </div>
+
+        {{-- Horizontal Scroll Gallery --}}
+        <div class="max-w-7xl mx-auto px-6 relative">
+            {{-- Scroll Buttons --}}
+            <button onclick="scrollCerts(-1)" id="cert-btn-left" style="position:absolute; left:-20px; top:50%; transform:translateY(-50%); z-index:20; width:48px; height:48px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.3s; backdrop-filter:blur(8px); opacity:0; pointer-events:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width:20px;height:20px;"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button onclick="scrollCerts(1)" id="cert-btn-right" style="position:absolute; right:-20px; top:50%; transform:translateY(-50%); z-index:20; width:48px; height:48px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.3s; backdrop-filter:blur(8px);" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width:20px;height:20px;"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+
+            <div id="cert-scroll-container" class="overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory" style="scroll-behavior:smooth;">
+                <div class="flex gap-6" style="width: max-content;">
+                    @foreach($certificates as $i => $certificate)
+                    <div class="glass-premium rounded-3xl overflow-hidden group hover:border-white/20 transition-all duration-500 snap-start flex-shrink-0 w-[320px] md:w-[380px]" data-reveal="up" data-delay="{{ $loop->index * 100 }}">
+                        {{-- Certificate Image --}}
+                        @if($certificate->image_url)
+                        <div class="aspect-[16/10] overflow-hidden relative cursor-pointer" onclick="openCertLightbox('{{ asset('storage/' . $certificate->image_url) }}', '{{ $certificate->title }}')">
+                            <img src="{{ asset('storage/' . $certificate->image_url) }}" alt="{{ $certificate->title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
+                            <div class="absolute top-3 right-3 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" class="w-4 h-4"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
                             </div>
-                            @endif
-                            <div>
-                                <div class="font-bold text-sm">{{ $testimonial->name }}</div>
-                                <div class="text-white/60 text-[10px] uppercase tracking-widest">{{ $testimonial->title }}{{ $testimonial->company ? ' @ ' . $testimonial->company : '' }}</div>
+                        </div>
+                        @else
+                        <div class="aspect-[16/10] bg-white/5 flex items-center justify-center">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="w-16 h-16 text-white/10">
+                                <rect x="3" y="3" width="18" height="18" rx="2" />
+                                <path d="M3 9h18M9 21V9" />
+                            </svg>
+                        </div>
+                        @endif
+
+                        {{-- Certificate Info --}}
+                        <div class="p-6">
+                            <div class="font-display font-bold text-lg mb-1 uppercase tracking-tight">{{ $certificate->title }}</div>
+                            <div class="text-white/50 text-sm mb-2">{{ $certificate->issuer }}</div>
+                            <div class="flex items-center justify-between">
+                                @if($certificate->year)
+                                <span class="text-white/40 font-mono text-[10px] tracking-widest">{{ $certificate->year }}</span>
+                                @endif
+                                @if($certificate->credential_url)
+                                <a href="{{ $certificate->credential_url }}" target="_blank" rel="noopener" class="text-brand-primary text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">
+                                    Verify →
+                                </a>
+                                @endif
                             </div>
                         </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
         </div>
+
+        <script>
+            (function() {
+                var sc = document.getElementById('cert-scroll-container');
+                var btnL = document.getElementById('cert-btn-left');
+                var btnR = document.getElementById('cert-btn-right');
+                function updateBtns() {
+                    if (!sc) return;
+                    btnL.style.opacity = sc.scrollLeft > 10 ? '1' : '0';
+                    btnL.style.pointerEvents = sc.scrollLeft > 10 ? 'auto' : 'none';
+                    btnR.style.opacity = sc.scrollLeft < sc.scrollWidth - sc.clientWidth - 10 ? '1' : '0';
+                    btnR.style.pointerEvents = sc.scrollLeft < sc.scrollWidth - sc.clientWidth - 10 ? 'auto' : 'none';
+                }
+                if (sc) {
+                    sc.addEventListener('scroll', updateBtns);
+                    updateBtns();
+                }
+                window.scrollCerts = function(dir) {
+                    if (sc) sc.scrollLeft += dir * 400;
+                };
+            })();
+        </script>
+
     </section>
     @endif
+
+    {{-- Certificate Lightbox Modal --}}
+    <div id="cert-lightbox" style="display:none; position:fixed; inset:0; z-index:99999; background:rgba(0,0,0,0.92); backdrop-filter:blur(12px); padding:2rem; align-items:center; justify-content:center; cursor:pointer;" onclick="if(event.target===this)closeCertLightbox()">
+        <button onclick="event.stopPropagation();closeCertLightbox()" style="position:absolute; top:1.5rem; right:1.5rem; z-index:10; width:3rem; height:3rem; background:rgba(255,255,255,0.1); border:none; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:background 0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.2)'" onmouseout="this.style.background='rgba(255,255,255,0.1)'">
+            <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width:24px;height:24px;"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+        <img id="cert-lightbox-img" src="" alt="" style="max-width:90vw; max-height:85vh; object-fit:contain; border-radius:1rem; box-shadow:0 25px 50px rgba(0,0,0,0.5); cursor:default;" onclick="event.stopPropagation()">
+        <div id="cert-lightbox-title" style="position:absolute; bottom:1.5rem; left:50%; transform:translateX(-50%); color:rgba(255,255,255,0.5); font-size:14px; font-family:monospace; text-transform:uppercase; letter-spacing:0.15em;"></div>
+    </div>
+
+    <script>
+        function openCertLightbox(src, title) {
+            var lb = document.getElementById('cert-lightbox');
+            document.getElementById('cert-lightbox-img').src = src;
+            document.getElementById('cert-lightbox-img').alt = title;
+            document.getElementById('cert-lightbox-title').textContent = title;
+            lb.style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+        }
+        function closeCertLightbox() {
+            document.getElementById('cert-lightbox').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeCertLightbox();
+        });
+    </script>
 
     {{-- ============================================================ --}}
     {{-- CTA SECTION                                                   --}}

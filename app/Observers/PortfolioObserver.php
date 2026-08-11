@@ -22,8 +22,9 @@ class PortfolioObserver
         Cache::forget('portfolio.settings');
         Cache::forget('portfolio.settings_profile');
 
-        // New _v3 JSON cache keys
+        // New JSON cache keys
         Cache::forget('portfolio.home_data_v3');
+        Cache::forget('portfolio.home_data_v4');
         Cache::forget('portfolio.about_data_v3');
         Cache::forget('portfolio.contact_profile_v3');
         Cache::forget('portfolio.settings_v3');

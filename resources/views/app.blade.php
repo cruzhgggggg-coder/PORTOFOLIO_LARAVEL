@@ -22,7 +22,8 @@
     {{-- Favicon --}}
     <link rel="icon" href="/favicon.ico" sizes="any">
 
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    {{-- HLS Library CDN fallback --}}
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -37,9 +38,22 @@
         </div>
     </div>
 
-    {{-- Background --}}
-    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden bg-black">
-        <div class="absolute inset-0 opacity-[0.03] mix-blend-overlay" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')"></div>
+    {{-- Global Background HLS Video --}}
+    <div id="bg-video-container" class="fixed inset-0 pointer-events-none z-1 overflow-hidden bg-video-fallback">
+        {{-- Video Element --}}
+        <video
+            id="bg-video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            crossorigin="anonymous"
+            class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto object-cover -translate-x-1/2 -translate-y-1/2 z-0 opacity-0 transition-opacity duration-1000"
+        ></video>
+
+        {{-- Noise Texture --}}
+        <div class="absolute inset-0 z-2 opacity-[0.03] mix-blend-overlay pointer-events-none" style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')"></div>
     </div>
 
     {{-- Navbar --}}
@@ -186,12 +200,20 @@
     </footer>
 
     <script>
-        // Page loader
-        window.addEventListener('load', () => {
-            setTimeout(() => {
-                document.getElementById('page-loader')?.classList.add('loaded');
-            }, 600);
-        });
+        // Robust Page Loader Hide
+        function hidePageLoader() {
+            const loader = document.getElementById('page-loader');
+            if (loader && !loader.classList.contains('loaded')) {
+                loader.classList.add('loaded');
+            }
+        }
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            setTimeout(hidePageLoader, 100);
+        } else {
+            window.addEventListener('DOMContentLoaded', hidePageLoader);
+            window.addEventListener('load', hidePageLoader);
+        }
+        setTimeout(hidePageLoader, 500);
 
         // Navbar scroll effect (enhanced)
         const navbar = document.getElementById('navbar');

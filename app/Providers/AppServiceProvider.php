@@ -36,6 +36,7 @@ class AppServiceProvider extends ServiceProvider
         \App\Models\Testimonial::observe(\App\Observers\PortfolioObserver::class);
         \App\Models\Skill::observe(\App\Observers\PortfolioObserver::class);
         \App\Models\Experience::observe(\App\Observers\PortfolioObserver::class);
+        \App\Models\Certificate::observe(\App\Observers\PortfolioObserver::class);
         \App\Models\SiteSetting::observe(\App\Observers\PortfolioObserver::class);
 
         // Share site settings globally with all views

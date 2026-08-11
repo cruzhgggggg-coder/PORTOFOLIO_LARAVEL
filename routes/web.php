@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminUserController;
+use App\Http\Controllers\Admin\CertificateAdminController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ExperienceAdminController;
 use App\Http\Controllers\Admin\MessageAdminController;
@@ -98,6 +99,11 @@ Route::prefix('admin')
             ->name('testimonials.toggle-featured');
         Route::patch('testimonials/{testimonial}/approve', [TestimonialAdminController::class, 'approve'])
             ->name('testimonials.approve');
+
+        // Certificates
+        Route::resource('certificates', CertificateAdminController::class)->except(['show']);
+        Route::patch('certificates/{certificate}/toggle-featured', [CertificateAdminController::class, 'toggleFeatured'])
+            ->name('certificates.toggle-featured');
 
         // Skills & Expertise
         Route::resource('skills', SkillAdminController::class)->except(['show']);

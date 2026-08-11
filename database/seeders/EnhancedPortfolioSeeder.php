@@ -263,6 +263,7 @@ class EnhancedPortfolioSeeder extends Seeder
             ['key' => 'show_features_section', 'value' => '1', 'type' => 'boolean'],
             ['key' => 'projects_per_page', 'value' => '9', 'type' => 'integer'],
             ['key' => 'enable_testimonials', 'value' => '1', 'type' => 'boolean'],
+            ['key' => 'enable_certificates', 'value' => '1', 'type' => 'boolean'],
             ['key' => 'enable_analytics', 'value' => '1', 'type' => 'boolean'],
             ['key' => 'brand_color_primary', 'value' => '#00f2ff', 'type' => 'text'],
             ['key' => 'brand_color_secondary', 'value' => '#7000ff', 'type' => 'text'],

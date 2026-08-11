@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Certificate;
 use App\Models\Experience;
 use App\Models\Message;
 use App\Models\ProfileSetting;
@@ -16,24 +17,24 @@ class ProjectController extends Controller
 {
     public function home()
     {
-        $cachedData = Cache::get('portfolio.home_data_v3');
-        
+        $cachedData = Cache::get('portfolio.home_data_v4');
+
         if ($cachedData) {
             $data = json_decode($cachedData, true);
             // Convert arrays back to objects for the views
             $data['projects'] = collect($data['projects'])->map(fn($item) => (object) $item);
-            $data['testimonials'] = collect($data['testimonials'])->map(fn($item) => (object) $item);
+            $data['certificates'] = collect($data['certificates'])->map(fn($item) => (object) $item);
         } else {
             $data = [
                 'projects' => Project::featured()->latest()->get()->toArray(),
                 'profile' => ProfileSetting::allAsArray(),
-                'testimonials' => Testimonial::approved()->featured()->ordered()->take(6)->get()->toArray(),
+                'certificates' => Certificate::active()->featured()->ordered()->take(10)->get()->toArray(),
             ];
-            Cache::put('portfolio.home_data_v3', json_encode($data), 86400);
-            
+            Cache::put('portfolio.home_data_v4', json_encode($data), 86400);
+
             // Convert to objects for immediate view use
             $data['projects'] = collect($data['projects'])->map(fn($item) => (object) $item);
-            $data['testimonials'] = collect($data['testimonials'])->map(fn($item) => (object) $item);
+            $data['certificates'] = collect($data['certificates'])->map(fn($item) => (object) $item);
         }
 
         return view('home', $data);

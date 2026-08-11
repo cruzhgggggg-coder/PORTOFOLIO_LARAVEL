@@ -43,8 +43,6 @@
 
                     <div class="relative aspect-square glass-premium rounded-[40px] overflow-hidden p-2 md:p-4" data-tilt>
                         <div data-tilt-glow></div>
-                        {{-- Dark overlay that fades on hover --}}
-                        <div class="absolute inset-0 bg-black/20 z-10 transition-opacity duration-700 group-hover:opacity-0 pointer-events-none rounded-[32px]"></div>
 
                         <img
                             src="{{ $profile['photo_url'] ?? 'https://picsum.photos/seed/architect-portrait/800/800' }}"
