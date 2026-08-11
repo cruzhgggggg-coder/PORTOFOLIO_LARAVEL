@@ -15,6 +15,7 @@
     },
     "dependencies": {
         "@types/three": "^0.183.1",
+        "hls.js": "^1.6.17",
         "three": "^0.183.2"
     }
 }

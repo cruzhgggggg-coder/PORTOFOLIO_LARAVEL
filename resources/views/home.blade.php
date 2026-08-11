@@ -30,7 +30,7 @@
                     @if(isset($profile['hero_line1']) || isset($profile['hero_line2']))
                     {{ $profile['hero_line1'] ?? '' }}
                     @if(isset($profile['hero_line2']))
-                    <br /> <span class="text-gradient-blue" style="filter: drop-shadow(0 0 40px rgba(0, 242, 255, 0.5)) drop-shadow(0 0 80px rgba(0, 168, 255, 0.3));">{{ $profile['hero_line2'] }}</span>
+                    <br /> <span class="text-gradient-blue">{{ $profile['hero_line2'] }}</span>
                     @endif
                     @else
                     {{ $siteSettings['site_name'] ?? 'LUMINESCENT ARCHITECT' }}
@@ -65,7 +65,7 @@
 
         {{-- Scroll indicator --}}
         <div class="absolute bottom-12 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-10" data-reveal="fade" data-delay="1200">
-            <span class="text-[9px] font-mono uppercase tracking-[0.4em] text-white/30">Scroll to explore</span>
+            <span class="text-[9px] font-mono uppercase tracking-[0.4em] text-white/60">Scroll to explore</span>
             <div class="relative w-5 h-8 rounded-full border border-white/20">
                 <div class="absolute top-1.5 left-1/2 -translate-x-1/2 w-1 h-2 rounded-full bg-brand-primary animate-bounce"></div>
             </div>
@@ -76,8 +76,8 @@
     {{-- TECH MARQUEE DIVIDER                                          --}}
     {{-- ============================================================ --}}
     @if($siteSettings['show_tech_marquee'] ?? true)
-    <div class="overflow-hidden py-8 border-y border-white/4" data-reveal="fade" data-delay="0">
-        <div class="marquee-track text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-white/12 leading-none whitespace-nowrap">
+    <div class="overflow-hidden py-8 border-y border-white/10" data-reveal="fade" data-delay="0">
+        <div class="marquee-track text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-white/25 leading-none whitespace-nowrap">
             <span>Laravel ◆ React ◆ Vue.js ◆ TypeScript ◆ Three.js ◆ Tailwind ◆ Node.js ◆ PostgreSQL ◆ Docker ◆ AWS ◆&nbsp;</span>
             <span>Laravel ◆ React ◆ Vue.js ◆ TypeScript ◆ Three.js ◆ Tailwind ◆ Node.js ◆ PostgreSQL ◆ Docker ◆ AWS ◆&nbsp;</span>
         </div>
@@ -111,7 +111,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-display font-bold uppercase tracking-widest mb-4 group-hover:text-brand-primary transition-colors duration-500">Aesthetic Precision</h3>
-                        <p class="text-white/40 leading-relaxed text-sm">
+                        <p class="text-white/60 leading-relaxed text-sm">
                             Every pixel is placed with intentionality, ensuring a visual harmony that resonates with modern digital sensibilities.
                         </p>
                         <div class="mt-8 flex items-center gap-2 text-brand-primary/50 group-hover:text-brand-primary/80 transition-colors">
@@ -131,7 +131,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-display font-bold uppercase tracking-widest mb-4 group-hover:text-brand-secondary transition-colors duration-500">High Performance</h3>
-                        <p class="text-white/40 leading-relaxed text-sm">
+                        <p class="text-white/60 leading-relaxed text-sm">
                             Optimized for speed and fluid interactions, bridging the gap between heavy visuals and seamless user experience.
                         </p>
                         <div class="mt-8 flex items-center gap-2 text-brand-secondary/50 group-hover:text-brand-secondary/80 transition-colors">
@@ -151,7 +151,7 @@
                             </svg>
                         </div>
                         <h3 class="text-xl font-display font-bold uppercase tracking-widest mb-4 group-hover:text-brand-secondary transition-colors duration-500">Robust Architecture</h3>
-                        <p class="text-white/40 leading-relaxed text-sm">
+                        <p class="text-white/60 leading-relaxed text-sm">
                             Built on solid foundations that scale, ensuring your digital presence remains future-proof and resilient.
                         </p>
                         <div class="mt-8 flex items-center gap-2 text-brand-secondary/50 group-hover:text-brand-secondary/80 transition-colors">
@@ -177,7 +177,7 @@
                         Featured <br /><span class="text-gradient-blue">Architectures</span>
                     </h2>
                 </div>
-                <a href="{{ route('projects') }}" class="group text-white/40 hover:text-white flex items-center gap-3 uppercase tracking-widest text-[10px] font-bold transition-all duration-300" data-reveal="fade" data-delay="200">
+                <a href="{{ route('projects') }}" class="group text-white/60 hover:text-white flex items-center gap-3 uppercase tracking-widest text-[10px] font-bold transition-all duration-300" data-reveal="fade" data-delay="200">
                     View All Projects
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-4 h-4 group-hover:translate-x-1 transition-transform">
                         <line x1="5" y1="12" x2="19" y2="12"></line>
@@ -221,7 +221,7 @@
                             <span class="text-brand-primary font-mono text-[9px] uppercase tracking-[0.3em] mb-2 block">{{ $project->category }}</span>
                             <h4 class="text-xl font-display font-bold uppercase tracking-tight group-hover:text-brand-primary transition-colors duration-500">{{ $project->title }}</h4>
                         </div>
-                        <span class="text-white/20 font-mono text-[10px] tracking-widest mt-1">{{ $project->year }}</span>
+                        <span class="text-white/50 font-mono text-[10px] tracking-widest mt-1">{{ $project->year }}</span>
                     </div>
                 </div>
                 @endforeach
@@ -250,7 +250,7 @@
                         <blockquote class="text-white/60 leading-relaxed text-sm flex-1 mb-6 italic">
                             "{{ $testimonial->content }}"
                         </blockquote>
-                        <div class="flex items-center gap-4 pt-6 border-t border-white/5">
+                        <div class="flex items-center gap-4 pt-6 border-t border-white/15">
                             @if($testimonial->avatar_url)
                             <img src="{{ $testimonial->avatar_url }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover bg-white/5">
                             @else
@@ -260,7 +260,7 @@
                             @endif
                             <div>
                                 <div class="font-bold text-sm">{{ $testimonial->name }}</div>
-                                <div class="text-white/30 text-[10px] uppercase tracking-widest">{{ $testimonial->title }}{{ $testimonial->company ? ' @ ' . $testimonial->company : '' }}</div>
+                                <div class="text-white/60 text-[10px] uppercase tracking-widest">{{ $testimonial->title }}{{ $testimonial->company ? ' @ ' . $testimonial->company : '' }}</div>
                             </div>
                         </div>
                     </div>
@@ -289,7 +289,7 @@
                     <h2 class="text-5xl md:text-8xl font-display font-bold tracking-tighter mb-8 uppercase leading-[0.85]">
                         Ready to build the <br /><span class="text-gradient-blue">Future?</span>
                     </h2>
-                    <p class="text-lg text-white/40 max-w-xl mx-auto mb-14 leading-relaxed">
+                    <p class="text-lg text-white/60 max-w-xl mx-auto mb-14 leading-relaxed">
                         Let's collaborate on your next digital masterpiece.
                         Currently accepting new architectural commissions.
                     </p>

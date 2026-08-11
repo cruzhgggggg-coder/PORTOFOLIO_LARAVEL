@@ -266,24 +266,8 @@ class CometAnimation {
 document.addEventListener('DOMContentLoaded', () => {
     const container = document.getElementById('comet-container');
     if (!container) return;
-
-    const canvas = document.createElement('canvas');
-    canvas.id = 'comet-canvas';
-    canvas.className = 'w-full h-full z-0 pointer-events-none'; // Inset-0 handled by container
-
-    container.appendChild(canvas);
-
-    new CometAnimation(canvas, {
-        comets: 15,
-        cometMinLength: 80,
-        cometMaxLength: 200,
-        cometSpeed: { min: 2, max: 4.5 },
-        cometWidth: { min: 1.5, max: 3 },
-        cometOpacity: { min: 0.3, max: 0.65 },
-        cometAngle: 38,
-        particles: 40,
-        ambientOrbs: 4
-    });
+    // Remove container to prevent black fill accumulation over video background
+    container.remove();
 });
 
 export { CometAnimation };

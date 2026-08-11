@@ -1,4 +1,5 @@
 import './bootstrap';
+import './video-background';     // Background HLS Video Player
 import './comet-animation';        // Diagonal comet effect (home page)
 import './ambient-background';     // Global ambient background (all pages)
 import './projects-background';    // Projects page immersive design
@@ -7,3 +8,4 @@ import './immersive-interactions'; // Scroll reveals, cursor, tilt, magnetic, et
 
 // System initialization
 console.log('%c◆ Luminescent Architect — System Online', 'color: #00f2ff; font-weight: bold; font-size: 14px;');
+

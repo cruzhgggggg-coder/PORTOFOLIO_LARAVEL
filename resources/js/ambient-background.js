@@ -299,6 +299,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (path === '/') {
         isHomePage = true;
         pageType = 'home';
+        // Home page uses the HLS video background directly — skip 2D canvas
+        return;
     } else if (path.includes('/projects')) {
         pageType = 'projects';
     } else if (path.includes('/about')) {
@@ -310,18 +312,13 @@ document.addEventListener('DOMContentLoaded', () => {
     new AmbientBackground(canvas, {
         isHomePage,
         pageType,
-        orbs: isHomePage ? [
-            { x: 0.25, y: 0.35, size: 320, color: '0, 242, 255', speed: 0.006, opacity: 0.07 },
-            { x: 0.7, y: 0.55, size: 380, color: '112, 0, 255', speed: 0.005, opacity: 0.06 },
-            { x: 0.5, y: 0.45, size: 340, color: '255, 0, 153', speed: 0.007, opacity: 0.05 },
-            { x: 0.6, y: 0.65, size: 290, color: '0, 220, 255', speed: 0.005, opacity: 0.06 },
-        ] : [
+        orbs: isHomePage ? [] : [
             { x: 0.3, y: 0.3, size: 280, color: '0, 242, 255', speed: 0.005, opacity: 0.05 },
             { x: 0.7, y: 0.5, size: 320, color: '112, 0, 255', speed: 0.004, opacity: 0.04 },
             { x: 0.5, y: 0.7, size: 240, color: '255, 0, 153', speed: 0.006, opacity: 0.03 },
         ],
-        particles: isHomePage ? 40 : 30,
-        rays: isHomePage ? 6 : 4
+        particles: isHomePage ? 25 : 30,
+        rays: isHomePage ? 3 : 4
     });
 });
 
