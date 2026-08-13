@@ -30,12 +30,21 @@ class SiteSettingController extends Controller
             'contact_phone' => 'nullable|string|max:50',
             'address' => 'nullable|string|max:500',
             'auto_optimize_images' => 'nullable|boolean',
+            'show_tech_marquee' => 'nullable|boolean',
+            'show_features_section' => 'nullable|boolean',
+            'enable_certificates' => 'nullable|boolean',
+            'projects_per_page' => 'nullable|integer|min:1|max:50',
+            'tech_marquee_items' => 'nullable|string|max:2000',
+            'footer_marquee_text' => 'nullable|string|max:1000',
         ]);
 
         // Define which keys are booleans to ensure they are handled correctly when unchecked
         $booleanKeys = [
             'maintenance_mode',
             'auto_optimize_images',
+            'show_tech_marquee',
+            'show_features_section',
+            'enable_certificates',
         ];
 
         // Combine validated data with boolean checks (for unchecked boxes)

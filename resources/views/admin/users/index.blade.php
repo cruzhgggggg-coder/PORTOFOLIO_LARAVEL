@@ -3,7 +3,7 @@
 @section('title', 'Admin Management')
 
 @section('content')
-<div style="max-width: 1000px; margin: 0 auto;">
+<div style="width:100%;">
     {{-- Header --}}
     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2.5rem;">
         <div>

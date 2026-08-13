@@ -3,7 +3,7 @@
 @section('title', 'Portfolio Works')
 
 @section('content')
-<div style="max-width:1200px;">
+<div style="width:100%;">
     {{-- Header --}}
     <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; gap:20px; flex-wrap:wrap;">
         <div>
@@ -20,7 +20,7 @@
     </div>
 
     {{-- Projects Table --}}
-    <div class="glass-card" style="padding:0; overflow:hidden;">
+    <div class="glass-card admin-table-wrapper" style="padding:0;">
         <table>
             <thead>
                 <tr>

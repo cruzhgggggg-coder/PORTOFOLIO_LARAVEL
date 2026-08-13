@@ -3,7 +3,7 @@
 @section('title', 'Edit SEO - ' . $pageKey)
 
 @section('content')
-<div style="max-width:800px;">
+<div style="width:100%;">
     {{-- Breadcrumb --}}
     <div style="margin-bottom:2rem;">
         <a href="{{ route('admin.seo.index') }}" style="display:inline-flex; align-items:center; gap:8px; color:rgba(255,255,255,0.4); font-size:13px; font-weight:500; text-decoration:none; transition:color 0.2s;"

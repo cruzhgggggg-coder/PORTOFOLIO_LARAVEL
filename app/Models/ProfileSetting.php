@@ -29,6 +29,9 @@ class ProfileSetting extends Model
             ['key' => $key],
             ['value' => $value]
         );
+
+        \Illuminate\Support\Facades\Cache::forget('portfolio.settings_profile_v3');
+        \Illuminate\Support\Facades\Cache::forget('portfolio.settings_v3');
     }
 
     /**
@@ -36,6 +39,8 @@ class ProfileSetting extends Model
      */
     public static function allAsArray(): array
     {
-        return static::all()->pluck('value', 'key')->toArray();
+        return static::all()->pluck('value', 'key')->map(function ($val) {
+            return ($val === '' ? null : $val);
+        })->toArray();
     }
 }

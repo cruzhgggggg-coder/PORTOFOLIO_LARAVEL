@@ -3,7 +3,7 @@
 @section('title', 'Certificates')
 
 @section('content')
-<div style="max-width:1400px;">
+<div style="width:100%;">
     {{-- Header --}}
     <div style="margin-bottom:2.5rem; display:flex; justify-content:space-between; align-items:end;">
         <div>
@@ -48,7 +48,7 @@
             {{-- Image Preview --}}
             @if($certificate->image_url)
             <div style="margin-bottom:16px; border-radius:12px; overflow:hidden; aspect-ratio:16/10;">
-                <img src="{{ asset('storage/' . $certificate->image_url) }}" alt="{{ $certificate->title }}" style="width:100%; height:100%; object-fit:cover;">
+                <img src="{{ asset('storage/' . $certificate->image_url) }}" alt="{{ $certificate->title }}" decoding="async" style="width:100%; height:100%; object-fit:cover;">
             </div>
             @endif
 

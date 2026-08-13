@@ -3,7 +3,7 @@
 @section('title', 'Edit Skill')
 
 @section('content')
-<div style="max-width:800px;">
+<div style="width:100%;">
     <div style="margin-bottom:2.5rem;">
         <a href="{{ route('admin.skills.index') }}" style="font-size:12px; color:rgba(255,255,255,0.4); text-decoration:none; display:inline-flex; align-items:center; gap:6px; margin-bottom:16px;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;"><line x1="19" y1="12" x2="5" y2="12" /><polyline points="12 19 5 12 12 5" /></svg>

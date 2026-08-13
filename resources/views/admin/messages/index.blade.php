@@ -3,7 +3,7 @@
 @section('title', 'Messages')
 
 @section('content')
-<div style="max-width:1400px;">
+<div style="width:100%;">
     {{-- Header --}}
     <div style="margin-bottom:2.5rem; display:flex; justify-content:space-between; align-items:end;">
         <div>

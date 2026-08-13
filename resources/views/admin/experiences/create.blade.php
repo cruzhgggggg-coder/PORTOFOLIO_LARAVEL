@@ -3,7 +3,7 @@
 @section('title', 'Add Experience')
 
 @section('content')
-<div style="max-width:900px;">
+<div style="width:100%;">
     {{-- Header --}}
     <div style="display:flex; align-items:center; gap:16px; margin-bottom:2.5rem;">
         <a href="{{ route('admin.experiences.index') }}" class="btn-secondary" style="padding:10px; border-radius:12px;">
@@ -14,6 +14,17 @@
             <p style="color:rgba(255,255,255,0.4); font-size:14px;">Tambahkan pengalaman kerja, pendidikan, atau sertifikasi baru ke timeline karir kamu.</p>
         </div>
     </div>
+
+    @if($errors->any())
+    <div class="glass-card" style="padding:20px; border-color:rgba(239,68,68,0.4); background:rgba(239,68,68,0.08); margin-bottom:24px;">
+        <div style="font-size:14px; font-weight:700; color:#f87171; margin-bottom:8px;">Terjadi kesalahan pengisian form:</div>
+        <ul style="margin:0; padding-left:20px; color:#fca5a5; font-size:13px; line-height:1.6;">
+            @foreach($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
 
     <form method="POST" action="{{ route('admin.experiences.store') }}" enctype="multipart/form-data">
         @csrf
@@ -82,16 +93,22 @@
                         <small style="color:rgba(255,255,255,0.2); font-size:10px; display:block; margin-top:6px;">One achievement per line</small>
                     </div>
 
-                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px;">
+                    <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-bottom:20px;">
                         <div>
-                            <label class="form-label">Logo / Image</label>
+                            <label class="form-label">Logo Logo / Icon</label>
                             <input type="file" name="logo_url" class="form-input" accept="image/*" style="padding:12px;">
-                            <small style="color:rgba(255,255,255,0.2); font-size:10px; display:block; margin-top:6px;">PNG, JPG, WEBP (Maks 2MB)</small>
+                            <small style="color:rgba(255,255,255,0.2); font-size:10px; display:block; margin-top:6px;">PNG, JPG, WEBP (Maks 4MB)</small>
                         </div>
                         <div>
-                            <label class="form-label">Link / URL</label>
-                            <input type="url" name="link" class="form-input" value="{{ old('link') }}" placeholder="https://company.com/...">
+                            <label class="form-label">Foto Tempat (Gedung / Kantor / Kampus / Sekolah)</label>
+                            <input type="file" name="location_photo" class="form-input" accept="image/*" style="padding:12px;">
+                            <small style="color:#00f2ff; font-size:10px; display:block; margin-top:6px; font-weight:600;">✨ Akan di-masking Brush Stroke secara otomatis! (Maks 8MB)</small>
                         </div>
+                    </div>
+
+                    <div style="margin-top:16px;">
+                        <label class="form-label">Link / URL</label>
+                        <input type="url" name="link" class="form-input" value="{{ old('link') }}" placeholder="https://company.com/...">
                     </div>
                 </div>
             </div>

@@ -33,6 +33,19 @@ class ImageOptimizer
     }
 
     /**
+     * Optimize certificate image: resize, compress, and convert to WebP
+     *
+     * @param  string  $filePath  The stored file path (e.g., 'certificates/image.jpg')
+     * @param  int  $maxWidth  Maximum width (maintains aspect ratio)
+     * @param  int  $quality  Quality level (1-100)
+     * @return string Optimized file path with .webp extension
+     */
+    public function optimizeCertificateImage(string $filePath, int $maxWidth = 1200, int $quality = 80): string
+    {
+        return $this->optimizeImage($filePath, $maxWidth, $quality, 'certificates');
+    }
+
+    /**
      * Core image optimization logic using native PHP GD
      */
     protected function optimizeImage(string $filePath, int $maxWidth, int $quality, string $folder): string
@@ -136,6 +149,7 @@ class ImageOptimizer
         $results = [
             'profile' => 0,
             'projects' => 0,
+            'certificates' => 0,
             'errors' => [],
         ];
 
@@ -166,6 +180,21 @@ class ImageOptimizer
                 $results['projects']++;
             } catch (\Exception $e) {
                 $results['errors'][] = "Project $file: ".$e->getMessage();
+            }
+        }
+
+        // Optimize certificate images
+        $certificateFiles = Storage::disk('public')->files('certificates');
+        foreach ($certificateFiles as $file) {
+            try {
+                // Skip if already WebP
+                if (str_ends_with($file, '.webp')) {
+                    continue;
+                }
+                $this->optimizeCertificateImage($file);
+                $results['certificates']++;
+            } catch (\Exception $e) {
+                $results['errors'][] = "Certificate $file: ".$e->getMessage();
             }
         }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Certificate;
+use App\Services\ImageOptimizer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -36,13 +37,13 @@ class CertificateAdminController extends Controller
         return view('admin.certificates.create');
     }
 
-    public function store(Request $request)
+    public function store(Request $request, ImageOptimizer $optimizer)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'issuer' => 'required|string|max:255',
             'year' => 'nullable|string|max:10',
-            'image_url' => 'nullable|image|max:4096',
+            'image_url' => 'nullable|image|max:10240',
             'credential_url' => 'nullable|url|max:500',
             'description' => 'nullable|string|max:1000',
             'is_featured' => 'boolean',
@@ -52,7 +53,7 @@ class CertificateAdminController extends Controller
 
         // Handle image upload
         if ($request->hasFile('image_url')) {
-            $validated['image_url'] = $this->handleImageUpload($request->file('image_url'));
+            $validated['image_url'] = $this->handleImageUpload($request->file('image_url'), $optimizer);
         }
 
         $validated['is_featured'] = $request->boolean('is_featured', false);
@@ -72,13 +73,13 @@ class CertificateAdminController extends Controller
         ]);
     }
 
-    public function update(Request $request, Certificate $certificate)
+    public function update(Request $request, Certificate $certificate, ImageOptimizer $optimizer)
     {
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'issuer' => 'required|string|max:255',
             'year' => 'nullable|string|max:10',
-            'image_url' => 'nullable|image|max:4096',
+            'image_url' => 'nullable|image|max:10240',
             'credential_url' => 'nullable|url|max:500',
             'description' => 'nullable|string|max:1000',
             'is_featured' => 'boolean',
@@ -92,7 +93,7 @@ class CertificateAdminController extends Controller
             if ($certificate->image_url) {
                 Storage::disk('public')->delete($certificate->image_url);
             }
-            $validated['image_url'] = $this->handleImageUpload($request->file('image_url'));
+            $validated['image_url'] = $this->handleImageUpload($request->file('image_url'), $optimizer);
         } else {
             unset($validated['image_url']);
         }
@@ -126,8 +127,15 @@ class CertificateAdminController extends Controller
             ->with('success', 'Certificate deleted successfully.');
     }
 
-    private function handleImageUpload($file): string
+    private function handleImageUpload($file, ImageOptimizer $optimizer): string
     {
-        return $file->store('certificates', 'public');
+        $storedPath = $file->store('certificates', 'public');
+        
+        try {
+            return $optimizer->optimizeCertificateImage($storedPath);
+        } catch (\Exception $e) {
+            // Fallback to original stored path if optimization fails
+            return $storedPath;
+        }
     }
 }

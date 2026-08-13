@@ -13,10 +13,30 @@ class SiteSetting extends Model
     ];
 
     /**
-     * Get a setting value
+     * Runtime cache for settings loaded in this request
+     */
+    protected static array $runtimeCache = [];
+
+    /**
+     * Set runtime cache from preloaded settings array
+     */
+    public static function setRuntimeCache(array $settings): void
+    {
+        self::$runtimeCache = $settings;
+    }
+
+    /**
+     * Get a setting value (checks runtime cache first, then DB)
      */
     public static function get(string $key, $default = null)
     {
+        // Check runtime cache first (set by AppServiceProvider)
+        if (array_key_exists($key, self::$runtimeCache)) {
+            $value = self::$runtimeCache[$key];
+            return ($value === '' || $value === null) ? $default : $value;
+        }
+
+        // Fallback to DB query
         $setting = self::where('key', $key)->first();
 
         if (! $setting || $setting->value === '' || $setting->value === null) {
@@ -49,6 +69,9 @@ class SiteSetting extends Model
             'value' => $settingValue,
             'type' => $type,
         ]);
+
+        \Illuminate\Support\Facades\Cache::forget('portfolio.settings_v3');
+        \Illuminate\Support\Facades\Cache::forget('portfolio.settings_profile_v3');
 
         return $setting;
     }

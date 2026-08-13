@@ -94,6 +94,13 @@ class ProfileAdminController extends Controller
             }
         }
 
+        // Flush all cached settings and views
+        \Illuminate\Support\Facades\Cache::forget('portfolio.settings_profile_v3');
+        \Illuminate\Support\Facades\Cache::forget('portfolio.settings_v3');
+        \Illuminate\Support\Facades\Cache::forget('portfolio.home_data_v4');
+        \Illuminate\Support\Facades\Cache::forget('portfolio.about_data_v3');
+        \Illuminate\Support\Facades\Cache::forget('portfolio.contact_profile_v3');
+
         return redirect()->route('admin.profile.edit')
             ->with('success', 'Profil berhasil diperbarui!');
     }

@@ -1,101 +1,57 @@
 @extends('admin.layout')
 
-@section('title', 'Edit Testimonial')
+@section('title', 'Edit Fun Fact')
 
 @section('content')
-<div style="max-width:1000px;">
+<div style="width:100%;">
     <div style="margin-bottom:2.5rem;">
         <a href="{{ route('admin.testimonials.index') }}" style="font-size:12px; color:rgba(255,255,255,0.4); text-decoration:none; display:inline-flex; align-items:center; gap:6px; margin-bottom:16px;">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;">
                 <line x1="19" y1="12" x2="5" y2="12" />
                 <polyline points="12 19 5 12 12 5" />
             </svg>
-            Back to Testimonials
+            Back to Fun Facts
         </a>
-        <h1 style="font-size:36px; font-weight:800; letter-spacing:-0.05em;">Edit Testimonial</h1>
+        <h1 style="font-size:36px; font-weight:800; letter-spacing:-0.05em;">Edit Fun Fact</h1>
     </div>
 
-    <form method="POST" action="{{ route('admin.testimonials.update', $testimonial) }}" enctype="multipart/form-data">
+    <form method="POST" action="{{ route('admin.testimonials.update', $funFact) }}">
         @csrf
         @method('PUT')
         <div style="display:grid; grid-template-columns: 2fr 1fr; gap:24px;">
             {{-- Main Content --}}
             <div class="glass-card" style="padding:32px;">
                 <div style="margin-bottom:24px;">
-                    <label class="form-label">Client Name *</label>
-                    <input type="text" name="name" class="form-input" value="{{ old('name', $testimonial->name) }}" required>
-                </div>
-
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px; margin-bottom:24px;">
-                    <div>
-                        <label class="form-label">Job Title</label>
-                        <input type="text" name="title" class="form-input" value="{{ old('title', $testimonial->title) }}" placeholder="e.g. CEO">
-                    </div>
-                    <div>
-                        <label class="form-label">Company</label>
-                        <input type="text" name="company" class="form-input" value="{{ old('company', $testimonial->company) }}" placeholder="e.g. Google">
-                    </div>
+                    <label class="form-label">Emoji</label>
+                    <input type="text" name="emoji" class="form-input" value="{{ old('emoji', $funFact->emoji) }}" placeholder="e.g. 🎮 🎸 📚 ☕" maxlength="10" style="font-size:24px; text-align:center; width:120px;">
+                    <p style="font-size:11px; color:rgba(255,255,255,0.3); margin-top:6px;">Pick an emoji that represents this fact</p>
                 </div>
 
                 <div style="margin-bottom:24px;">
-                    <label class="form-label">Email</label>
-                    <input type="email" name="email" class="form-input" value="{{ old('email', $testimonial->email) }}">
+                    <label class="form-label">Title *</label>
+                    <input type="text" name="title" class="form-input" value="{{ old('title', $funFact->name) }}" placeholder="e.g. Gamer, Coffee Addict, Night Owl" required>
                 </div>
 
                 <div style="margin-bottom:24px;">
-                    <label class="form-label">Testimonial Content *</label>
-                    <textarea name="content" class="form-input" rows="6" required>{{ old('content', $testimonial->content) }}</textarea>
-                </div>
-
-                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
-                    <div>
-                        <label class="form-label">Project Name</label>
-                        <input type="text" name="project_name" class="form-input" value="{{ old('project_name', $testimonial->project_name) }}">
-                    </div>
-                    <div>
-                        <label class="form-label">Project URL</label>
-                        <input type="url" name="project_url" class="form-input" value="{{ old('project_url', $testimonial->project_url) }}">
-                    </div>
+                    <label class="form-label">Description *</label>
+                    <textarea name="description" class="form-input" rows="4" placeholder="A short description about this personal fact..." required>{{ old('description', $funFact->content) }}</textarea>
                 </div>
             </div>
 
             {{-- Sidebar --}}
             <div style="display:flex; flex-direction:column; gap:24px;">
                 <div class="glass-card" style="padding:24px;">
-                    <h3 style="font-size:12px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:16px;">Rating</h3>
-                    <select name="rating" class="form-input">
-                        <option value="5" {{ old('rating', $testimonial->rating) == 5 ? 'selected' : '' }}>★★★★★ (5 Stars)</option>
-                        <option value="4" {{ old('rating', $testimonial->rating) == 4 ? 'selected' : '' }}>★★★★☆ (4 Stars)</option>
-                        <option value="3" {{ old('rating', $testimonial->rating) == 3 ? 'selected' : '' }}>★★★☆☆ (3 Stars)</option>
-                        <option value="2" {{ old('rating', $testimonial->rating) == 2 ? 'selected' : '' }}>★★☆☆☆ (2 Stars)</option>
-                        <option value="1" {{ old('rating', $testimonial->rating) == 1 ? 'selected' : '' }}>★☆☆☆☆ (1 Star)</option>
-                    </select>
-                </div>
-
-                <div class="glass-card" style="padding:24px;">
-                    <h3 style="font-size:12px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:16px;">Avatar</h3>
-                    @if($testimonial->avatar_url)
-                    <div style="margin-bottom:12px;">
-                        <img src="{{ asset('storage/' . $testimonial->avatar_url) }}" alt="Current Avatar" style="width:64px; height:64px; border-radius:50%; border:2px solid #00f2ff; object-fit:cover;">
-                        <p style="font-size:11px; color:rgba(255,255,255,0.4); margin-top:6px;">Current avatar</p>
-                    </div>
-                    @endif
-                    <input type="file" name="avatar_url" class="form-input" accept="image/*">
-                </div>
-
-                <div class="glass-card" style="padding:24px;">
-                    <h3 style="font-size:12px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:16px;">Status</h3>
-                    <div style="margin-bottom:12px;">
+                    <h3 style="font-size:12px; font-weight:800; letter-spacing:0.1em; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:16px;">Display</h3>
+                    <div style="margin-bottom:16px;">
                         <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-                            <input type="checkbox" name="is_approved" value="1" {{ old('is_approved', $testimonial->is_approved) ? 'checked' : '' }}>
-                            <span style="font-size:13px; color:rgba(255,255,255,0.7);">Approved</span>
+                            <input type="checkbox" name="is_active" value="1" {{ old('is_active', $funFact->is_active) ? 'checked' : '' }}>
+                            <span style="font-size:13px; color:rgba(255,255,255,0.7);">Active (visible on About page)</span>
                         </label>
                     </div>
                     <div>
-                        <label style="display:flex; align-items:center; gap:8px; cursor:pointer;">
-                            <input type="checkbox" name="is_featured" value="1" {{ old('is_featured', $testimonial->is_featured) ? 'checked' : '' }}>
-                            <span style="font-size:13px; color:rgba(255,255,255,0.7);">Featured</span>
-                        </label>
+                        <label class="form-label" style="margin-bottom:6px;">Sort Order</label>
+                        <input type="number" name="sort_order" class="form-input" value="{{ old('sort_order', $funFact->sort_order) }}" min="0" style="width:100px;">
+                        <p style="font-size:11px; color:rgba(255,255,255,0.3); margin-top:4px;">Lower = shows first</p>
                     </div>
                 </div>
 
@@ -105,14 +61,14 @@
                         <polyline points="17,21 17,13 7,13 7,21" />
                         <polyline points="7,3 7,8 15,8" />
                     </svg>
-                    Update Testimonial
+                    Update Fun Fact
                 </button>
             </div>
         </div>
     </form>
 
-    {{-- Delete Form (separate from update form) --}}
-    <form method="POST" action="{{ route('admin.testimonials.destroy', $testimonial) }}" onsubmit="return confirm('Delete permanently?')" style="margin-top:16px; max-width:200px;">
+    {{-- Delete Form --}}
+    <form method="POST" action="{{ route('admin.testimonials.destroy', $funFact) }}" onsubmit="return confirm('Delete this fun fact permanently?')" style="margin-top:16px; max-width:200px;">
         @csrf
         @method('DELETE')
         <button type="submit" class="btn-danger" style="width:100%; justify-content:center;">
@@ -120,7 +76,7 @@
                 <polyline points="3,6 5,6 21,6" />
                 <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2" />
             </svg>
-            Delete Testimonial
+            Delete Fun Fact
         </button>
     </form>
 </div>

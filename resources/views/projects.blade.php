@@ -26,6 +26,9 @@
         {{-- Projects Grid --}}
         <div class="grid grid-cols-1 md:grid-cols-2 gap-16 lg:gap-24">
             @foreach($projects as $index => $project)
+            @php
+                $pObj = is_array($project) ? (object) $project : (is_object($project) ? $project : (object)[]);
+            @endphp
             <div class="project-card group cursor-pointer relative" data-reveal="up" data-delay="{{ ($loop->index % 2) * 150 }}">
                 {{-- Image --}}
                 <div class="relative aspect-4/5 md:aspect-video overflow-hidden bg-white/5 rounded-4xl mb-10 shadow-2xl" data-img-reveal data-tilt>
@@ -38,8 +41,8 @@
                     <div class="absolute inset-0 bg-brand-primary/0 group-hover:bg-brand-primary/5 transition-colors duration-700 z-10 pointer-events-none"></div>
 
                     <img
-                        src="{{ $project->image }}"
-                        alt="{{ $project->title }}"
+                        src="{{ $pObj->image ?? ($pObj->image_url ?? '') }}"
+                        alt="{{ $pObj->title ?? '' }}"
                         loading="lazy"
                         decoding="async"
                         class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" />
@@ -65,16 +68,16 @@
                 <div class="project-info flex justify-between items-end px-4">
                     <div>
                         <div class="flex items-center gap-4 mb-4">
-                            <span class="px-4 py-1.5 glass-premium rounded-full text-[9px] font-bold uppercase tracking-[0.3em] text-brand-primary border-brand-primary/20">
-                                {{ $project->category }}
+                            <span class="px-4 py-1.5 glass-premium rounded-full text-xs font-mono font-semibold uppercase tracking-[0.2em] text-brand-primary border-brand-primary/30">
+                                {{ $pObj->category ?? '' }}
                             </span>
-                            <span class="text-white/20 font-mono text-[10px] tracking-widest">{{ $project->year }}</span>
+                            <span class="text-brand-primary/90 font-mono text-xs font-semibold tracking-wider">{{ $pObj->year ?? '' }}</span>
                         </div>
-                        <h2 class="text-3xl md:text-4xl font-display font-bold uppercase tracking-tighter group-hover:text-brand-primary transition-colors duration-500">
-                            {{ $project->title }}
+                        <h2 class="text-3xl md:text-4xl font-display font-bold text-white tracking-wide group-hover:text-brand-primary transition-colors duration-500">
+                            {{ $pObj->title ?? '' }}
                         </h2>
-                        <p class="text-white/30 mt-4 max-w-md leading-relaxed text-sm group-hover:text-white/50 transition-colors duration-500">
-                            {{ $project->description }}
+                        <p class="text-white/60 mt-4 max-w-md leading-relaxed text-sm group-hover:text-white/80 transition-colors duration-500">
+                            {{ $pObj->description ?? '' }}
                         </p>
                     </div>
                 </div>

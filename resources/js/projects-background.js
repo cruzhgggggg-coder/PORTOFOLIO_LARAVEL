@@ -323,6 +323,11 @@ class ProjectsBackground {
     }
 
     animate() {
+        if (document.hidden) {
+            this.animationId = requestAnimationFrame(() => this.animate());
+            return;
+        }
+
         const { ctx, width, height } = this;
 
         // Clear

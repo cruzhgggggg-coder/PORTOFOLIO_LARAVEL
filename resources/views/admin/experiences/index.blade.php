@@ -3,7 +3,7 @@
 @section('title', 'Experience')
 
 @section('content')
-<div style="max-width:1000px;">
+<div style="width:100%;">
     {{-- Header --}}
     <div style="display:flex; justify-content:space-between; align-items:flex-end; margin-bottom:2.5rem; gap:20px; flex-wrap:wrap;">
         <div>
@@ -78,6 +78,11 @@
                             @if($exp->is_current)
                             <span style="background:rgba(0,242,255,0.1); color:#00f2ff; border:1px solid rgba(0,242,255,0.2); font-size:9px; font-weight:800; padding:4px 10px; border-radius:8px; text-transform:uppercase; letter-spacing:0.1em;">
                                 Current
+                            </span>
+                            @endif
+                            @if($exp->location_photo)
+                            <span style="background:rgba(112,0,255,0.15); color:#a855f7; border:1px solid rgba(112,0,255,0.3); font-size:9px; font-weight:800; padding:4px 10px; border-radius:8px; text-transform:uppercase; letter-spacing:0.1em;">
+                                🖼️ Photo Terpasang
                             </span>
                             @endif
                             @if(!$exp->is_active)

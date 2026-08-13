@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Testimonial extends Model
 {
     protected $fillable = [
+        'type',
+        'emoji',
         'name',
         'title',
         'company',
@@ -18,6 +20,7 @@ class Testimonial extends Model
         'project_url',
         'is_featured',
         'is_approved',
+        'is_active',
         'sort_order',
     ];
 
@@ -25,6 +28,7 @@ class Testimonial extends Model
         'rating' => 'integer',
         'is_featured' => 'boolean',
         'is_approved' => 'boolean',
+        'is_active' => 'boolean',
         'sort_order' => 'integer',
     ];
 
@@ -44,6 +48,22 @@ class Testimonial extends Model
     public function scopeApproved($query)
     {
         return $query->where('is_approved', true);
+    }
+
+    /**
+     * Scope: only fun facts
+     */
+    public function scopeFunFacts($query)
+    {
+        return $query->where('type', 'fun_fact');
+    }
+
+    /**
+     * Scope: only active items
+     */
+    public function scopeActive($query)
+    {
+        return $query->where('is_active', true);
     }
 
     /**

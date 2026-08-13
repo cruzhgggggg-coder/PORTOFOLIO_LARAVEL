@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Models\Certificate;
 use App\Models\ProfileSetting;
 use App\Models\Project;
 use App\Services\ImageOptimizer;
@@ -45,7 +46,8 @@ class OptimizeImages extends Command
             [
                 ['Profile Photos', $results['profile']],
                 ['Project Images', $results['projects']],
-                ['Total', $results['profile'] + $results['projects']],
+                ['Certificate Images', $results['certificates'] ?? 0],
+                ['Total', $results['profile'] + $results['projects'] + ($results['certificates'] ?? 0)],
             ]
         );
 
@@ -88,6 +90,16 @@ class OptimizeImages extends Command
             if ($project->image_url && str_starts_with($project->image_url, '/storage/') && ! str_ends_with(parse_url($project->image_url, PHP_URL_PATH), '.webp')) {
                 $project->image_url = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $project->image_url);
                 $project->save();
+                $updated++;
+            }
+        }
+
+        // Update certificate images
+        $certificates = Certificate::whereNotNull('image_url')->get();
+        foreach ($certificates as $certificate) {
+            if ($certificate->image_url && ! str_ends_with(parse_url($certificate->image_url, PHP_URL_PATH), '.webp')) {
+                $certificate->image_url = preg_replace('/\.(jpg|jpeg|png|gif)$/i', '.webp', $certificate->image_url);
+                $certificate->save();
                 $updated++;
             }
         }

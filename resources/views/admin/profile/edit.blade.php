@@ -3,7 +3,7 @@
 @section('title', 'Profile Identity')
 
 @section('content')
-<div style="max-width:1000px;">
+<div style="width:100%;">
     {{-- Header --}}
     <div style="margin-bottom:3rem;">
         <h1 style="font-size:36px; font-weight:800; letter-spacing:-0.05em; margin-bottom:10px;">Profile & Identity</h1>

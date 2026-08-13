@@ -3,7 +3,7 @@
 @section('title', 'Message Details')
 
 @section('content')
-<div style="max-width:1000px;">
+<div style="width:100%;">
     {{-- Header --}}
     <div style="margin-bottom:2.5rem;">
         <a href="{{ route('admin.messages.index') }}" style="font-size:12px; color:rgba(255,255,255,0.4); text-decoration:none; display:inline-flex; align-items:center; gap:6px; margin-bottom:16px;">

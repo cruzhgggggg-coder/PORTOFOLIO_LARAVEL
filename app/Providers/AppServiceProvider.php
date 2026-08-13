@@ -8,7 +8,6 @@ use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
@@ -42,26 +41,18 @@ class AppServiceProvider extends ServiceProvider
         // Share site settings globally with all views
         $settings = [];
         $profile = [];
-        
+
         if (! app()->runningInConsole()) {
-            if (Schema::hasTable('site_settings')) {
-                $cachedSettings = Cache::get('portfolio.settings_v3');
-                if ($cachedSettings) {
-                    $settings = json_decode($cachedSettings, true);
-                } else {
-                    $settings = SiteSetting::allAsArray();
-                    Cache::put('portfolio.settings_v3', json_encode($settings), 86400);
-                }
-            }
-            if (Schema::hasTable('profile_settings')) {
-                $cachedProfile = Cache::get('portfolio.settings_profile_v3');
-                if ($cachedProfile) {
-                    $profile = json_decode($cachedProfile, true);
-                } else {
-                    $profile = ProfileSetting::allAsArray();
-                    Cache::put('portfolio.settings_profile_v3', json_encode($profile), 86400);
-                }
-            }
+            $settings = Cache::remember('portfolio.settings_v3', 86400, function () {
+                return SiteSetting::allAsArray();
+            });
+
+            $profile = Cache::remember('portfolio.settings_profile_v3', 86400, function () {
+                return ProfileSetting::allAsArray();
+            });
+
+            // Store in runtime cache for middleware access (no extra DB queries)
+            SiteSetting::setRuntimeCache($settings);
         }
         
         View::share('siteSettings', $settings);

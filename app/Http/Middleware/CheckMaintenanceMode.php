@@ -27,7 +27,8 @@ class CheckMaintenanceMode
             return $next($request);
         }
 
-        if (SiteSetting::isMaintenanceMode()) {
+        // Use cached maintenance mode check (runtime cache set by AppServiceProvider)
+        if (SiteSetting::get('maintenance_mode', false)) {
             return response()->view('errors.maintenance', [], 503);
         }
 

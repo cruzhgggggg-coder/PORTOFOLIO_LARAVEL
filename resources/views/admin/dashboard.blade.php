@@ -3,7 +3,7 @@
 @section('title', 'Dashboard')
 
 @section('content')
-<div @style(['max-width: 1400px', '--accent: ' . ($unreadMessages > 0 ? '#f59e0b' : 'var(--brand)')])>
+<div @style(['width: 100%', '--accent: ' . ($unreadMessages > 0 ? '#f59e0b' : 'var(--brand)')])>
     {{-- Header with Search & Clock --}}
     <div style="margin-bottom:3.5rem; display:flex; justify-content:space-between; align-items:flex-start; gap:40px; flex-wrap:wrap;">
         <div style="flex:1; min-width:300px;">
@@ -86,9 +86,10 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a4 4 0 0 0-4-4H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a4 4 0 0 1 4-4h6z"/></svg>
             </div>
             <div class="stat-label">Knowledge Matrix</div>
-            <div class="stat-value" style="font-size:32px; display:flex; gap:12px;">
+            <div class="stat-value" style="font-size:28px; display:flex; gap:12px; flex-wrap:wrap;">
                 <span>{{ $totalProjects }}<sub style="font-size:10px; color:rgba(255,255,255,0.3);">PRJ</sub></span>
                 <span>{{ $activeSkills }}<sub style="font-size:10px; color:rgba(255,255,255,0.3);">SKL</sub></span>
+                <span>{{ $totalCertificates }}<sub style="font-size:10px; color:rgba(255,255,255,0.3);">CRT</sub></span>
             </div>
             <div class="stat-footer">
                  Structural content density
@@ -161,6 +162,16 @@
                             <div style="font-size:10px; color:rgba(255,255,255,0.3);">Manage project matrix</div>
                         </div>
                     </a>
+                    <form method="POST" action="{{ route('admin.clear-cache') }}" style="margin:0;" id="clear-cache-form">
+                        @csrf
+                        <button type="button" class="command-btn" onclick="if(confirm('Clear all cached data? Pages will reload with fresh data.'))document.getElementById('clear-cache-form').submit()" style="width:100%;">
+                            <span class="cmd-icon" style="background:rgba(239, 68, 68, 0.1); color:#ef4444;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg></span>
+                            <div style="flex:1;">
+                                <div style="font-size:13px; font-weight:700; color:#fff;">Clear Cache</div>
+                                <div style="font-size:10px; color:rgba(255,255,255,0.3);">Force refresh all cached data</div>
+                            </div>
+                        </button>
+                    </form>
                 </div>
             </div>
 

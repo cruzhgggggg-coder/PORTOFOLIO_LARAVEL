@@ -11,27 +11,21 @@ class PortfolioObserver
      */
     protected function clearCache(): void
     {
-        // Simple strategy: Clear all keys starting with 'portfolio.'
-        // Note: For File/Database cache drivers, we might need a more specific approach
-        // if we don't want to flush the whole cache.
-        // For simplicity in a portfolio, we can flush or use specific keys.
-        
-        Cache::forget('portfolio.home_data');
-        Cache::forget('portfolio.about_data');
-        Cache::forget('portfolio.contact_profile');
-        Cache::forget('portfolio.settings');
-        Cache::forget('portfolio.settings_profile');
+        // Clear current cache keys only
+        $keys = [
+            'portfolio.home_data_v4',
+            'portfolio.about_data_v3',
+            'portfolio.contact_profile_v3',
+            'portfolio.settings_v3',
+            'portfolio.settings_profile_v3',
+        ];
 
-        // New JSON cache keys
-        Cache::forget('portfolio.home_data_v3');
-        Cache::forget('portfolio.home_data_v4');
-        Cache::forget('portfolio.about_data_v3');
-        Cache::forget('portfolio.contact_profile_v3');
-        Cache::forget('portfolio.settings_v3');
-        Cache::forget('portfolio.settings_profile_v3');
-        
-        for ($i = 1; $i <= 10; $i++) {
-            Cache::forget("portfolio.projects_page_{$i}");
+        foreach ($keys as $key) {
+            Cache::forget($key);
+        }
+
+        // Clear paginated project caches
+        for ($i = 1; $i <= 20; $i++) {
             Cache::forget("portfolio.projects_page_v3_{$i}");
         }
     }

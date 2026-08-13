@@ -3,7 +3,7 @@
 @section('title', 'Skills & Expertise')
 
 @section('content')
-<div style="max-width:1400px;">
+<div style="width:100%;">
     <div style="margin-bottom:2.5rem; display:flex; justify-content:space-between; align-items:end;">
         <div>
             <h1 style="font-size:36px; font-weight:800; letter-spacing:-0.05em; margin-bottom:8px;">Skills & Expertise</h1>

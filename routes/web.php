@@ -74,6 +74,7 @@ Route::prefix('admin')
     ->group(function () {
         // Dashboard
         Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+        Route::post('clear-cache', [DashboardController::class, 'clearCache'])->name('clear-cache');
 
         // Project CRUD
         Route::resource('projects', ProjectAdminController::class);
@@ -93,12 +94,10 @@ Route::prefix('admin')
         Route::delete('messages/{message}', [MessageAdminController::class, 'destroy'])->name('messages.destroy');
         Route::post('messages/bulk-action', [MessageAdminController::class, 'bulkAction'])->name('messages.bulk-action');
 
-        // Testimonials
+        // Fun Facts (repurposed from Testimonials)
         Route::resource('testimonials', TestimonialAdminController::class)->except(['show']);
-        Route::patch('testimonials/{testimonial}/toggle-featured', [TestimonialAdminController::class, 'toggleFeatured'])
-            ->name('testimonials.toggle-featured');
-        Route::patch('testimonials/{testimonial}/approve', [TestimonialAdminController::class, 'approve'])
-            ->name('testimonials.approve');
+        Route::patch('testimonials/{testimonial}/toggle-active', [TestimonialAdminController::class, 'toggleActive'])
+            ->name('testimonials.toggle-active');
 
         // Certificates
         Route::resource('certificates', CertificateAdminController::class)->except(['show']);

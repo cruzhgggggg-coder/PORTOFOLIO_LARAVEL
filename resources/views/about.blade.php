@@ -11,15 +11,13 @@
         <div class="flex flex-col lg:flex-row items-center gap-16 lg:gap-24 mb-40">
             <div class="w-full lg:w-1/2 order-2 lg:order-1">
                 <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-8 block" data-reveal="fade" data-delay="0">
-                    The Digital Architect
+                    {{ $profile['tagline'] ?? 'The Digital Architect' }}
                 </span>
-                <h1 class="text-5xl md:text-8xl font-display font-bold tracking-tighter uppercase mb-12 leading-[0.85]" data-reveal="up" data-delay="100">
-                    Designing the <br />
-                    <span class="text-gradient-blue" style="filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.4));">Invisible</span>
+                <h1 class="text-4xl md:text-7xl font-display font-bold tracking-tighter uppercase mb-8 leading-[0.85]" data-reveal="up" data-delay="100">
+                    {{ $profile['name'] ?? 'Designing the Invisible' }}
                 </h1>
-                <p class="text-lg md:text-xl text-white/50 leading-relaxed mb-14 max-w-2xl font-light" data-reveal="up" data-delay="200">
-                    I specialize in crafting immersive digital environments where human intuition meets architectural precision.
-                    My philosophy is simple: <span class="text-white font-medium italic">digital structures should be as enduring and intentional as physical ones.</span>
+                <p class="text-base md:text-lg text-white/60 leading-relaxed mb-12 max-w-2xl font-light" data-reveal="up" data-delay="200">
+                    {{ $profile['bio'] ?? 'Computer Science student and full-stack developer specializing in building modern web applications, AI integrations, and creative tech.' }}
                 </p>
 
                 {{-- Stats --}}
@@ -92,63 +90,56 @@
             </div>
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="feature-card glass-premium p-12 rounded-4xl relative overflow-hidden group" data-tilt data-reveal="up" data-delay="0" style="--card-accent: #00f2ff;">
-                    <div data-tilt-glow></div>
+                {{-- Card 1: Problem Solving & Algorithmic Logic --}}
+                <div class="feature-card glass-premium p-10 md:p-12 rounded-3xl relative overflow-hidden group border border-white/10 hover:border-white/25 transition-all duration-500" data-tilt data-reveal="up" data-delay="0">
                     <div class="relative z-10">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-primary/5 blur-3xl rounded-full group-hover:bg-brand-primary/10 transition-colors pointer-events-none"></div>
-                        <div class="w-14 h-14 text-brand-primary mb-8 group-hover:scale-110 transition-transform duration-500">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
-                                <polygon points="12 2 2 7 12 12 22 7 12 2" />
-                                <polyline points="2 17 12 22 22 17" />
-                                <polyline points="2 12 12 17 22 12" />
-                            </svg>
+                        <div class="flex items-center justify-between mb-8">
+                            <span class="font-mono text-xs font-semibold text-white/50 tracking-widest px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 group-hover:border-white/20 group-hover:text-white transition-all duration-300">
+                                // 01
+                            </span>
+                            <span class="font-mono text-[10px] text-white/30 tracking-widest uppercase">Core / Logic</span>
                         </div>
-                        <h3 class="text-2xl font-display font-bold uppercase tracking-widest mb-6 group-hover:text-brand-primary transition-colors duration-500">Structural Integrity</h3>
-                        <p class="text-white/40 leading-relaxed">
-                            Code is my foundation. I architect clean, scalable, and performant systems that stand the test of time and traffic.
+                        <h3 class="text-xl md:text-2xl font-display font-bold uppercase tracking-wider mb-4 text-white group-hover:text-white/90 transition-colors">
+                            Algorithmic Logic
+                        </h3>
+                        <p class="text-white/50 text-sm leading-relaxed">
+                            Driven by curiosity to decompose complex problems, optimize algorithms, and write efficient, well-structured code from the ground up.
                         </p>
                     </div>
                 </div>
 
-                <div class="feature-card glass-premium p-12 rounded-4xl relative overflow-hidden group" data-tilt data-reveal="up" data-delay="150" style="--card-accent: #7000ff;">
-                    <div data-tilt-glow></div>
+                {{-- Card 2: Software Craftsmanship & Full-Stack --}}
+                <div class="feature-card glass-premium p-10 md:p-12 rounded-3xl relative overflow-hidden group border border-white/10 hover:border-white/25 transition-all duration-500" data-tilt data-reveal="up" data-delay="150">
                     <div class="relative z-10">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-secondary/5 blur-3xl rounded-full group-hover:bg-brand-secondary/10 transition-colors pointer-events-none"></div>
-                        <div class="w-14 h-14 text-brand-secondary mb-8 group-hover:scale-110 transition-transform duration-500">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
-                                <rect x="4" y="4" width="16" height="16" rx="2" ry="2" />
-                                <rect x="9" y="9" width="6" height="6" />
-                                <line x1="9" y1="1" x2="9" y2="4" />
-                                <line x1="15" y1="1" x2="15" y2="4" />
-                                <line x1="9" y1="20" x2="9" y2="23" />
-                                <line x1="15" y1="20" x2="15" y2="23" />
-                                <line x1="20" y1="9" x2="23" y2="9" />
-                                <line x1="20" y1="15" x2="23" y2="15" />
-                                <line x1="1" y1="9" x2="4" y2="9" />
-                                <line x1="1" y1="15" x2="4" y2="15" />
-                            </svg>
+                        <div class="flex items-center justify-between mb-8">
+                            <span class="font-mono text-xs font-semibold text-white/50 tracking-widest px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 group-hover:border-white/20 group-hover:text-white transition-all duration-300">
+                                // 02
+                            </span>
+                            <span class="font-mono text-[10px] text-white/30 tracking-widest uppercase">Dev / Craft</span>
                         </div>
-                        <h3 class="text-2xl font-display font-bold uppercase tracking-widest mb-6 group-hover:text-brand-secondary transition-colors duration-500">Neural UX</h3>
-                        <p class="text-white/40 leading-relaxed">
-                            Interfaces that feel like an extension of the mind. I focus on cognitive load reduction and intuitive motion flow.
+                        <h3 class="text-xl md:text-2xl font-display font-bold uppercase tracking-wider mb-4 text-white group-hover:text-white/90 transition-colors">
+                            Software Craftsmanship
+                        </h3>
+                        <p class="text-white/50 text-sm leading-relaxed">
+                            Building clean, performant web applications with intuitive user experiences. Bridging computer science theory with modern full-stack development.
                         </p>
                     </div>
                 </div>
 
-                <div class="feature-card glass-premium p-12 rounded-4xl relative overflow-hidden group" data-tilt data-reveal="up" data-delay="300" style="--card-accent: #ff0099;">
-                    <div data-tilt-glow></div>
+                {{-- Card 3: Continuous Discovery & Growth --}}
+                <div class="feature-card glass-premium p-10 md:p-12 rounded-3xl relative overflow-hidden group border border-white/10 hover:border-white/25 transition-all duration-500" data-tilt data-reveal="up" data-delay="300">
                     <div class="relative z-10">
-                        <div class="absolute top-0 right-0 w-32 h-32 bg-brand-accent/5 blur-3xl rounded-full group-hover:bg-brand-accent/10 transition-colors pointer-events-none"></div>
-                        <div class="w-14 h-14 text-brand-accent mb-8 group-hover:scale-110 transition-transform duration-500">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
-                                <circle cx="12" cy="12" r="10" />
-                                <line x1="2" y1="12" x2="22" y2="12" />
-                                <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
-                            </svg>
+                        <div class="flex items-center justify-between mb-8">
+                            <span class="font-mono text-xs font-semibold text-white/50 tracking-widest px-3.5 py-1.5 rounded-full bg-white/5 border border-white/10 group-hover:border-white/20 group-hover:text-white transition-all duration-300">
+                                // 03
+                            </span>
+                            <span class="font-mono text-[10px] text-white/30 tracking-widest uppercase">Growth / Stack</span>
                         </div>
-                        <h3 class="text-2xl font-display font-bold uppercase tracking-widest mb-6 group-hover:text-brand-accent transition-colors duration-500">Global Reach</h3>
-                        <p class="text-white/40 leading-relaxed">
-                            Designing for a connected world. My architectures are inclusive, accessible, and culturally resonant.
+                        <h3 class="text-xl md:text-2xl font-display font-bold uppercase tracking-wider mb-4 text-white group-hover:text-white/90 transition-colors">
+                            Continuous Discovery
+                        </h3>
+                        <p class="text-white/50 text-sm leading-relaxed">
+                            Passionate about exploring emerging technologies, software architecture, and new frameworks—constantly expanding my toolkit through real-world projects.
                         </p>
                     </div>
                 </div>
@@ -174,43 +165,43 @@
             @if($skills->isNotEmpty())
             @foreach($skills as $category => $categorySkills)
             <div class="mb-12" data-reveal="up">
-                <h3 class="text-[10px] font-mono uppercase tracking-[0.4em] text-brand-primary/60 mb-8 flex items-center gap-4">
+                <h3 class="text-xs md:text-sm font-mono uppercase tracking-[0.3em] text-brand-primary font-semibold mb-6 flex items-center gap-4">
                     {{ $category }}
-                    <span class="flex-1 h-px bg-white/5"></span>
-                    <span class="text-white/20">{{ $categorySkills->count() }} skills</span>
+                    <span class="flex-1 h-px bg-white/10"></span>
+                    <span class="text-white/50 text-xs font-mono">{{ $categorySkills->count() }} skills</span>
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     @foreach($categorySkills as $skill)
-                    <div class="group glass-premium rounded-2xl p-6 hover:border-white/20 transition-all duration-500" data-tilt style="--card-accent: #00f2ff;">
+                    <div class="group glass-premium rounded-2xl p-7 hover:border-white/20 transition-all duration-500" data-tilt style="--card-accent: #00f2ff;">
                         <div data-tilt-glow></div>
                         <div class="relative z-10">
-                            <div class="flex justify-between items-start mb-4">
+                            <div class="flex justify-between items-start mb-4 gap-4">
                                 <div>
-                                    <h4 class="font-bold text-base tracking-wide group-hover:text-brand-primary transition-colors duration-300">{{ $skill->name }}</h4>
+                                    <h4 class="font-display font-bold text-lg md:text-xl text-white tracking-wide group-hover:text-brand-primary transition-colors duration-300">{{ $skill->name }}</h4>
                                     @if($skill->description)
-                                    <p class="text-white/30 text-xs mt-1">{{ $skill->description }}</p>
+                                    <p class="text-white/60 text-sm mt-1.5 leading-relaxed">{{ $skill->description }}</p>
                                     @endif
                                 </div>
                                 @php
                                     $proficiencyClass = match($skill->proficiency_level) {
-                                        'Expert' => 'bg-brand-primary/10 text-brand-primary',
-                                        'Advanced' => 'bg-brand-secondary/10 text-brand-secondary',
-                                        default => 'bg-white/5 text-white/40',
+                                        'Expert' => 'bg-brand-primary/15 text-brand-primary border border-brand-primary/30',
+                                        'Advanced' => 'bg-brand-secondary/15 text-brand-secondary border border-brand-secondary/30',
+                                        default => 'bg-white/10 text-white/70 border border-white/10',
                                     };
                                 @endphp
-                                <span @class(['text-[9px] font-mono uppercase tracking-widest px-3 py-1 rounded-full', $proficiencyClass])>
+                                <span @class(['text-xs font-mono uppercase tracking-wider px-3.5 py-1 rounded-full font-semibold flex-shrink-0', $proficiencyClass])>
                                     {{ $skill->proficiency_level }}
                                 </span>
                             </div>
-                            <div class="relative h-1 bg-white/5 rounded-full overflow-hidden">
-                                <div class="absolute left-0 top-0 h-full rounded-full transition-all duration-1000 group-hover:opacity-100 opacity-60"
+                            <div class="relative h-1.5 bg-white/10 rounded-full overflow-hidden mt-3">
+                                <div class="absolute left-0 top-0 h-full rounded-full transition-all duration-1000 group-hover:opacity-100 opacity-80"
                                      @style([
                                          'width: ' . $skill->proficiency . '%',
                                          'background: linear-gradient(90deg, #00f2ff, #7000ff)'
                                      ])></div>
                             </div>
-                            <div class="flex justify-end mt-1.5">
-                                <span class="text-[9px] font-mono text-white/20">{{ $skill->proficiency }}%</span>
+                            <div class="flex justify-end mt-2">
+                                <span class="text-xs font-mono font-medium text-white/60">{{ $skill->proficiency }}%</span>
                             </div>
                         </div>
                     </div>
@@ -244,116 +235,318 @@
         </div>
 
         {{-- ============================================================ --}}
-        {{-- EXPERIENCE / CAREER TIMELINE                                   --}}
+        {{-- EXPERIENCE / CAREER TIMELINE — ENHANCED                       --}}
         {{-- ============================================================ --}}
         @if($experiences->isNotEmpty())
-        <div class="mb-40" data-reveal="up">
+        <div class="mb-40">
             <div class="text-center mb-20">
                 <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block" data-reveal="fade">Career Path</span>
                 <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase" data-reveal="up" data-delay="100">
                     The <span class="text-gradient-blue">Journey</span>
                 </h2>
             </div>
-            <div class="relative">
-                {{-- Vertical timeline line --}}
-                <div class="absolute left-6 md:left-1/2 top-0 bottom-0 w-px bg-white/5 md:-translate-x-1/2"></div>
 
-                <div class="flex flex-col gap-12">
+            <div class="relative timeline-container">
+                {{-- Animated SVG timeline line (desktop only) --}}
+                <div class="hidden md:block absolute left-1/2 top-0 bottom-0 -translate-x-1/2 pointer-events-none">
+                    <svg class="timeline-svg w-1 h-full" viewBox="0 0 4 1000" preserveAspectRatio="none">
+                        {{-- Background track --}}
+                        <line x1="2" y1="0" x2="2" y2="1000" stroke="rgba(255,255,255,0.04)" stroke-width="2" />
+                        {{-- Animated progress line --}}
+                        <line x1="2" y1="0" x2="2" y2="1000" stroke="url(#timeline-gradient)" stroke-width="2"
+                              stroke-dasharray="1000" stroke-dashoffset="1000" class="timeline-progress" />
+                        <defs>
+                            <linearGradient id="timeline-gradient" x1="0" y1="0" x2="0" y2="1">
+                                <stop offset="0%" stop-color="#00f2ff" stop-opacity="0.8" />
+                                <stop offset="50%" stop-color="#7000ff" stop-opacity="0.6" />
+                                <stop offset="100%" stop-color="#ff0099" stop-opacity="0.4" />
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+
+                {{-- Mobile timeline line --}}
+                <div class="md:hidden absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-brand-primary/30 via-brand-secondary/20 to-transparent"></div>
+
+                <div class="flex flex-col gap-20 md:gap-28">
                     @foreach($experiences as $i => $exp)
-                    <div class="relative flex flex-col md:flex-row gap-8 {{ $i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse' }}" data-reveal="up" data-delay="{{ $i * 100 }}">
-                        {{-- Timeline dot --}}
-                        <div class="absolute left-6 md:left-1/2 top-6 w-3 h-3 rounded-full border-2 md:-translate-x-1/2 -translate-y-1/2
-                            {{ $exp->is_current ? 'bg-brand-primary border-brand-primary shadow-[0_0_12px_rgba(0,242,255,0.5)]' : 'bg-white/10 border-white/20' }}"></div>
+                    <div class="relative flex flex-col md:flex-row items-center gap-8 {{ $i % 2 === 0 ? 'md:flex-row' : 'md:flex-row-reverse' }} timeline-item group"
+                         data-reveal="up" data-delay="{{ $i * 120 }}">
 
-                        {{-- Content card --}}
-                        <div class="ml-16 md:ml-0 md:w-5/12 {{ $i % 2 === 0 ? 'md:mr-auto md:pr-16' : 'md:ml-auto md:pl-16' }}">
-                            <div class="glass-premium p-8 rounded-3xl group hover:border-white/20 transition-all duration-500">
-                                <div class="flex items-start gap-4 mb-4">
-                                    @if($exp->logo_url)
-                                    <img src="{{ $exp->logo_url }}" alt="{{ $exp->company }}" class="w-10 h-10 rounded-xl object-cover bg-white/5">
-                                    @endif
-                                    <div class="flex-1">
-                                        <div class="flex items-center gap-3 flex-wrap">
-                                            <span class="text-[9px] font-mono uppercase tracking-widest px-3 py-1 rounded-full
-                                                {{ $exp->type === 'work' ? 'bg-brand-primary/10 text-brand-primary' : 'bg-brand-secondary/10 text-brand-secondary' }}">
-                                                {{ $exp->type === 'work' ? 'Work' : 'Education' }}
-                                            </span>
-                                            @if($exp->is_current)
-                                            <span class="text-[9px] font-mono uppercase tracking-widest px-3 py-1 rounded-full bg-green-500/10 text-green-400 flex items-center gap-1.5">
-                                                <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse"></span>
-                                                Current
-                                            </span>
-                                            @endif
+                        {{-- Large decorative number (desktop background) --}}
+                        <div class="hidden md:flex absolute top-1/2 -translate-y-1/2 {{ $i % 2 === 0 ? 'right-[51%]' : 'left-[51%]' }} pointer-events-none select-none z-0">
+                            <span class="font-display font-black text-[130px] leading-none opacity-[0.03] text-white"
+                                  style="background: linear-gradient(180deg, rgba(0,242,255,0.2), transparent); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+                                {{ str_pad($i + 1, 2, '0', STR_PAD_LEFT) }}
+                            </span>
+                        </div>
+
+                        {{-- Timeline node --}}
+                        <div class="absolute left-6 md:left-1/2 top-8 md:top-1/2 -translate-x-1/2 -translate-y-1/2 z-20">
+                            @if($exp->is_current)
+                            {{-- Active node with pulse rings --}}
+                            <div class="relative">
+                                <div class="absolute inset-0 w-6 h-6 -m-1 rounded-full bg-brand-primary/30 animate-ping"></div>
+                                <div class="absolute inset-0 w-6 h-6 -m-1 rounded-full bg-brand-primary/20 animate-pulse"></div>
+                                <div class="w-4 h-4 rounded-full bg-brand-primary shadow-[0_0_24px_rgba(0,242,255,0.9),0_0_48px_rgba(0,242,255,0.4)] border-2 border-white"></div>
+                            </div>
+                            @else
+                            {{-- Regular node --}}
+                            <div class="w-4 h-4 rounded-full bg-slate-900 border-2 border-white/30 group-hover:border-brand-primary group-hover:bg-brand-primary/20 group-hover:shadow-[0_0_18px_rgba(0,242,255,0.6)] transition-all duration-500"></div>
+                            @endif
+                        </div>
+
+                        {{-- Content Card --}}
+                        <div class="ml-16 md:ml-0 md:w-[46%] {{ $i % 2 === 0 ? 'md:mr-auto md:pr-6' : 'md:ml-auto md:pl-6' }} z-10 w-full">
+                            <div class="glass-premium p-8 md:p-10 rounded-3xl group-hover:border-white/20 transition-all duration-500 relative overflow-hidden" data-tilt>
+                                <div data-tilt-glow></div>
+
+                                {{-- Subtle gradient accent --}}
+                                <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-brand-primary/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+
+                                <div class="relative z-10">
+                                    {{-- Header --}}
+                                    <div class="flex items-start gap-4 mb-5">
+                                        @if($exp->logo_url_formatted)
+                                        <div class="relative flex-shrink-0">
+                                            <img src="{{ $exp->logo_url_formatted }}" alt="{{ $exp->company }}" class="w-12 h-12 rounded-xl object-cover bg-white/5 ring-1 ring-white/10 group-hover:ring-brand-primary/40 transition-all duration-500">
                                         </div>
-                                        <h4 class="font-bold text-lg mt-2 group-hover:text-brand-primary transition-colors duration-300">{{ $exp->title }}</h4>
-                                        <p class="text-white/50 text-sm">{{ $exp->company }}{{ $exp->location ? ' · ' . $exp->location : '' }}</p>
+                                        @endif
+                                        <div class="flex-1 min-w-0">
+                                            <div class="flex items-center gap-3 flex-wrap mb-2">
+                                                <span class="text-[10px] font-mono uppercase tracking-[0.2em] px-3.5 py-1.5 rounded-full font-bold
+                                                    {{ $exp->type === 'work' ? 'bg-brand-primary/15 text-brand-primary border border-brand-primary/30' : 'bg-brand-secondary/15 text-brand-secondary border border-brand-secondary/30' }}">
+                                                    {{ $exp->type === 'work' ? '💼 Work' : '🎓 Education' }}
+                                                </span>
+                                                @if($exp->is_current)
+                                                <span class="text-[10px] font-mono uppercase tracking-[0.2em] px-3.5 py-1.5 rounded-full bg-green-500/15 text-green-400 border border-green-500/30 flex items-center gap-1.5 font-bold">
+                                                    <span class="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse shadow-[0_0_6px_rgba(74,222,128,0.6)]"></span>
+                                                    Current
+                                                </span>
+                                                @endif
+                                            </div>
+                                            <h4 class="font-display font-bold text-xl md:text-2xl text-white group-hover:text-brand-primary transition-colors duration-300 leading-tight">{{ $exp->title }}</h4>
+                                            <p class="text-white/50 text-sm font-medium mt-1">{{ $exp->company }}{{ $exp->location ? ' · ' . $exp->location : '' }}</p>
+                                        </div>
                                     </div>
+
+                                    {{-- Date badge --}}
+                                    <div class="inline-flex items-center gap-2 mb-5 px-4 py-2 rounded-full bg-white/[0.03] border border-white/[0.06]">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3.5 h-3.5 text-brand-primary/70">
+                                            <rect x="3" y="4" width="18" height="18" rx="2" ry="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
+                                        </svg>
+                                        <span class="text-brand-primary/80 text-xs font-mono font-medium tracking-wider">{{ $exp->date_range }}</span>
+                                        <span class="text-white/20">·</span>
+                                        <span class="text-white/40 text-xs font-mono">{{ $exp->duration }}</span>
+                                    </div>
+
+                                    {{-- Description --}}
+                                    @if($exp->description)
+                                    <p class="text-white/60 text-sm leading-relaxed mb-5">{{ $exp->description }}</p>
+                                    @endif
+
+                                    {{-- Highlights --}}
+                                    @if($exp->highlights && count($exp->highlights) > 0)
+                                    <div class="space-y-2.5 pt-5 border-t border-white/[0.06]">
+                                        @foreach($exp->highlights as $highlight)
+                                        <div class="flex items-start gap-3 text-sm group/item">
+                                            <span class="w-1.5 h-1.5 rounded-full bg-brand-primary/50 mt-1.5 flex-shrink-0 group-hover/item:bg-brand-primary group-hover/item:shadow-[0_0_8px_rgba(0,242,255,0.4)] transition-all duration-300"></span>
+                                            <span class="text-white/50 group-hover/item:text-white/80 transition-colors duration-300">{{ $highlight }}</span>
+                                        </div>
+                                        @endforeach
+                                    </div>
+                                    @endif
                                 </div>
-                                <p class="text-white/20 text-[10px] font-mono uppercase tracking-widest mb-4">{{ $exp->date_range }} · {{ $exp->duration }}</p>
-                                @if($exp->description)
-                                <p class="text-white/40 text-sm leading-relaxed mb-4">{{ $exp->description }}</p>
-                                @endif
-                                @if($exp->highlights && count($exp->highlights) > 0)
-                                <ul class="flex flex-col gap-2">
-                                    @foreach($exp->highlights as $highlight)
-                                    <li class="flex items-start gap-2 text-sm text-white/30">
-                                        <span class="text-brand-primary mt-0.5">▸</span>
-                                        {{ $highlight }}
-                                    </li>
-                                    @endforeach
-                                </ul>
-                                @endif
                             </div>
                         </div>
+
+                        {{-- Opposite Side: Immersive Brush-Masked Location Photo --}}
+                        <div class="ml-16 md:ml-0 md:w-[48%] {{ $i % 2 === 0 ? 'md:ml-auto md:pl-6' : 'md:mr-auto md:pr-6' }} flex items-center justify-center z-10 w-full">
+                            <div class="w-full max-w-xl brush-mask-container cursor-pointer group/photo"
+                                 onclick="openLocationModal('{{ $exp->location_photo_url }}', '{{ addslashes($exp->company ?? $exp->title) }}', '{{ addslashes($exp->location ?? '') }}')">
+                                
+                                <div class="brush-mask-wrapper">
+                                    <img src="{{ $exp->location_photo_url }}" 
+                                         alt="{{ $exp->company }} Location" 
+                                         class="brush-mask-image shadow-2xl" 
+                                         loading="lazy">
+                                </div>
+
+                                {{-- Minimalist Overlay Pills --}}
+                                <div class="absolute bottom-4 left-4 right-4 flex items-center justify-between pointer-events-none z-20">
+                                    @if($exp->location || $exp->company)
+                                    <div class="px-4 py-2 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-xs font-mono text-white/80 tracking-wider flex items-center gap-2 shadow-2xl group-hover/photo:border-white/30 transition-all duration-300">
+                                        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                                        <span>{{ $exp->location ?? $exp->company }}</span>
+                                    </div>
+                                    @endif
+
+                                    <div class="px-3 py-1.5 rounded-full bg-black/80 backdrop-blur-md border border-white/10 text-[10px] font-mono text-white/60 tracking-widest uppercase flex items-center gap-1.5 opacity-0 group-hover/photo:opacity-100 transition-opacity duration-300 ml-auto">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3 h-3"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
+                                        <span>Expand</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                     @endforeach
                 </div>
             </div>
         </div>
+
+        {{-- Interactive Location Photo Lightbox Modal --}}
+        <div id="location-lightbox" class="fixed inset-0 z-[99999] hidden items-center justify-center p-4 md:p-10 bg-black/92 backdrop-blur-xl transition-all duration-300" onclick="if(event.target === this) closeLocationModal()">
+            <button onclick="closeLocationModal()" class="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all duration-300 border border-white/10 z-50">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" class="w-6 h-6"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            </button>
+            <div class="relative max-w-5xl w-full max-h-[85vh] flex flex-col items-center justify-center">
+                <img id="lightbox-img" src="" alt="Location Photo" class="max-h-[70vh] w-auto max-w-full rounded-2xl object-contain border border-white/15 shadow-2xl">
+                <div class="mt-6 text-center">
+                    <h3 id="lightbox-title" class="font-display text-2xl font-bold text-white tracking-tight"></h3>
+                    <p id="lightbox-subtitle" class="font-mono text-sm text-white/50 mt-1.5"></p>
+                </div>
+            </div>
+        </div>
+
+        {{-- Timeline scroll animation script --}}
+        @push('scripts')
+        <script>
+        function openLocationModal(imgUrl, title, location) {
+            const modal = document.getElementById('location-lightbox');
+            if (!modal) return;
+            document.getElementById('lightbox-img').src = imgUrl;
+            document.getElementById('lightbox-title').textContent = title;
+            document.getElementById('lightbox-subtitle').textContent = location ? '📍 ' + location : '';
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeLocationModal() {
+            const modal = document.getElementById('location-lightbox');
+            if (!modal) return;
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeLocationModal();
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const timelineContainer = document.querySelector('.timeline-container');
+            if (!timelineContainer) return;
+
+            const progressLine = timelineContainer.querySelector('.timeline-progress');
+            if (!progressLine) return;
+
+            function updateTimelineProgress() {
+                const rect = timelineContainer.getBoundingClientRect();
+                const windowHeight = window.innerHeight;
+                const containerHeight = rect.height;
+
+                // Calculate how much of the timeline is visible/scrolled
+                const scrolled = Math.max(0, windowHeight - rect.top);
+                const totalScroll = containerHeight + windowHeight;
+                const progress = Math.min(1, scrolled / totalScroll);
+
+                // Update SVG line (stroke-dashoffset from 1000 to 0)
+                const offset = 1000 - (progress * 1000);
+                progressLine.setAttribute('stroke-dashoffset', offset);
+            }
+
+            // Throttle scroll handler
+            let ticking = false;
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    requestAnimationFrame(function() {
+                        updateTimelineProgress();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            // Initial call
+            updateTimelineProgress();
+        });
+        </script>
+        @endpush
         @endif
 
         {{-- ============================================================ --}}
-        {{-- TESTIMONIALS SECTION                                           --}}
+        {{-- HOW I BUILD + BEYOND THE CODE                                  --}}
         {{-- ============================================================ --}}
-        @if($testimonials->isNotEmpty())
-        <div class="mb-40" data-reveal="up">
-            <div class="text-center mb-20">
-                <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block" data-reveal="fade">Social Proof</span>
-                <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase" data-reveal="up" data-delay="100">
-                    What Clients <span class="text-gradient-blue">Say</span>
-                </h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                @foreach($testimonials as $i => $testimonial)
-                <div class="glass-premium p-8 rounded-3xl group hover:border-white/20 transition-all duration-500 flex flex-col" data-tilt data-reveal="up" data-delay="{{ $i * 100 }}" style="--card-accent: #00f2ff;">
-                    <div data-tilt-glow></div>
-                    <div class="relative z-10 flex flex-col h-full">
-                        {{-- Stars --}}
-                        <div class="text-brand-primary text-lg mb-6 tracking-wider">{{ $testimonial->stars }}</div>
-                        {{-- Quote --}}
-                        <blockquote class="text-white/60 leading-relaxed text-sm flex-1 mb-6 italic">
-                            "{{ $testimonial->content }}"
-                        </blockquote>
-                        {{-- Author --}}
-                        <div class="flex items-center gap-4 pt-6 border-t border-white/5">
-                            @if($testimonial->avatar_url)
-                            <img src="{{ $testimonial->avatar_url }}" alt="{{ $testimonial->name }}" class="w-10 h-10 rounded-full object-cover bg-white/5">
-                            @else
-                            <div class="w-10 h-10 rounded-full bg-brand-primary/10 flex items-center justify-center text-brand-primary font-bold text-sm">
-                                {{ substr($testimonial->name, 0, 1) }}
+        <div class="mb-40">
+            {{-- HOW I BUILD --}}
+            <div class="mb-32" data-reveal="up">
+                <div class="text-center mb-20">
+                    <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block" data-reveal="fade">Methodology</span>
+                    <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase" data-reveal="up" data-delay="100">
+                        How I <span class="text-gradient-blue">Build</span>
+                    </h2>
+                    <p class="text-white/30 max-w-lg mx-auto mt-6 text-sm leading-relaxed" data-reveal="fade" data-delay="200">
+                        Every project follows a structured process — from understanding the problem to shipping a polished solution.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-5 gap-6">
+                    @php
+                    $steps = [
+                        ['num' => '01', 'icon' => '<circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />', 'title' => 'Research', 'desc' => 'Understand the problem, audience, and constraints before writing a single line.'],
+                        ['num' => '02', 'icon' => '<rect x="3" y="3" width="18" height="18" rx="2" ry="2" /><line x1="3" y1="9" x2="21" y2="9" /><line x1="9" y1="21" x2="9" y2="9" />', 'title' => 'Design', 'desc' => 'Plan the architecture, data flow, and user experience.'],
+                        ['num' => '03', 'icon' => '<polyline points="16 18 22 12 16 6" /><polyline points="8 6 2 12 8 18" />', 'title' => 'Build', 'desc' => 'Clean, scalable code with modern tools and best practices.'],
+                        ['num' => '04', 'icon' => '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />', 'title' => 'Test', 'desc' => 'Automated tests, edge cases, and cross-browser checks.'],
+                        ['num' => '05', 'icon' => '<path d="M22 2L11 13" /><polygon points="22 2 15 22 11 13 2 9 22 2" />', 'title' => 'Deploy', 'desc' => 'Ship with CI/CD, monitor performance, iterate fast.'],
+                    ];
+                    @endphp
+
+                    @foreach($steps as $i => $step)
+                    <div class="glass-premium p-8 rounded-3xl group hover:border-white/20 transition-all duration-500 text-center relative" data-tilt data-reveal="up" data-delay="{{ $i * 100 }}" style="--card-accent: #00f2ff;">
+                        <div data-tilt-glow></div>
+                        <div class="relative z-10">
+                            <span class="text-brand-primary/30 font-display font-black text-5xl absolute -top-2 left-1/2 -translate-x-1/2 opacity-20 group-hover:opacity-40 transition-opacity">{{ $step['num'] }}</span>
+                            <div class="w-12 h-12 mx-auto mb-6 text-brand-primary group-hover:scale-110 transition-transform duration-500 relative z-10 mt-4">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">{!! $step['icon'] !!}</svg>
                             </div>
-                            @endif
-                            <div>
-                                <div class="font-bold text-sm">{{ $testimonial->name }}</div>
-                                <div class="text-white/30 text-[10px] uppercase tracking-widest">{{ $testimonial->title }}{{ $testimonial->company ? ' @ ' . $testimonial->company : '' }}</div>
-                            </div>
+                            <h4 class="font-display font-bold text-lg uppercase tracking-widest mb-3 group-hover:text-brand-primary transition-colors duration-300">{{ $step['title'] }}</h4>
+                            <p class="text-white/40 text-xs leading-relaxed">{{ $step['desc'] }}</p>
                         </div>
                     </div>
+                    @endforeach
                 </div>
-                @endforeach
             </div>
+
+            {{-- BEYOND THE CODE --}}
+            @if($funFacts->isNotEmpty())
+            <div data-reveal="up">
+                <div class="text-center mb-16">
+                    <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block" data-reveal="fade">Personal</span>
+                    <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase" data-reveal="up" data-delay="100">
+                        Beyond the <span class="text-gradient-blue">Code</span>
+                    </h2>
+                    <p class="text-white/30 max-w-lg mx-auto mt-6 text-sm leading-relaxed" data-reveal="fade" data-delay="200">
+                        When I'm not building things, here's what keeps me going.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    @foreach($funFacts as $i => $fact)
+                    <div class="glass-premium p-8 rounded-3xl group hover:border-white/20 transition-all duration-500 text-center" data-tilt data-reveal="up" data-delay="{{ $i * 100 }}" style="--card-accent: #7000ff;">
+                        <div data-tilt-glow></div>
+                        <div class="relative z-10">
+                            <div class="text-4xl mb-5 group-hover:scale-110 transition-transform duration-500">{{ $fact->emoji ?? '✨' }}</div>
+                            <h4 class="font-display font-bold text-base uppercase tracking-widest mb-3 group-hover:text-brand-secondary transition-colors duration-300">{{ $fact->name }}</h4>
+                            <p class="text-white/40 text-xs leading-relaxed">{{ $fact->content }}</p>
+                        </div>
+                    </div>
+                    @endforeach
+                </div>
+            </div>
+            @endif
         </div>
-        @endif
 
         {{-- ============================================================ --}}
         {{-- PHILOSOPHY SECTION                                            --}}

@@ -3,7 +3,7 @@
 @section('title', 'New Project')
 
 @section('content')
-<div style="max-width:900px;">
+<div style="width:100%;">
     {{-- Header --}}
     <div style="display:flex; align-items:center; gap:16px; margin-bottom:2.5rem;">
         <a href="{{ route('admin.projects.index') }}" class="btn-secondary" style="padding:10px; border-radius:12px;">

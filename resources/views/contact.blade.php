@@ -66,7 +66,7 @@
                             <div>
                                 <h4 class="text-[9px] font-bold uppercase tracking-[0.4em] text-white/30 mb-2">Encrypted Line</h4>
                                 <p class="text-base font-display font-medium group-hover:text-brand-accent transition-colors duration-300">
-                                    {{ $siteSettings['contact_phone'] ?? $profile['phone'] }}
+                                    {{ $siteSettings['contact_phone'] ?? ($profile['phone'] ?? '') }}
                                 </p>
                             </div>
                         </div>

@@ -293,6 +293,7 @@ class Hero3DScene {
     animate() {
         if (this.disposed) return;
         requestAnimationFrame(() => this.animate());
+        if (document.hidden) return;
 
         const elapsed = this.clock.getElapsedTime();
 

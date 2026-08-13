@@ -3,7 +3,7 @@
 @section('title', 'SEO Manager')
 
 @section('content')
-<div style="max-width:1200px;">
+<div style="width:100%;">
     {{-- Header --}}
     <div style="margin-bottom:2.5rem;">
         <h1 style="font-size:32px; font-weight:800; letter-spacing:-0.04em; margin-bottom:8px;">SEO Manager</h1>

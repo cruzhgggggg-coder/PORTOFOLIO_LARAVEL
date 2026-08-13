@@ -3,7 +3,7 @@
 @section('title', 'Add New Admin')
 
 @section('content')
-<div style="max-width: 600px; margin: 0 auto;">
+<div style="width:100%;">
     {{-- Back Link --}}
     <a href="{{ route('admin.users.index') }}" style="display:inline-flex; align-items:center; gap:8px; color:rgba(255,255,255,0.4); text-decoration:none; margin-bottom:24px; font-size:14px; transition:color 0.2s;" onmouseover="this.style.color='#fff'" onmouseout="this.style.color='rgba(255,255,255,0.4)'">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:16px; height:16px;">

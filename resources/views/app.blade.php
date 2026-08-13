@@ -15,15 +15,13 @@
         }
     </style>
 
-    {{-- Fonts --}}
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=dm-sans:400,500,600,700|playfair-display:400,500,600,700,800,900" rel="stylesheet" />
+    {{-- Fonts (Modern Tech & High Legibility) --}}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
     {{-- Favicon --}}
     <link rel="icon" href="/favicon.ico" sizes="any">
-
-    {{-- HLS Library CDN fallback --}}
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -67,7 +65,7 @@
                     <div class="absolute inset-0 bg-brand-primary/20 blur-lg rounded-full group-hover:bg-brand-primary/40 transition-colors duration-500"></div>
                 </div>
                 <span class="font-display font-bold text-xl tracking-tighter uppercase" data-magnetic-text>
-                    {{ $siteSettings['site_name'] ?? 'Luminescent Architect' }}
+                    {{ !empty($siteSettings['site_name']) ? $siteSettings['site_name'] : (!empty($profile['name']) ? $profile['name'] : 'Luminescent Architect') }}
                 </span>
             </a>
 
@@ -111,10 +109,16 @@
     {{-- Enhanced Footer --}}
     <footer class="relative z-10 bg-black border-t border-white/6 overflow-hidden">
         {{-- Marquee divider --}}
+        @php
+            $footerMarquee = !empty($siteSettings['footer_marquee_text'])
+                ? $siteSettings['footer_marquee_text']
+                : ($siteSettings['site_name'] ?? 'Luminescent Architect') . ', Digital Craftsman, Full-Stack Developer, UI/UX Engineer';
+            $footerMarqueeFormatted = implode(' ◆ ', array_map('trim', explode(',', $footerMarquee)));
+        @endphp
         <div class="py-6 border-b border-white/4 overflow-hidden">
             <div class="marquee-track text-[10rem] font-display font-black uppercase tracking-tighter text-white/10 leading-none whitespace-nowrap select-none">
-                <span>Luminescent Architect ◆ Digital Craftsman ◆ Full-Stack Developer ◆ UI/UX Engineer ◆&nbsp;</span>
-                <span>Luminescent Architect ◆ Digital Craftsman ◆ Full-Stack Developer ◆ UI/UX Engineer ◆&nbsp;</span>
+                <span>{{ $footerMarqueeFormatted }} ◆&nbsp;</span>
+                <span>{{ $footerMarqueeFormatted }} ◆&nbsp;</span>
             </div>
         </div>
 
@@ -235,6 +239,8 @@
             menu.classList.toggle('flex');
         });
     </script>
+
+    @stack('scripts')
 </body>
 
 </html>

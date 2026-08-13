@@ -8,7 +8,7 @@
     <title>@yield('title', 'Admin') — Luminescent Architect CMS</title>
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=instrument-sans:400,500,600,700|jetbrains-mono:400,500" rel="stylesheet" />
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
+    @vite(['resources/css/admin.css', 'resources/js/admin.js'])
     <style>
         :root {
             --brand: #00f2ff;
@@ -47,8 +47,15 @@
         .admin-main {
             margin-left: var(--sidebar-w);
             min-height: 100vh;
-            padding: 2.5rem;
-            max-width: 1400px;
+            padding: 2.5rem 3rem;
+            width: calc(100% - var(--sidebar-w));
+            box-sizing: border-box;
+        }
+
+        .admin-container {
+            max-width: 1440px;
+            margin: 0 auto;
+            width: 100%;
         }
 
         /* Nav Links */
@@ -57,7 +64,7 @@
             align-items: center;
             gap: 12px;
             padding: 12px 20px;
-            color: rgba(255, 255, 255, 0.45);
+            color: rgba(255, 255, 255, 0.5);
             font-size: 13px;
             font-weight: 500;
             text-decoration: none;
@@ -69,14 +76,14 @@
 
         .nav-link:hover {
             color: #fff;
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
         }
 
         .nav-link.active {
             background: var(--brand-muted);
             color: var(--brand);
             font-weight: 600;
-            box-shadow: inset 0 0 0 1px rgba(0, 242, 255, 0.15);
+            box-shadow: inset 0 0 0 1px rgba(0, 242, 255, 0.2);
         }
 
         .nav-link svg {
@@ -92,10 +99,52 @@
             background: var(--card-bg);
             border: 1px solid var(--card-border);
             border-radius: 20px;
-            backdrop-filter: blur(12px);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(16px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            box-sizing: border-box;
         }
 
+        /* Tables & Data Grids */
+        .admin-table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+        }
+
+        th {
+            padding: 16px 24px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: rgba(255, 255, 255, 0.45);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.015);
+        }
+
+        td {
+            padding: 18px 24px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+            vertical-align: middle;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        tr:hover td {
+            background: rgba(255, 255, 255, 0.025);
+        }
+
+        /* Buttons */
         .btn-primary {
             background: var(--brand);
             color: #000;
@@ -121,9 +170,9 @@
         }
 
         .btn-danger {
-            background: rgba(239, 68, 68, 0.1);
+            background: rgba(239, 68, 68, 0.12);
             color: #f87171;
-            border: 1px solid rgba(239, 68, 68, 0.2);
+            border: 1px solid rgba(239, 68, 68, 0.25);
             font-weight: 600;
             font-size: 12px;
             padding: 10px 18px;
@@ -134,14 +183,14 @@
         }
 
         .btn-danger:hover {
-            background: rgba(239, 68, 68, 0.2);
+            background: rgba(239, 68, 68, 0.25);
             transform: translateY(-1px);
         }
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.05);
-            color: rgba(255, 255, 255, 0.7);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.12);
             font-weight: 600;
             font-size: 12px;
             padding: 10px 18px;
@@ -155,26 +204,74 @@
         }
 
         .btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.08);
-            border-color: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.09);
+            border-color: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+
+        /* Badge Styling */
+        .badge-featured {
+            background: rgba(245, 158, 11, 0.15);
+            color: #fbbf24;
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .badge-normal {
+            background: rgba(255, 255, 255, 0.05);
+            color: rgba(255, 255, 255, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 10px;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         /* Forms */
+        .form-grid-2 {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .form-grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+
+        @media (max-width: 900px) {
+            .form-grid-2, .form-grid-3 {
+                grid-template-columns: 1fr;
+            }
+        }
+
         .form-input {
             width: 100%;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.035);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             color: #fff;
             border-radius: 12px;
             padding: 14px 18px;
             font-size: 14px;
             transition: all 0.2s ease;
             outline: none;
+            box-sizing: border-box;
         }
 
         .form-input:focus {
             border-color: var(--brand);
-            background: rgba(255, 255, 255, 0.05);
+            background: rgba(255, 255, 255, 0.06);
             box-shadow: 0 0 0 4px var(--brand-muted);
         }
 
@@ -183,7 +280,7 @@
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.12em;
-            color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.5);
             display: block;
             margin-bottom: 10px;
         }
@@ -351,9 +448,12 @@
             </a>
             <a href="{{ route('admin.testimonials.index') }}" class="nav-link {{ request()->routeIs('admin.testimonials.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
-                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+                    <circle cx="12" cy="12" r="10" />
+                    <path d="M8 14s1.5 2 4 2 4-2 4-2" />
+                    <line x1="9" y1="9" x2="9.01" y2="9" />
+                    <line x1="15" y1="9" x2="15.01" y2="9" />
                 </svg>
-                Testimonials
+                Fun Facts
             </a>
             <a href="{{ route('admin.certificates.index') }}" class="nav-link {{ request()->routeIs('admin.certificates.*') ? 'active' : '' }}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;">
@@ -460,7 +560,9 @@
 
     {{-- Main Content --}}
     <main class="admin-main">
-        @yield('content')
+        <div class="admin-container">
+            @yield('content')
+        </div>
     </main>
 
     {{-- Delete Modal --}}

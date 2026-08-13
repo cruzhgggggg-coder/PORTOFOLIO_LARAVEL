@@ -51,7 +51,8 @@ class ExperienceAdminController extends Controller
             'is_current' => 'boolean',
             'description' => 'nullable|string',
             'highlights' => 'nullable|string',
-            'logo_url' => 'nullable|image|max:2048',
+            'logo_url' => 'nullable|image|max:4096',
+            'location_photo' => 'nullable|image|max:8192',
             'link' => 'nullable|url|max:255',
             'sort_order' => 'integer',
             'is_active' => 'boolean',
@@ -60,6 +61,11 @@ class ExperienceAdminController extends Controller
         // Handle logo upload
         if ($request->hasFile('logo_url')) {
             $validated['logo_url'] = $this->handleLogoUpload($request->file('logo_url'));
+        }
+
+        // Handle location photo upload
+        if ($request->hasFile('location_photo')) {
+            $validated['location_photo'] = $this->handleLocationPhotoUpload($request->file('location_photo'));
         }
 
         $validated['is_current'] = $request->boolean('is_current', false);
@@ -98,7 +104,8 @@ class ExperienceAdminController extends Controller
             'is_current' => 'boolean',
             'description' => 'nullable|string',
             'highlights' => 'nullable|string',
-            'logo_url' => 'nullable|image|max:2048',
+            'logo_url' => 'nullable|image|max:4096',
+            'location_photo' => 'nullable|image|max:8192',
             'link' => 'nullable|url|max:255',
             'sort_order' => 'integer',
             'is_active' => 'boolean',
@@ -115,13 +122,22 @@ class ExperienceAdminController extends Controller
 
         // Handle logo upload
         if ($request->hasFile('logo_url')) {
-            if ($experience->logo_url) {
+            if ($experience->logo_url && !str_starts_with($experience->logo_url, 'http')) {
                 Storage::disk('public')->delete($experience->logo_url);
             }
             $validated['logo_url'] = $this->handleLogoUpload($request->file('logo_url'));
         } else {
-            // Keep existing logo if not replaced, but ensure we don't overwrite with null from validator
             unset($validated['logo_url']);
+        }
+
+        // Handle location photo upload
+        if ($request->hasFile('location_photo')) {
+            if ($experience->location_photo && !str_starts_with($experience->location_photo, 'http')) {
+                Storage::disk('public')->delete($experience->location_photo);
+            }
+            $validated['location_photo'] = $this->handleLocationPhotoUpload($request->file('location_photo'));
+        } else {
+            unset($validated['location_photo']);
         }
 
         // Parse highlights from textarea string to array
@@ -146,8 +162,12 @@ class ExperienceAdminController extends Controller
 
     public function destroy(Experience $experience)
     {
-        if ($experience->logo_url) {
+        if ($experience->logo_url && !str_starts_with($experience->logo_url, 'http')) {
             Storage::disk('public')->delete($experience->logo_url);
+        }
+
+        if ($experience->location_photo && !str_starts_with($experience->location_photo, 'http')) {
+            Storage::disk('public')->delete($experience->location_photo);
         }
 
         $experience->delete();
@@ -158,8 +178,11 @@ class ExperienceAdminController extends Controller
 
     private function handleLogoUpload($file): string
     {
-        $path = $file->store('experiences/logos', 'public');
+        return $file->store('experiences/logos', 'public');
+    }
 
-        return $path;
+    private function handleLocationPhotoUpload($file): string
+    {
+        return $file->store('experiences/photos', 'public');
     }
 }

@@ -17,14 +17,14 @@
                 </span>
 
                 {{-- Main Title --}}
-                <h1 class="text-6xl md:text-8xl lg:text-9xl font-display font-bold tracking-tighter mb-10 leading-[0.85] uppercase" data-reveal="up" data-delay="400">
-                    @if(isset($profile['hero_line1']) || isset($profile['hero_line2']))
+                <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tighter mb-10 leading-[0.88] uppercase" data-reveal="up" data-delay="400">
+                    @if(!empty($profile['hero_line1']) || !empty($profile['hero_line2']))
                     {{ $profile['hero_line1'] ?? '' }}
-                    @if(isset($profile['hero_line2']))
+                    @if(!empty($profile['hero_line2']))
                     <br /> <span class="text-gradient-blue">{{ $profile['hero_line2'] }}</span>
                     @endif
                     @else
-                    {{ $siteSettings['site_name'] ?? 'LUMINESCENT ARCHITECT' }}
+                    {{ !empty($profile['name']) ? $profile['name'] : ($siteSettings['site_name'] ?? 'LUMINESCENT ARCHITECT') }}
                     @endif
                 </h1>
 
@@ -67,10 +67,16 @@
     {{-- TECH MARQUEE DIVIDER                                          --}}
     {{-- ============================================================ --}}
     @if($siteSettings['show_tech_marquee'] ?? true)
+    @php
+        $marqueeItems = !empty($siteSettings['tech_marquee_items'])
+            ? $siteSettings['tech_marquee_items']
+            : 'Laravel, React, Vue.js, TypeScript, Three.js, Tailwind, Node.js, PostgreSQL, Docker, AWS';
+        $marqueeFormatted = implode(' ◆ ', array_map('trim', explode(',', $marqueeItems)));
+    @endphp
     <div class="overflow-hidden py-8 border-y border-white/10" data-reveal="fade" data-delay="0">
         <div class="marquee-track text-4xl md:text-5xl font-display font-black uppercase tracking-tighter text-white/25 leading-none whitespace-nowrap">
-            <span>Laravel ◆ React ◆ Vue.js ◆ TypeScript ◆ Three.js ◆ Tailwind ◆ Node.js ◆ PostgreSQL ◆ Docker ◆ AWS ◆&nbsp;</span>
-            <span>Laravel ◆ React ◆ Vue.js ◆ TypeScript ◆ Three.js ◆ Tailwind ◆ Node.js ◆ PostgreSQL ◆ Docker ◆ AWS ◆&nbsp;</span>
+            <span>{{ $marqueeFormatted }} ◆&nbsp;</span>
+            <span>{{ $marqueeFormatted }} ◆&nbsp;</span>
         </div>
     </div>
     @endif
@@ -179,6 +185,9 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
                 @foreach($projects as $index => $project)
+                @php
+                    $pObj = is_array($project) ? (object) $project : (is_object($project) ? $project : (object)[]);
+                @endphp
                 <div class="project-card group relative" data-reveal="up" data-delay="{{ $loop->index * 150 }}">
                     {{-- Image --}}
                     <div class="project-image-wrap aspect-4/5 bg-white/5 rounded-4xl mb-8 shadow-2xl overflow-hidden" data-img-reveal>
@@ -186,8 +195,8 @@
                         <span class="project-index font-display">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
 
                         <img
-                            src="{{ $project->image }}"
-                            alt="{{ $project->title }}"
+                            src="{{ $pObj->image ?? ($pObj->image_url ?? '') }}"
+                            alt="{{ $pObj->title ?? '' }}"
                             loading="lazy"
                             decoding="async"
                             class="w-full h-full object-cover grayscale" />
@@ -209,10 +218,10 @@
                     {{-- Info --}}
                     <div class="project-info flex justify-between items-start px-2">
                         <div>
-                            <span class="text-brand-primary font-mono text-[9px] uppercase tracking-[0.3em] mb-2 block">{{ $project->category }}</span>
-                            <h4 class="text-xl font-display font-bold uppercase tracking-tight group-hover:text-brand-primary transition-colors duration-500">{{ $project->title }}</h4>
+                            <span class="text-brand-primary font-mono text-xs font-semibold uppercase tracking-[0.2em] mb-2 block">{{ $pObj->category ?? '' }}</span>
+                            <h4 class="text-2xl font-display font-bold text-white tracking-wide group-hover:text-brand-primary transition-colors duration-500">{{ $pObj->title ?? '' }}</h4>
                         </div>
-                        <span class="text-white/50 font-mono text-[10px] tracking-widest mt-1">{{ $project->year }}</span>
+                        <span class="text-white/60 font-mono text-xs tracking-wider mt-1">{{ $pObj->year ?? '' }}</span>
                     </div>
                 </div>
                 @endforeach
@@ -227,38 +236,43 @@
     <section class="relative py-32 z-10">
         <div class="max-w-7xl mx-auto px-6">
             <div class="text-center mb-20">
-                <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-6 block" data-reveal="fade" data-delay="0">Achievements</span>
-                <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tighter uppercase" data-reveal="up" data-delay="100">
+                <span class="text-brand-primary font-mono text-xs font-semibold uppercase tracking-[0.3em] mb-6 block" data-reveal="fade" data-delay="0">Achievements</span>
+                <h2 class="text-4xl md:text-6xl font-display font-bold tracking-tight uppercase" data-reveal="up" data-delay="100">
                     Certi<span class="text-gradient-blue">fications</span>
                 </h2>
             </div>
         </div>
 
-        {{-- Horizontal Scroll Gallery --}}
-        <div class="max-w-7xl mx-auto px-6 relative">
+        {{-- 3D Convex Coverflow Gallery Container --}}
+        <div class="max-w-[1400px] mx-auto relative px-4 md:px-12">
             {{-- Scroll Buttons --}}
-            <button onclick="scrollCerts(-1)" id="cert-btn-left" style="position:absolute; left:-20px; top:50%; transform:translateY(-50%); z-index:20; width:48px; height:48px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.3s; backdrop-filter:blur(8px); opacity:0; pointer-events:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width:20px;height:20px;"><polyline points="15 18 9 12 15 6"/></svg>
+            <button onclick="scrollCerts(-1)" id="cert-btn-left" style="position:absolute; left:10px; top:50%; transform:translateY(-50%); z-index:50; width:52px; height:52px; background:rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.3s; backdrop-filter:blur(12px); opacity:0; pointer-events:none;" onmouseover="this.style.background='rgba(255,255,255,0.15)'; this.style.borderColor='rgba(255,255,255,0.3)';" onmouseout="this.style.background='rgba(0,0,0,0.7)'; this.style.borderColor='rgba(255,255,255,0.15)';" aria-label="Previous Certificate">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="width:22px;height:22px;"><polyline points="15 18 9 12 15 6"/></svg>
             </button>
-            <button onclick="scrollCerts(1)" id="cert-btn-right" style="position:absolute; right:-20px; top:50%; transform:translateY(-50%); z-index:20; width:48px; height:48px; background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.3s; backdrop-filter:blur(8px);" onmouseover="this.style.background='rgba(255,255,255,0.15)'" onmouseout="this.style.background='rgba(255,255,255,0.08)'">
-                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" style="width:20px;height:20px;"><polyline points="9 18 15 12 9 6"/></svg>
+            <button onclick="scrollCerts(1)" id="cert-btn-right" style="position:absolute; right:10px; top:50%; transform:translateY(-50%); z-index:50; width:52px; height:52px; background:rgba(0,0,0,0.7); border:1px solid rgba(255,255,255,0.15); border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all 0.3s; backdrop-filter:blur(12px);" onmouseover="this.style.background='rgba(255,255,255,0.15)'; this.style.borderColor='rgba(255,255,255,0.3)';" onmouseout="this.style.background='rgba(0,0,0,0.7)'; this.style.borderColor='rgba(255,255,255,0.15)';" aria-label="Next Certificate">
+                <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="width:22px;height:22px;"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
 
-            <div id="cert-scroll-container" class="overflow-x-auto scrollbar-hide pb-4 snap-x snap-mandatory" style="scroll-behavior:smooth;">
-                <div class="flex gap-6" style="width: max-content;">
+            <div id="cert-scroll-container" class="cert-3d-perspective overflow-x-auto scrollbar-hide py-16 px-[10%] md:px-[25%] snap-x snap-mandatory" style="scroll-behavior:smooth;">
+                <div class="flex gap-8 md:gap-12 items-center" style="width: max-content;">
                     @foreach($certificates as $i => $certificate)
-                    <div class="glass-premium rounded-3xl overflow-hidden group hover:border-white/20 transition-all duration-500 snap-start flex-shrink-0 w-[320px] md:w-[380px]" data-reveal="up" data-delay="{{ $loop->index * 100 }}">
-                        {{-- Certificate Image --}}
+                    <div class="cert-3d-card glass-premium rounded-3xl overflow-hidden group hover:border-white/30 transition-all duration-500 snap-center flex-shrink-0 w-[310px] md:w-[380px] cursor-pointer shadow-2xl relative" 
+                         data-reveal="up" data-delay="{{ $loop->index * 80 }}"
+                         onclick="openCertLightbox('{{ asset('storage/' . $certificate->image_url) }}', '{{ addslashes($certificate->title) }}')">
+                        
+                        {{-- Certificate Image Header --}}
                         @if($certificate->image_url)
-                        <div class="aspect-[16/10] overflow-hidden relative cursor-pointer" onclick="openCertLightbox('{{ asset('storage/' . $certificate->image_url) }}', '{{ $certificate->title }}')">
-                            <img src="{{ asset('storage/' . $certificate->image_url) }}" alt="{{ $certificate->title }}" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
-                            <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent"></div>
-                            <div class="absolute top-3 right-3 w-8 h-8 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div class="aspect-[16/10] overflow-hidden relative">
+                            <img src="{{ asset('storage/' . $certificate->image_url) }}" alt="{{ $certificate->title }}" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+                            
+                            {{-- Expand Badge --}}
+                            <div class="absolute top-3 right-3 w-9 h-9 bg-black/60 backdrop-blur-md rounded-full border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 transform group-hover:scale-110">
                                 <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" class="w-4 h-4"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="11" y1="8" x2="11" y2="14"/><line x1="8" y1="11" x2="14" y2="11"/></svg>
                             </div>
                         </div>
                         @else
-                        <div class="aspect-[16/10] bg-white/5 flex items-center justify-center">
+                        <div class="aspect-[16/10] bg-white/5 flex items-center justify-center border-b border-white/5">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" class="w-16 h-16 text-white/10">
                                 <rect x="3" y="3" width="18" height="18" rx="2" />
                                 <path d="M3 9h18M9 21V9" />
@@ -266,17 +280,22 @@
                         </div>
                         @endif
 
-                        {{-- Certificate Info --}}
-                        <div class="p-6">
-                            <div class="font-display font-bold text-lg mb-1 uppercase tracking-tight">{{ $certificate->title }}</div>
-                            <div class="text-white/50 text-sm mb-2">{{ $certificate->issuer }}</div>
-                            <div class="flex items-center justify-between">
+                        {{-- Certificate Info Body --}}
+                        <div class="p-6 md:p-7 relative z-10 bg-slate-950/40 backdrop-blur-sm">
+                            <div class="font-display font-bold text-xl text-white mb-2 leading-snug tracking-wide group-hover:text-white/90 transition-colors duration-300">{{ $certificate->title }}</div>
+                            <div class="text-white/60 text-sm font-medium mb-4 flex items-center gap-2">
+                                <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
+                                <span>{{ $certificate->issuer }}</span>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-3 border-t border-white/10">
                                 @if($certificate->year)
-                                <span class="text-white/40 font-mono text-[10px] tracking-widest">{{ $certificate->year }}</span>
+                                <span class="text-white/80 font-mono text-xs font-semibold tracking-wider px-3 py-1 rounded-full bg-white/5 border border-white/10">{{ $certificate->year }}</span>
                                 @endif
                                 @if($certificate->credential_url)
-                                <a href="{{ $certificate->credential_url }}" target="_blank" rel="noopener" class="text-brand-primary text-[10px] font-bold uppercase tracking-widest hover:text-white transition-colors">
-                                    Verify →
+                                <a href="{{ $certificate->credential_url }}" target="_blank" rel="noopener" onclick="event.stopPropagation()" class="inline-flex items-center gap-1 text-white/70 text-xs font-bold uppercase tracking-widest hover:text-white transition-colors">
+                                    <span>Verify</span>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="w-3 h-3"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
                                 </a>
                                 @endif
                             </div>
@@ -292,19 +311,68 @@
                 var sc = document.getElementById('cert-scroll-container');
                 var btnL = document.getElementById('cert-btn-left');
                 var btnR = document.getElementById('cert-btn-right');
-                function updateBtns() {
-                    if (!sc) return;
-                    btnL.style.opacity = sc.scrollLeft > 10 ? '1' : '0';
-                    btnL.style.pointerEvents = sc.scrollLeft > 10 ? 'auto' : 'none';
-                    btnR.style.opacity = sc.scrollLeft < sc.scrollWidth - sc.clientWidth - 10 ? '1' : '0';
-                    btnR.style.pointerEvents = sc.scrollLeft < sc.scrollWidth - sc.clientWidth - 10 ? 'auto' : 'none';
+                var cards = document.querySelectorAll('.cert-3d-card');
+
+                function update3D() {
+                    if (!sc || !cards.length) return;
+                    
+                    // Show/hide scroll buttons
+                    btnL.style.opacity = sc.scrollLeft > 15 ? '1' : '0';
+                    btnL.style.pointerEvents = sc.scrollLeft > 15 ? 'auto' : 'none';
+                    btnR.style.opacity = sc.scrollLeft < sc.scrollWidth - sc.clientWidth - 15 ? '1' : '0';
+                    btnR.style.pointerEvents = sc.scrollLeft < sc.scrollWidth - sc.clientWidth - 15 ? 'auto' : 'none';
+
+                    // Center point of container
+                    var containerCenter = sc.scrollLeft + (sc.clientWidth / 2);
+
+                    cards.forEach(function(card) {
+                        var cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+                        var dist = (cardCenter - containerCenter) / (card.offsetWidth * 0.95);
+                        var clampedDist = Math.max(-2.5, Math.min(2.5, dist));
+                        
+                        // 3D U-Shape (Concave Amphitheater Arc Math):
+                        // Left & Right cards angle inward facing the user (U-shape curve!)
+                        // Center card pops out forward (translateZ 70px, scale 1.07)
+                        var rotateY = clampedDist * 26;
+                        var translateY = Math.pow(clampedDist, 2) * 6;
+                        var translateZ = Math.max(-70, 70 - Math.abs(clampedDist) * 85);
+                        var scale = Math.max(0.84, 1.07 - Math.abs(clampedDist) * 0.11);
+                        var opacity = Math.max(0.5, 1 - Math.abs(clampedDist) * 0.32);
+
+                        card.style.transform = 'perspective(1200px) rotateY(' + rotateY + 'deg) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px) scale(' + scale + ')';
+                        card.style.opacity = opacity;
+                        card.style.zIndex = Math.round(100 - Math.abs(clampedDist) * 30);
+
+                        if (Math.abs(clampedDist) < 0.45) {
+                            card.classList.add('cert-card-active');
+                        } else {
+                            card.classList.remove('cert-card-active');
+                        }
+                    });
                 }
+
+                var ticking = false;
                 if (sc) {
-                    sc.addEventListener('scroll', updateBtns);
-                    updateBtns();
+                    sc.addEventListener('scroll', function() {
+                        if (!ticking) {
+                            requestAnimationFrame(function() {
+                                update3D();
+                                ticking = false;
+                            });
+                            ticking = true;
+                        }
+                    }, { passive: true });
+
+                    window.addEventListener('resize', update3D);
+                    setTimeout(update3D, 150);
+                    update3D();
                 }
+
                 window.scrollCerts = function(dir) {
-                    if (sc) sc.scrollLeft += dir * 400;
+                    if (sc) {
+                        var scrollAmount = window.innerWidth < 768 ? 320 : 400;
+                        sc.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
+                    }
                 };
             })();
         </script>
