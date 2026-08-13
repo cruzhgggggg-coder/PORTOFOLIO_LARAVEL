@@ -4,9 +4,45 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="{{ $siteSettings['site_tagline'] ?? 'Luminescent Architect — Crafting immersive digital experiences at the intersection of light, motion, and code.' }}">
+    <title>{{ $seoMeta['title'] ?? ($siteSettings['site_name'] ?? config('app.name', 'Site')) . ' — ' . ($siteSettings['site_tagline'] ?? 'Architect') }}</title>
+
+    {{-- SEO Meta --}}
+    <meta name="description" content="{{ $seoMeta['description'] ?? ($siteSettings['site_tagline'] ?? 'Luminescent Architect — Crafting immersive digital experiences at the intersection of light, motion, and code.') }}">
+    @if(!empty($seoMeta['keywords']))
+    <meta name="keywords" content="{{ $seoMeta['keywords'] }}">
+    @endif
+    @if(!empty($seoMeta['no_index']) && $seoMeta['no_index'])
+    <meta name="robots" content="noindex, nofollow">
+    @else
+    <meta name="robots" content="index, follow">
+    @endif
+
+    {{-- Open Graph --}}
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ $seoMeta['title'] ?? ($siteSettings['site_name'] ?? 'Luminescent Architect') }}">
+    <meta property="og:description" content="{{ $seoMeta['description'] ?? ($siteSettings['site_tagline'] ?? 'Crafting immersive digital experiences at the intersection of light, motion, and code.') }}">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:site_name" content="{{ $siteSettings['site_name'] ?? 'Luminescent Architect' }}">
+    @if(!empty($seoMeta['og:image']))
+    <meta property="og:image" content="{{ $seoMeta['og:image'] }}">
+    @endif
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{ $seoMeta['title'] ?? ($siteSettings['site_name'] ?? 'Luminescent Architect') }}">
+    <meta name="twitter:description" content="{{ $seoMeta['description'] ?? ($siteSettings['site_tagline'] ?? 'Crafting immersive digital experiences at the intersection of light, motion, and code.') }}">
+    @if(!empty($seoMeta['og:image']))
+    <meta name="twitter:image" content="{{ $seoMeta['og:image'] }}">
+    @endif
+
+    {{-- Canonical URL --}}
+    @if(!empty($seoMeta['canonical']))
+    <link rel="canonical" href="{{ $seoMeta['canonical'] }}">
+    @else
+    <link rel="canonical" href="{{ url()->current() }}">
+    @endif
+
     <meta name="theme-color" content="{{ $siteSettings['brand_color_primary'] ?? '#000000' }}">
-    <title>@yield('title', ($siteSettings['site_name'] ?? config('app.name', 'Site')) . ' — ' . ($siteSettings['site_tagline'] ?? 'Architect'))</title>
 
     <style>
         :root {
@@ -207,7 +243,7 @@
     </footer>
 
     <script>
-        // Robust Page Loader Hide
+        // Instant & Smooth Page Loader Hide
         function hidePageLoader() {
             const loader = document.getElementById('page-loader');
             if (loader && !loader.classList.contains('loaded')) {
@@ -215,12 +251,12 @@
             }
         }
         if (document.readyState === 'complete' || document.readyState === 'interactive') {
-            setTimeout(hidePageLoader, 100);
+            requestAnimationFrame(hidePageLoader);
         } else {
-            window.addEventListener('DOMContentLoaded', hidePageLoader);
-            window.addEventListener('load', hidePageLoader);
+            document.addEventListener('DOMContentLoaded', hidePageLoader, { once: true });
+            window.addEventListener('load', hidePageLoader, { once: true });
         }
-        setTimeout(hidePageLoader, 500);
+        setTimeout(hidePageLoader, 300);
 
         // Navbar scroll effect (enhanced)
         const navbar = document.getElementById('navbar');
