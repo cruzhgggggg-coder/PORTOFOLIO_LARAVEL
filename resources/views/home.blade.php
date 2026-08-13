@@ -275,6 +275,15 @@
                          data-reveal="up" data-delay="{{ $loop->index * 80 }}"
                          onclick="openCertLightbox('{{ asset('storage/' . $certificate->image_url) }}', '{{ addslashes($certificate->title) }}')">
                         
+                        {{-- Scan Line Effect --}}
+                        <div class="cert-scan-line"></div>
+                        
+                        {{-- Corner Tech Decorations --}}
+                        <div class="cert-corner-tech tl"></div>
+                        <div class="cert-corner-tech tr"></div>
+                        <div class="cert-corner-tech bl"></div>
+                        <div class="cert-corner-tech br"></div>
+                        
                         {{-- Certificate Image Header --}}
                         @if($certificate->image_url)
                         <div class="aspect-[16/10] overflow-hidden relative">
@@ -297,7 +306,7 @@
 
                         {{-- Certificate Info Body --}}
                         <div class="p-6 md:p-7 relative z-10 bg-slate-950/40 backdrop-blur-sm">
-                            <div class="font-display font-bold text-xl text-white mb-2 leading-snug tracking-wide group-hover:text-white/90 transition-colors duration-300">{{ $certificate->title }}</div>
+                            <div class="font-display font-bold text-xl text-white mb-2 leading-snug tracking-wide group-hover:text-white/90 transition-colors duration-300 cert-glitch-title" data-text="{{ $certificate->title }}">{{ $certificate->title }}</div>
                             <div class="text-white/60 text-sm font-medium mb-4 flex items-center gap-2">
                                 <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
                                 <span>{{ $certificate->issuer }}</span>
