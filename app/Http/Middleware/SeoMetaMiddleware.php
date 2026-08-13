@@ -24,11 +24,16 @@ class SeoMetaMiddleware
         $pageKey = $pageMap[$routeName] ?? null;
 
         if ($pageKey) {
-            $seo = Cache::remember("portfolio.seo.{$pageKey}", 86400, function () use ($pageKey) {
-                return SeoSetting::getByPage($pageKey);
+            $metaTags = Cache::remember("portfolio.seo.{$pageKey}", 86400, function () use ($pageKey) {
+                $seo = SeoSetting::getByPage($pageKey);
+                return $seo?->meta_tags ?? [];
             });
 
-            view()->share('seoMeta', $seo?->meta_tags ?? []);
+            if (! is_array($metaTags)) {
+                $metaTags = [];
+            }
+
+            view()->share('seoMeta', $metaTags);
         } else {
             view()->share('seoMeta', []);
         }
