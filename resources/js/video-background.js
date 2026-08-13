@@ -6,7 +6,6 @@ export function initVideoBackground() {
     const video = document.getElementById('bg-video');
     const container = document.getElementById('bg-video-container');
     if (!video || !container) {
-        console.warn('[VideoBackground] #bg-video or #bg-video-container not found');
         return;
     }
 
@@ -32,10 +31,8 @@ export function initVideoBackground() {
         const p = video.play();
         if (p && typeof p.then === 'function') {
             p.then(() => {
-                console.log('[VideoBackground] Video playing successfully');
                 showVideo();
-            }).catch(err => {
-                console.warn('[VideoBackground] Autoplay blocked, waiting for user gesture:', err.message);
+            }).catch(() => {
                 const onGesture = () => {
                     video.play().then(() => showVideo()).catch(() => {});
                     window.removeEventListener('click', onGesture);
@@ -53,13 +50,11 @@ export function initVideoBackground() {
         }
     };
 
-    const onError = (context) => {
-        console.error(`[VideoBackground] ${context} — fallback gradient remains visible`);
+    const onError = () => {
         // Keep the fallback gradient visible; no further action needed
     };
 
     if (HlsClass && HlsClass.isSupported()) {
-        console.log('[VideoBackground] Initializing HLS.js...');
         const hls = new HlsClass({
             enableWorker: true,
             lowLatencyMode: false,
@@ -72,7 +67,6 @@ export function initVideoBackground() {
         hls.attachMedia(video);
 
         hls.on(HlsClass.Events.MANIFEST_PARSED, () => {
-            console.log('[VideoBackground] Manifest parsed, attempting play');
             playVideo();
         });
 
@@ -80,11 +74,9 @@ export function initVideoBackground() {
             if (data.fatal) {
                 switch (data.type) {
                     case HlsClass.ErrorTypes.NETWORK_ERROR:
-                        console.warn('[VideoBackground] Network error, retrying...');
                         hls.startLoad();
                         break;
                     case HlsClass.ErrorTypes.MEDIA_ERROR:
-                        console.warn('[VideoBackground] Media error, recovering...');
                         hls.recoverMediaError();
                         break;
                     default:
@@ -95,7 +87,6 @@ export function initVideoBackground() {
             }
         });
     } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-        console.log('[VideoBackground] Using native HLS player (Safari/iOS)');
         video.src = VIDEO_SRC;
         video.addEventListener('loadedmetadata', () => {
             playVideo();
