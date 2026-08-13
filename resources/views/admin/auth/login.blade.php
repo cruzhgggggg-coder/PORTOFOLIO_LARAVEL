@@ -114,12 +114,8 @@
         {{-- Logo --}}
         <div style="text-align:center;margin-bottom:40px;">
             <div style="width:52px;height:52px;background:rgba(0,242,255,0.1);border:1px solid rgba(0,242,255,0.2);border-radius:14px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#00f2ff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;">
-                    <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
-                    <path d="M2 17L12 22L22 17"/>
-                    <path d="M2 7V17"/>
-                    <path d="M22 7V17"/>
-                    <path d="M12 12V22"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="#00f2ff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:24px;height:24px;">
+                    <path d="M12 2l9 4.9V17.1L12 22l-9-4.9V6.9L12 2z"/>
                 </svg>
             </div>
             <h1 style="font-size:22px;font-weight:700;letter-spacing:-0.02em;margin-bottom:6px;">Admin Access</h1>
