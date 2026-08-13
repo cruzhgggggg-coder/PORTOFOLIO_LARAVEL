@@ -13,9 +13,27 @@
                 <span class="text-brand-primary font-mono text-[10px] uppercase tracking-[0.5em] mb-8 block" data-reveal="fade" data-delay="0">
                     {{ $profile['tagline'] ?? 'The Digital Architect' }}
                 </span>
-                <h1 class="text-4xl md:text-7xl font-display font-bold tracking-tighter uppercase mb-8 leading-[0.85]" data-reveal="up" data-delay="100">
-                    {{ $profile['name'] ?? 'Designing the Invisible' }}
+
+                @php
+                    $rawName = !empty($profile['name']) ? $profile['name'] : 'Zaky Manggala Putra Santoso';
+                    $nameParts = explode(' ', trim($rawName));
+                    if (count($nameParts) > 1) {
+                        $half = ceil(count($nameParts) / 2);
+                        $firstHalf = implode(' ', array_slice($nameParts, 0, $half));
+                        $secondHalf = implode(' ', array_slice($nameParts, $half));
+                    } else {
+                        $firstHalf = '';
+                        $secondHalf = $rawName;
+                    }
+                @endphp
+
+                <h1 class="text-4xl md:text-6xl lg:text-7xl font-display font-bold tracking-tighter uppercase mb-8 leading-[0.9]" data-reveal="up" data-delay="100">
+                    @if(!empty($firstHalf))
+                        {{ $firstHalf }} <br />
+                    @endif
+                    <span class="text-gradient-blue" style="filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.4));">{{ $secondHalf }}</span>
                 </h1>
+
                 <p class="text-base md:text-lg text-white/60 leading-relaxed mb-12 max-w-2xl font-light" data-reveal="up" data-delay="200">
                     {{ $profile['bio'] ?? 'Computer Science student and full-stack developer specializing in building modern web applications, AI integrations, and creative tech.' }}
                 </p>

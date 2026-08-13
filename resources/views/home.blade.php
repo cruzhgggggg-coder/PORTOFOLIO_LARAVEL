@@ -16,15 +16,30 @@
                     {{ $profile['hero_badge'] ?? 'Digital Architect & Designer' }}
                 </span>
 
-                {{-- Main Title --}}
+                @php
+                    $rawName = !empty($profile['name']) ? $profile['name'] : 'Zaky Manggala Putra Santoso';
+                    $nameParts = explode(' ', trim($rawName));
+                    if (count($nameParts) > 1) {
+                        $half = ceil(count($nameParts) / 2);
+                        $homeFirst = implode(' ', array_slice($nameParts, 0, $half));
+                        $homeSecond = implode(' ', array_slice($nameParts, $half));
+                    } else {
+                        $homeFirst = '';
+                        $homeSecond = $rawName;
+                    }
+                @endphp
+
                 <h1 class="text-5xl md:text-7xl lg:text-8xl font-display font-bold tracking-tighter mb-10 leading-[0.88] uppercase" data-reveal="up" data-delay="400">
                     @if(!empty($profile['hero_line1']) || !empty($profile['hero_line2']))
-                    {{ $profile['hero_line1'] ?? '' }}
-                    @if(!empty($profile['hero_line2']))
-                    <br /> <span class="text-gradient-blue">{{ $profile['hero_line2'] }}</span>
-                    @endif
+                        {{ $profile['hero_line1'] ?? '' }}
+                        @if(!empty($profile['hero_line2']))
+                        <br /> <span class="text-gradient-blue" style="filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.4));">{{ $profile['hero_line2'] }}</span>
+                        @endif
                     @else
-                    {{ !empty($profile['name']) ? $profile['name'] : ($siteSettings['site_name'] ?? 'LUMINESCENT ARCHITECT') }}
+                        @if(!empty($homeFirst))
+                            {{ $homeFirst }} <br />
+                        @endif
+                        <span class="text-gradient-blue" style="filter: drop-shadow(0 0 30px rgba(0, 242, 255, 0.4));">{{ $homeSecond }}</span>
                     @endif
                 </h1>
 
