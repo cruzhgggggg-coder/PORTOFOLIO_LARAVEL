@@ -27,6 +27,7 @@ Route::get('/projects', [ProjectController::class, 'index'])->name('projects');
 Route::get('/about', [ProjectController::class, 'about'])->name('about');
 Route::get('/contact', [ProjectController::class, 'contact'])->name('contact');
 Route::post('/contact', [ProjectController::class, 'submitContact'])->name('contact.submit');
+Route::get('/sitemap.xml', [ProjectController::class, 'sitemap'])->name('sitemap');
 
 /*
 |--------------------------------------------------------------------------

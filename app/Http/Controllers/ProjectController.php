@@ -60,4 +60,32 @@ class ProjectController extends Controller
             'message' => 'Transmission received successfully.',
         ]);
     }
+
+    public function sitemap()
+    {
+        $pages = [
+            ['url' => url('/'), 'priority' => '1.0', 'changefreq' => 'weekly'],
+            ['url' => url('/projects'), 'priority' => '0.8', 'changefreq' => 'weekly'],
+            ['url' => url('/about'), 'priority' => '0.7', 'changefreq' => 'monthly'],
+            ['url' => url('/contact'), 'priority' => '0.6', 'changefreq' => 'monthly'],
+        ];
+
+        $xml = '<?xml version="1.0" encoding="UTF-8"?>' . "\n";
+        $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">' . "\n";
+
+        foreach ($pages as $page) {
+            $xml .= "  <url>\n";
+            $xml .= "    <loc>{$page['url']}</loc>\n";
+            $xml .= "    <lastmod>" . now()->toAtomString() . "</lastmod>\n";
+            $xml .= "    <changefreq>{$page['changefreq']}</changefreq>\n";
+            $xml .= "    <priority>{$page['priority']}</priority>\n";
+            $xml .= "  </url>\n";
+        }
+
+        $xml .= '</urlset>';
+
+        return response($xml, 200, [
+            'Content-Type' => 'application/xml',
+        ]);
+    }
 }
