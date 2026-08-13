@@ -411,8 +411,12 @@
         <a href="{{ route('admin.dashboard') }}" style="text-decoration:none; color:inherit; display:block; padding: 32px 24px; border-bottom: 1px solid var(--card-border);">
             <div style="display:flex; align-items:center; gap:12px;">
                 <div style="width:40px;height:40px;background:var(--brand-muted);border:1px solid rgba(0,242,255,0.2);border-radius:12px;display:flex;align-items:center;justify-content:center;">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="2" style="width:20px;height:20px;">
-                        <path d="M12 2l9 4.9V17.1L12 22l-9-4.9V6.9L12 2z" />
+                    <svg viewBox="0 0 24 24" fill="none" stroke="var(--brand)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:20px;height:20px;">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                        <path d="M2 17L12 22L22 17"/>
+                        <path d="M2 7V17"/>
+                        <path d="M22 7V17"/>
+                        <path d="M12 12V22"/>
                     </svg>
                 </div>
                 <div>

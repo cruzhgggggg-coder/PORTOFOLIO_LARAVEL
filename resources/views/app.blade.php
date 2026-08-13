@@ -21,7 +21,8 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
     {{-- Favicon --}}
-    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="alternate icon" href="/favicon.ico" sizes="any">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -59,8 +60,12 @@
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             <a href="{{ route('home') }}" class="flex items-center gap-3 group" data-magnetic>
                 <div class="relative">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-brand-primary group-hover:rotate-90 transition-transform duration-700">
-                        <path d="M12 2l9 4.9V17.1L12 22l-9-4.9V6.9L12 2z" />
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" class="w-8 h-8 text-brand-primary group-hover:rotate-90 transition-transform duration-700">
+                        <path d="M12 2L2 7L12 12L22 7L12 2Z"/>
+                        <path d="M2 17L12 22L22 17"/>
+                        <path d="M2 7V17"/>
+                        <path d="M22 7V17"/>
+                        <path d="M12 12V22"/>
                     </svg>
                     <div class="absolute inset-0 bg-brand-primary/20 blur-lg rounded-full group-hover:bg-brand-primary/40 transition-colors duration-500"></div>
                 </div>
