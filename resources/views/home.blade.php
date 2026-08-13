@@ -268,10 +268,10 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="width:22px;height:22px;"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
 
-            <div id="cert-scroll-container" class="cert-3d-perspective overflow-x-auto scrollbar-hide py-16 snap-x snap-mandatory" style="scroll-behavior:smooth; padding-left:calc(50% - 190px); padding-right:calc(50% - 190px);">
-                <div class="flex gap-6 md:gap-8 items-end" style="width: max-content;">
+            <div id="cert-scroll-container" class="cert-3d-perspective overflow-x-auto scrollbar-hide py-16 snap-x snap-mandatory" style="scroll-behavior:smooth;">
+                <div id="cert-track" class="flex items-end" style="width:max-content;">
                     @foreach($certificates as $i => $certificate)
-                    <div class="cert-3d-card glass-premium rounded-3xl overflow-hidden group hover:border-white/30 transition-all duration-500 snap-center flex-shrink-0 w-[280px] md:w-[380px] cursor-pointer shadow-2xl relative" 
+                    <div class="cert-3d-card glass-premium rounded-3xl overflow-hidden group hover:border-white/30 transition-all duration-500 snap-center flex-shrink-0 w-[280px] md:w-[380px] cursor-pointer relative" 
                          data-reveal="up" data-delay="{{ $loop->index * 80 }}"
                          onclick="openCertLightbox('{{ asset('storage/' . $certificate->image_url) }}', '{{ addslashes($certificate->title) }}')">
                         
@@ -324,72 +324,88 @@
         <script>
             (function() {
                 var sc = document.getElementById('cert-scroll-container');
+                var track = document.getElementById('cert-track');
                 var btnL = document.getElementById('cert-btn-left');
                 var btnR = document.getElementById('cert-btn-right');
                 var cards = document.querySelectorAll('.cert-3d-card');
+                if (!sc || !cards.length) return;
+
+                var gap = window.innerWidth < 768 ? 20 : 32;
+                var cardW = window.innerWidth < 768 ? 280 : 380;
+
+                // Set track gap and container padding so first/last cards center
+                track.style.gap = gap + 'px';
+                var pad = (sc.clientWidth - cardW) / 2;
+                sc.style.paddingLeft = pad + 'px';
+                sc.style.paddingRight = pad + 'px';
 
                 function update3D() {
-                    if (!sc || !cards.length) return;
+                    var containerCenter = sc.scrollLeft + sc.clientWidth / 2;
 
-                    // Show/hide scroll buttons
+                    // Button visibility
                     btnL.style.opacity = sc.scrollLeft > 15 ? '1' : '0';
                     btnL.style.pointerEvents = sc.scrollLeft > 15 ? 'auto' : 'none';
                     btnR.style.opacity = sc.scrollLeft < sc.scrollWidth - sc.clientWidth - 15 ? '1' : '0';
                     btnR.style.pointerEvents = sc.scrollLeft < sc.scrollWidth - sc.clientWidth - 15 ? 'auto' : 'none';
 
-                    var containerCenter = sc.scrollLeft + (sc.clientWidth / 2);
-
                     cards.forEach(function(card) {
-                        var cardCenter = card.offsetLeft + (card.offsetWidth / 2);
-                        var dist = (cardCenter - containerCenter) / (sc.clientWidth * 0.5);
-                        var clampedDist = Math.max(-1.2, Math.min(1.2, dist));
-                        var absDist = Math.abs(clampedDist);
+                        var cardCenter = card.offsetLeft + card.offsetWidth / 2;
+                        var dist = (cardCenter - containerCenter) / (cardW + gap);
+                        var absDist = Math.abs(dist);
 
-                        // U-Shape — ALL cards stay elevated, center pops more
-                        var rotateY = clampedDist * 28;
-                        var translateY = (clampedDist * clampedDist) * 35;
-                        var translateZ = 50 - absDist * 50;
-                        var scale = 1.0 - absDist * 0.08;
-                        var opacity = 0.95 - absDist * 0.2;
+                        // U-Shape: side cards curve down & rotate inward
+                        var rotateY = dist * 25;
+                        var translateY = dist * dist * 40;
+                        var translateZ = -absDist * 80;
+                        var scale = 1 - absDist * 0.12;
+                        var opacity = 1 - absDist * 0.3;
 
-                        card.style.transform = 'perspective(1000px) rotateY(' + rotateY + 'deg) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px) scale(' + scale + ')';
-                        card.style.opacity = Math.max(0.65, opacity);
-                        card.style.zIndex = Math.round(100 - absDist * 30);
-
-                        if (absDist < 0.25) {
+                        // Active card pops forward
+                        if (absDist < 0.5) {
+                            translateZ = 60 * (1 - absDist * 2);
+                            scale = 1.05 - absDist * 0.1;
+                            opacity = 1;
                             card.classList.add('cert-card-active');
                         } else {
                             card.classList.remove('cert-card-active');
                         }
+
+                        card.style.transform = 'perspective(1000px) rotateY(' + rotateY + 'deg) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px) scale(' + scale + ')';
+                        card.style.opacity = Math.max(0.5, opacity);
+                        card.style.zIndex = Math.round(100 - absDist * 40);
                     });
                 }
 
-                var ticking = false;
-                if (sc) {
-                    sc.addEventListener('scroll', function() {
-                        if (!ticking) {
-                            requestAnimationFrame(function() {
-                                update3D();
-                                ticking = false;
-                            });
-                            ticking = true;
-                        }
-                    }, { passive: true });
-
-                    window.addEventListener('resize', update3D);
-                    setTimeout(update3D, 150);
-                    update3D();
-                }
-
+                // Scroll exactly one card at a time
                 window.scrollCerts = function(dir) {
-                    if (sc) {
-                        // Scroll exactly one card width + gap
-                        var card = cards[0];
-                        var gap = card ? parseInt(getComputedStyle(card.parentElement).gap) || 32 : 32;
-                        var scrollAmount = card ? card.offsetWidth + gap : 400;
-                        sc.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
-                    }
+                    var step = cardW + gap;
+                    sc.scrollBy({ left: dir * step, behavior: 'smooth' });
                 };
+
+                // Recalculate on resize
+                window.addEventListener('resize', function() {
+                    gap = window.innerWidth < 768 ? 20 : 32;
+                    cardW = window.innerWidth < 768 ? 280 : 380;
+                    track.style.gap = gap + 'px';
+                    pad = (sc.clientWidth - cardW) / 2;
+                    sc.style.paddingLeft = pad + 'px';
+                    sc.style.paddingRight = pad + 'px';
+                    update3D();
+                });
+
+                // Smooth 3D update on scroll
+                var ticking = false;
+                sc.addEventListener('scroll', function() {
+                    if (!ticking) {
+                        requestAnimationFrame(function() {
+                            update3D();
+                            ticking = false;
+                        });
+                        ticking = true;
+                    }
+                }, { passive: true });
+
+                update3D();
             })();
         </script>
 
