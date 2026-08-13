@@ -21,8 +21,9 @@
     <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
     {{-- Favicon --}}
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="alternate icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/favicon.svg?v=3" type="image/svg+xml">
+    <link rel="shortcut icon" href="/favicon.svg?v=3">
+    <link rel="apple-touch-icon" href="/favicon.svg?v=3">
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -70,7 +71,7 @@
                     <div class="absolute inset-0 bg-brand-primary/20 blur-lg rounded-full group-hover:bg-brand-primary/40 transition-colors duration-500"></div>
                 </div>
                 <span class="font-display font-bold text-xl tracking-tighter uppercase" data-magnetic-text>
-                    {{ !empty($siteSettings['site_name']) ? $siteSettings['site_name'] : (!empty($profile['name']) ? $profile['name'] : 'Luminescent Architect') }}
+                    {{ !empty($profile['name']) ? $profile['name'] : ($siteSettings['site_name'] ?? 'Luminescent Architect') }}
                 </span>
             </a>
 
