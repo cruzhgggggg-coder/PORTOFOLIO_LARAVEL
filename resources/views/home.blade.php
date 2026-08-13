@@ -268,21 +268,12 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" style="width:22px;height:22px;"><polyline points="9 18 15 12 9 6"/></svg>
             </button>
 
-            <div id="cert-scroll-container" class="cert-3d-perspective overflow-x-auto scrollbar-hide py-16 px-[10%] md:px-[25%] snap-x snap-mandatory" style="scroll-behavior:smooth;">
-                <div class="flex gap-8 md:gap-12 items-center" style="width: max-content;">
+            <div id="cert-scroll-container" class="cert-3d-perspective overflow-x-auto scrollbar-hide py-16 snap-x snap-mandatory" style="scroll-behavior:smooth; padding-left:calc(50% - 190px); padding-right:calc(50% - 190px);">
+                <div class="flex gap-6 md:gap-8 items-end" style="width: max-content;">
                     @foreach($certificates as $i => $certificate)
-                    <div class="cert-3d-card glass-premium rounded-3xl overflow-hidden group hover:border-white/30 transition-all duration-500 snap-center flex-shrink-0 w-[310px] md:w-[380px] cursor-pointer shadow-2xl relative" 
+                    <div class="cert-3d-card glass-premium rounded-3xl overflow-hidden group hover:border-white/30 transition-all duration-500 snap-center flex-shrink-0 w-[280px] md:w-[380px] cursor-pointer shadow-2xl relative" 
                          data-reveal="up" data-delay="{{ $loop->index * 80 }}"
                          onclick="openCertLightbox('{{ asset('storage/' . $certificate->image_url) }}', '{{ addslashes($certificate->title) }}')">
-                        
-                        {{-- Scan Line Effect --}}
-                        <div class="cert-scan-line"></div>
-                        
-                        {{-- Corner Tech Decorations --}}
-                        <div class="cert-corner-tech tl"></div>
-                        <div class="cert-corner-tech tr"></div>
-                        <div class="cert-corner-tech bl"></div>
-                        <div class="cert-corner-tech br"></div>
                         
                         {{-- Certificate Image Header --}}
                         @if($certificate->image_url)
@@ -306,7 +297,7 @@
 
                         {{-- Certificate Info Body --}}
                         <div class="p-6 md:p-7 relative z-10 bg-slate-950/40 backdrop-blur-sm">
-                            <div class="font-display font-bold text-xl text-white mb-2 leading-snug tracking-wide group-hover:text-white/90 transition-colors duration-300 cert-glitch-title" data-text="{{ $certificate->title }}">{{ $certificate->title }}</div>
+                            <div class="font-display font-bold text-xl text-white mb-2 leading-snug tracking-wide group-hover:text-white/90 transition-colors duration-300">{{ $certificate->title }}</div>
                             <div class="text-white/60 text-sm font-medium mb-4 flex items-center gap-2">
                                 <span class="w-1.5 h-1.5 rounded-full bg-white/40"></span>
                                 <span>{{ $certificate->issuer }}</span>
@@ -339,7 +330,7 @@
 
                 function update3D() {
                     if (!sc || !cards.length) return;
-                    
+
                     // Show/hide scroll buttons
                     btnL.style.opacity = sc.scrollLeft > 15 ? '1' : '0';
                     btnL.style.pointerEvents = sc.scrollLeft > 15 ? 'auto' : 'none';
@@ -348,26 +339,27 @@
 
                     // Center point of container
                     var containerCenter = sc.scrollLeft + (sc.clientWidth / 2);
+                    var cardW = cards[0] ? cards[0].offsetWidth : 380;
 
                     cards.forEach(function(card) {
                         var cardCenter = card.offsetLeft + (card.offsetWidth / 2);
-                        var dist = (cardCenter - containerCenter) / (card.offsetWidth * 0.95);
-                        var clampedDist = Math.max(-2.5, Math.min(2.5, dist));
-                        
-                        // 3D U-Shape (Concave Amphitheater Arc Math):
-                        // Left & Right cards angle inward facing the user (U-shape curve!)
-                        // Center card pops out forward (translateZ 70px, scale 1.07)
-                        var rotateY = clampedDist * 26;
-                        var translateY = Math.pow(clampedDist, 2) * 6;
-                        var translateZ = Math.max(-70, 70 - Math.abs(clampedDist) * 85);
-                        var scale = Math.max(0.84, 1.07 - Math.abs(clampedDist) * 0.11);
-                        var opacity = Math.max(0.5, 1 - Math.abs(clampedDist) * 0.32);
+                        // Normalize by container width so edge cards keep full curve
+                        var dist = (cardCenter - containerCenter) / (sc.clientWidth * 0.5);
+                        var clampedDist = Math.max(-1.2, Math.min(1.2, dist));
+                        var absDist = Math.abs(clampedDist);
 
-                        card.style.transform = 'perspective(1200px) rotateY(' + rotateY + 'deg) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px) scale(' + scale + ')';
-                        card.style.opacity = opacity;
-                        card.style.zIndex = Math.round(100 - Math.abs(clampedDist) * 30);
+                        // U-Shape Convex Arc — symmetric curve, edges don't flatten
+                        var rotateY = clampedDist * 30;
+                        var translateY = (clampedDist * clampedDist) * 28;
+                        var translateZ = 90 - absDist * 120;
+                        var scale = 1.08 - absDist * 0.16;
+                        var opacity = 1 - absDist * 0.35;
 
-                        if (Math.abs(clampedDist) < 0.45) {
+                        card.style.transform = 'perspective(1000px) rotateY(' + rotateY + 'deg) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px) scale(' + scale + ')';
+                        card.style.opacity = Math.max(0.45, opacity);
+                        card.style.zIndex = Math.round(100 - absDist * 50);
+
+                        if (absDist < 0.15) {
                             card.classList.add('cert-card-active');
                         } else {
                             card.classList.remove('cert-card-active');
@@ -394,7 +386,10 @@
 
                 window.scrollCerts = function(dir) {
                     if (sc) {
-                        var scrollAmount = window.innerWidth < 768 ? 320 : 400;
+                        // Scroll exactly one card width + gap
+                        var card = cards[0];
+                        var gap = card ? parseInt(getComputedStyle(card.parentElement).gap) || 32 : 32;
+                        var scrollAmount = card ? card.offsetWidth + gap : 400;
                         sc.scrollBy({ left: dir * scrollAmount, behavior: 'smooth' });
                     }
                 };
