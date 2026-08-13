@@ -872,15 +872,16 @@
     backface-visibility: hidden;
     will-change: transform, opacity;
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.45s ease, border-color 0.45s ease, box-shadow 0.45s ease;
+    box-shadow: 0 15px 40px -10px rgba(0, 0, 0, 0.7);
 }
 
 .cert-3d-card.cert-card-active {
-    border-color: rgba(0, 242, 255, 0.3) !important;
-    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 40px -10px rgba(0, 242, 255, 0.15) !important;
+    border-color: rgba(0, 242, 255, 0.35) !important;
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.9), 0 0 50px -10px rgba(0, 242, 255, 0.2) !important;
 }
 
 .cert-3d-card.cert-card-active:hover {
     border-color: rgba(0, 242, 255, 0.5) !important;
-    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.95), 0 0 60px -10px rgba(0, 242, 255, 0.2) !important;
+    box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.95), 0 0 70px -10px rgba(0, 242, 255, 0.25) !important;
 }
 

@@ -337,29 +337,26 @@
                     btnR.style.opacity = sc.scrollLeft < sc.scrollWidth - sc.clientWidth - 15 ? '1' : '0';
                     btnR.style.pointerEvents = sc.scrollLeft < sc.scrollWidth - sc.clientWidth - 15 ? 'auto' : 'none';
 
-                    // Center point of container
                     var containerCenter = sc.scrollLeft + (sc.clientWidth / 2);
-                    var cardW = cards[0] ? cards[0].offsetWidth : 380;
 
                     cards.forEach(function(card) {
                         var cardCenter = card.offsetLeft + (card.offsetWidth / 2);
-                        // Normalize by container width so edge cards keep full curve
                         var dist = (cardCenter - containerCenter) / (sc.clientWidth * 0.5);
                         var clampedDist = Math.max(-1.2, Math.min(1.2, dist));
                         var absDist = Math.abs(clampedDist);
 
-                        // U-Shape Convex Arc — symmetric curve, edges don't flatten
-                        var rotateY = clampedDist * 30;
-                        var translateY = (clampedDist * clampedDist) * 28;
-                        var translateZ = 90 - absDist * 120;
-                        var scale = 1.08 - absDist * 0.16;
-                        var opacity = 1 - absDist * 0.35;
+                        // U-Shape — ALL cards stay elevated, center pops more
+                        var rotateY = clampedDist * 28;
+                        var translateY = (clampedDist * clampedDist) * 35;
+                        var translateZ = 50 - absDist * 50;
+                        var scale = 1.0 - absDist * 0.08;
+                        var opacity = 0.95 - absDist * 0.2;
 
                         card.style.transform = 'perspective(1000px) rotateY(' + rotateY + 'deg) translateY(' + translateY + 'px) translateZ(' + translateZ + 'px) scale(' + scale + ')';
-                        card.style.opacity = Math.max(0.45, opacity);
-                        card.style.zIndex = Math.round(100 - absDist * 50);
+                        card.style.opacity = Math.max(0.65, opacity);
+                        card.style.zIndex = Math.round(100 - absDist * 30);
 
-                        if (absDist < 0.15) {
+                        if (absDist < 0.25) {
                             card.classList.add('cert-card-active');
                         } else {
                             card.classList.remove('cert-card-active');
