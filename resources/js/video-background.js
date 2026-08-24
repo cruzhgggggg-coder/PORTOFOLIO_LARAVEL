@@ -100,8 +100,17 @@ export function initVideoBackground() {
     }
 }
 
+// Defer video init until page is interactive — avoids competing with critical resources
+function deferredInit() {
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(initVideoBackground, { timeout: 3000 });
+    } else {
+        setTimeout(initVideoBackground, 1500);
+    }
+}
+
 if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initVideoBackground);
+    document.addEventListener('DOMContentLoaded', deferredInit);
 } else {
-    initVideoBackground();
+    deferredInit();
 }

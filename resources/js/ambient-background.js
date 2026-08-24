@@ -285,8 +285,8 @@ class AmbientBackground {
     }
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize — deferred to avoid competing with critical rendering
+function initAmbient() {
     const body = document.body;
 
     const canvas = document.createElement('canvas');
@@ -325,6 +325,13 @@ document.addEventListener('DOMContentLoaded', () => {
         particles: isHomePage ? 25 : 30,
         rays: isHomePage ? 3 : 4
     });
-});
+}
+
+// Defer ambient background until browser is idle
+if ('requestIdleCallback' in window) {
+    requestIdleCallback(initAmbient, { timeout: 3000 });
+} else {
+    window.addEventListener('load', () => setTimeout(initAmbient, 1500));
+}
 
 export { AmbientBackground };

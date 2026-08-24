@@ -360,6 +360,45 @@
 }
 
 /* ============================================================ */
+/* IMAGE BLUR-UP / SKELETON PLACEHOLDER                          */
+/* ============================================================ */
+.img-placeholder {
+    position: relative;
+    overflow: hidden;
+}
+
+.img-placeholder::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(110deg, rgba(255,255,255,0.03) 30%, rgba(255,255,255,0.06) 50%, rgba(255,255,255,0.03) 70%);
+    background-size: 200% 100%;
+    animation: shimmer-placeholder 1.5s ease-in-out infinite;
+    z-index: 1;
+    border-radius: inherit;
+}
+
+.img-placeholder img {
+    opacity: 0;
+    transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.img-placeholder img.loaded {
+    opacity: 1;
+}
+
+.img-placeholder img.loaded + .img-skeleton,
+.img-placeholder:has(img.loaded)::before {
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+@keyframes shimmer-placeholder {
+    0% { background-position: 200% 0; }
+    100% { background-position: -200% 0; }
+}
+
+/* ============================================================ */
 /* MAGNETIC BUTTONS                                              */
 /* ============================================================ */
 [data-magnetic] {

@@ -31,7 +31,7 @@
             @endphp
             <div class="project-card group cursor-pointer relative" data-reveal="up" data-delay="{{ ($loop->index % 2) * 150 }}">
                 {{-- Image --}}
-                <div class="relative aspect-4/5 md:aspect-video overflow-hidden bg-white/5 rounded-4xl mb-10 shadow-2xl" data-img-reveal data-tilt>
+                <div class="relative aspect-4/5 md:aspect-video overflow-hidden bg-white/5 rounded-4xl mb-10 shadow-2xl img-placeholder" data-img-reveal data-tilt>
                     <div data-tilt-glow></div>
 
                     {{-- Project number --}}
@@ -45,6 +45,7 @@
                         alt="{{ $pObj->title ?? '' }}"
                         loading="lazy"
                         decoding="async"
+                        onload="this.classList.add('loaded')"
                         class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-1000" />
 
                     {{-- Overlay with view button --}}

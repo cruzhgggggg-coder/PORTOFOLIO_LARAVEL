@@ -57,7 +57,7 @@
                     {{-- Glow backdrop --}}
                     <div class="absolute -inset-4 bg-linear-to-br from-brand-primary/20 to-brand-secondary/20 rounded-[40px] blur-3xl opacity-20 group-hover:opacity-50 transition-opacity duration-1000"></div>
 
-                    <div class="relative aspect-square glass-premium rounded-[40px] overflow-hidden p-2 md:p-4" data-tilt>
+                    <div class="relative aspect-square glass-premium rounded-[40px] overflow-hidden p-2 md:p-4 img-placeholder" data-tilt>
                         <div data-tilt-glow></div>
 
                         <img
@@ -65,6 +65,7 @@
                             alt="{{ $profile['name'] ?? 'Architect' }}"
                             loading="lazy"
                             decoding="async"
+                            onload="this.classList.add('loaded')"
                             class="w-full h-full object-cover rounded-[32px] grayscale group-hover:grayscale-0 transition-all duration-1000 scale-105 group-hover:scale-100" />
 
                         {{-- Decorative Elements --}}
@@ -383,11 +384,12 @@
                             <div class="w-full max-w-xl brush-mask-container cursor-pointer group/photo"
                                  onclick="openLocationModal('{{ $exp->location_photo_url }}', '{{ addslashes($exp->company ?? $exp->title) }}', '{{ addslashes($exp->location ?? '') }}')">
                                 
-                                <div class="brush-mask-wrapper">
+                                <div class="brush-mask-wrapper img-placeholder">
                                     <img src="{{ $exp->location_photo_url }}" 
                                          alt="{{ $exp->company }} Location" 
                                          class="brush-mask-image shadow-2xl" 
-                                         loading="lazy">
+                                         loading="lazy"
+                                         onload="this.classList.add('loaded')">
                                 </div>
 
                                 {{-- Minimalist Overlay Pills --}}
