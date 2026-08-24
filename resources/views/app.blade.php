@@ -51,10 +51,12 @@
         }
     </style>
 
-    {{-- Fonts (Modern Tech & High Legibility) --}}
+    {{-- Fonts (Modern Tech & High Legibility) — async load to avoid render-blocking --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+    <noscript><link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet"></noscript>
 
     {{-- Favicon --}}
     <link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2">
@@ -80,11 +82,10 @@
         {{-- Video Element --}}
         <video
             id="bg-video"
-            autoplay
             muted
             loop
             playsinline
-            preload="auto"
+            preload="none"
             crossorigin="anonymous"
             class="absolute top-1/2 left-1/2 min-w-full min-h-full w-auto h-auto object-cover -translate-x-1/2 -translate-y-1/2 z-0 opacity-0 transition-opacity duration-1000"
         ></video>
@@ -243,20 +244,47 @@
     </footer>
 
     <script>
-        // Instant & Smooth Page Loader Hide
+        // Smooth Page Loader Hide — waits for DOM + above-the-fold images
         function hidePageLoader() {
             const loader = document.getElementById('page-loader');
             if (loader && !loader.classList.contains('loaded')) {
                 loader.classList.add('loaded');
             }
         }
-        if (document.readyState === 'complete' || document.readyState === 'interactive') {
-            requestAnimationFrame(hidePageLoader);
-        } else {
-            document.addEventListener('DOMContentLoaded', hidePageLoader, { once: true });
-            window.addEventListener('load', hidePageLoader, { once: true });
+
+        // Wait for DOM interactive, then hide loader with a smooth minimum display time
+        function initLoader() {
+            // Minimum display time so loader doesn't flash
+            const minDisplay = 400;
+            const startTime = performance.now();
+
+            // Load above-the-fold images, then hide
+            const aboveFoldImages = document.querySelectorAll('section:first-of-type img, .hero-badge, [data-reveal]');
+            const imagePromises = Array.from(aboveFoldImages).map(el => {
+                if (el.tagName === 'IMG' && !el.complete) {
+                    return new Promise(resolve => {
+                        el.addEventListener('load', resolve, { once: true });
+                        el.addEventListener('error', resolve, { once: true });
+                    });
+                }
+                return Promise.resolve();
+            });
+
+            Promise.all(imagePromises).then(() => {
+                const elapsed = performance.now() - startTime;
+                const remaining = Math.max(0, minDisplay - elapsed);
+                setTimeout(hidePageLoader, remaining);
+            });
+
+            // Failsafe: hide after 2s max regardless
+            setTimeout(hidePageLoader, 2000);
         }
-        setTimeout(hidePageLoader, 300);
+
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            initLoader();
+        } else {
+            document.addEventListener('DOMContentLoaded', initLoader, { once: true });
+        }
 
         // Navbar scroll effect (enhanced)
         const navbar = document.getElementById('navbar');

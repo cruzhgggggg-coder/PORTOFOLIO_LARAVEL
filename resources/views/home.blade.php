@@ -205,7 +205,7 @@
                 @endphp
                 <div class="project-card group relative" data-reveal="up" data-delay="{{ $loop->index * 150 }}">
                     {{-- Image --}}
-                    <div class="project-image-wrap aspect-4/5 bg-white/5 rounded-4xl mb-8 shadow-2xl overflow-hidden" data-img-reveal>
+                    <div class="project-image-wrap aspect-4/5 bg-white/5 rounded-4xl mb-8 shadow-2xl overflow-hidden img-placeholder" data-img-reveal>
                         {{-- Project index number --}}
                         <span class="project-index font-display">{{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}</span>
 
@@ -214,6 +214,7 @@
                             alt="{{ $pObj->title ?? '' }}"
                             loading="lazy"
                             decoding="async"
+                            onload="this.classList.add('loaded')"
                             class="w-full h-full object-cover grayscale" />
 
                         {{-- Overlay on hover --}}
@@ -277,8 +278,8 @@
                         
                         {{-- Certificate Image Header --}}
                         @if($certificate->image_url)
-                        <div class="aspect-[16/10] overflow-hidden relative">
-                            <img src="{{ asset('storage/' . $certificate->image_url) }}" alt="{{ $certificate->title }}" decoding="async" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
+                        <div class="aspect-[16/10] overflow-hidden relative img-placeholder">
+                            <img src="{{ asset('storage/' . $certificate->image_url) }}" alt="{{ $certificate->title }}" decoding="async" loading="lazy" onload="this.classList.add('loaded')" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105">
                             <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
                             
                             {{-- Expand Badge --}}

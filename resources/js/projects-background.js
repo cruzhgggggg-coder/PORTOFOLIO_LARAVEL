@@ -352,8 +352,8 @@ class ProjectsBackground {
     }
 }
 
-// Initialize
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize — deferred to avoid competing with critical rendering
+function initProjectsBg() {
     const projectsContent = document.querySelector('.relative.max-w-7xl');
     if (!projectsContent) return;
 
@@ -376,6 +376,12 @@ document.addEventListener('DOMContentLoaded', () => {
         particles: 40,
         cornerSize: 70
     });
-});
+}
+
+if ('requestIdleCallback' in window) {
+    requestIdleCallback(initProjectsBg, { timeout: 3000 });
+} else {
+    window.addEventListener('load', () => setTimeout(initProjectsBg, 1500));
+}
 
 export { ProjectsBackground };

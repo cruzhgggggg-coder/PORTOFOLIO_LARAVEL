@@ -376,17 +376,28 @@ class SmoothNavigation {
 }
 
 // ============================================================
-// INITIALIZE ALL
+// INITIALIZE — critical first, defer the rest
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+    // Critical: scroll reveals and image reveals (affects above-the-fold content)
     new ScrollReveal();
-    new CustomCursor();
-    new TiltEffect();
-    new MagneticEffect();
-    new TextSplitAnimation();
-    new CounterAnimation();
-    new ParallaxEffect();
-    new NavbarEnhanced();
     new ImageReveal();
-    new SmoothNavigation();
+    new NavbarEnhanced();
+
+    // Defer non-critical interactions until browser is idle
+    const deferInit = () => {
+        new CustomCursor();
+        new TiltEffect();
+        new MagneticEffect();
+        new TextSplitAnimation();
+        new CounterAnimation();
+        new ParallaxEffect();
+        new SmoothNavigation();
+    };
+
+    if ('requestIdleCallback' in window) {
+        requestIdleCallback(deferInit, { timeout: 2000 });
+    } else {
+        setTimeout(deferInit, 1000);
+    }
 });
